@@ -1,26 +1,57 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Box : MonoBehaviour
 {
-    public Camera camera;
-    public List<GameObject> BoxSlots;
+    public new Camera camera;
+    public Transform[] BoxSlots;
     public int Slot;
     public GameMaster GM;
+    public float speed;
+    public int hp;
+    private bool move = false;
+    private float healTimer;
+    public float healCD;
+
     // Use this for initialization
     void Start ()
     {
         camera = GameObject.Find("Main Camera").GetComponent<Camera>();
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
+        BoxSlots = GameObject.Find("Box Points").GetComponentsInChildren<Transform>().Where(x => x.name != "Box Points").Select(x => x.transform).ToArray();
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-	
-	}
-
+        if (!Input.GetMouseButton(0) && transform.position != BoxSlots[Slot].position)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, BoxSlots[Slot].position, speed * Time.deltaTime);
+                
+        }
+        if(Slot == BoxSlots.Length-1)
+        {
+            if(healTimer < Time.time)
+            {
+                hp++;
+                healTimer = Time.time + healCD;
+            }
+        }
+    }
+    void OnCollisionEnter(Collision col)
+    {
+        if(col.transform.tag == transform.tag)
+        {
+            GM.addScore();
+        }
+        else
+        {
+            hp--;
+        }
+        col.gameObject.SetActive(false);
+    }
 
     void OnMouseOver()
     {
@@ -28,26 +59,36 @@ public class Box : MonoBehaviour
         {
             Vector3 pos = Input.mousePosition;
             transform.position = camera.ScreenToWorldPoint(new Vector3(pos.x,pos.y,camera.nearClipPlane));
-            transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+            transform.position = new Vector3(transform.position.x, transform.position.y, -2f);
+           
         }
-        if(Input.GetMouseButtonUp(0))
+        if(!Input.GetMouseButton(0))
         {
-            for (int i = 0; i < BoxSlots.Count; i++)
+            move = false;
+            for (int i = 0; i < BoxSlots.Length; i++)
             {
-                if (Mathf.Abs((transform.position - BoxSlots[i].transform.position).magnitude) <= 0.75f)
-                {
+                if (Mathf.Abs((transform.position.x - BoxSlots[i].position.x)) <= 0.75f && Mathf.Abs((transform.position.y - BoxSlots[i].position.y)) <= 0.75f)
+                { 
+                    move = true; 
                     GM.swapBox(Slot, i);
                     Slot = i;
-                    transform.position = BoxSlots[i].transform.position;
+                    //transform.position = BoxSlots[i].position;
                 }
             }
-            
+            if(!move)
+            {
+                //transform.position = BoxSlots[Slot].position;
+            }
         }
     }
     public void newPos(int pos)
     {
         Slot = pos;
-        transform.position = BoxSlots[Slot].transform.position;
+        //transform.position = BoxSlots[Slot].position;
+    }
+    public void StartPos(int pos)
+    {
+        Slot = pos;
     }
 
 }

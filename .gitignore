@@ -33,5 +33,7 @@ Assets/_Scenes/*
 Assets/Testing/*
 Assets/Testing.meta
 
+Library\metadata/*
+
 Assets/Resources/Graphics/Testing/*
 Assets/Resources/Graphics/Testing.meta

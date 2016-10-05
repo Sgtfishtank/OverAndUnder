@@ -26,16 +26,16 @@ ProjectSettings/EditorBuildSettings.asset
 #Unity scenes
 *.unity
 *.unity.meta
-Assets/_Scenes
-Assets/_Scenes/*
+OverAndUnder/Assets/_Scenes
+OverAndUnder/Assets/_Scenes/*
 
 #Folder for materials used in local testing, ie resources, prefabs etc
-Assets/Testing/*
-Assets/Testing.meta
+OverAndUnder/Assets/Testing/*
+OverAndUnder/Assets/Testing.meta
 
-Library/metadata/*
+OverAndUnder/Library/metadata/**
 
-Library/shadercompiler-UnityShaderCompiler.exe0.log
+OverAndUnder/Library/shadercompiler-UnityShaderCompiler.exe0.log
 
-Assets/Resources/Graphics/Testing/*
-Assets/Resources/Graphics/Testing.meta
+OverAndUnder/Assets/Resources/Graphics/Testing/*
+OverAndUnder/Assets/Resources/Graphics/Testing.meta

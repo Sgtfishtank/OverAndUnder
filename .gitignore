@@ -33,7 +33,9 @@ Assets/_Scenes/*
 Assets/Testing/*
 Assets/Testing.meta
 
-Library\metadata/*
+Library/metadata/*
+
+Library/shadercompiler-UnityShaderCompiler.exe0.log
 
 Assets/Resources/Graphics/Testing/*
 Assets/Resources/Graphics/Testing.meta

@@ -31,7 +31,7 @@ public class GameMaster : MonoBehaviour
 
     public enum Abilitys
     {
-        SLOW,WALL,MULTIPLIER,NEUTRAL
+        SLOW,WALL,MULTIPLIER,NEUTRAL,NONE
     };
 
     

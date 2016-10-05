@@ -12,12 +12,30 @@ public class GameMaster : MonoBehaviour
     public GameObject blueBox;
     public GameObject redBox;
     public GameObject ghostBox;
-
     public GameObject blueBall;
     public GameObject redBall;
     public int score;
-    private float lastSpawn;
     public float spawnRate;
+    private float lastSpawn;
+    private bool abilityActive;
+    public float SlowDuration;
+    public float WallDuration;
+    public float MultiDuration;
+    public float NeutralDuration;
+    public float durationTime;
+    public Abilitys currentActive;
+    public int activeLane;
+    public float slowSpeed;
+    public float normalspeed;
+    private int multiplier;
+
+    public enum Abilitys
+    {
+        SLOW,WALL,MULTIPLIER,NEUTRAL
+    };
+
+    
+    
 
     void Start()
     {
@@ -54,50 +72,96 @@ public class GameMaster : MonoBehaviour
 
     void Update()
     {
-        /*
-        spawnrate
-        color
-        pattern
-        pos
-        speed
-
-        */
         if(Time.time > lastSpawn)
         {
+            if(durationTime < Time.time)
+            {
+                abilityActive = false;
+                multiplier = 1;
+            }
             if(UnityEngine.Random.Range(0,1) ==0)//pattern
             {
                 int spawnpos = UnityEngine.Random.Range(0, 5);
-                if (UnityEngine.Random.Range(0, 2) == 0)//collor blue
+                int color = UnityEngine.Random.Range(0, 2);
+                if(abilityActive && activeLane == spawnpos)
                 {
-                    int ball = findInactiveBlue();
-
-                    balls[ball].transform.position = BallSpawnPoints[spawnpos].position;
-                    if (spawnpos < 3)
-                        balls[ball].GetComponent<Rigidbody>().velocity = new Vector3(0, -5, 0);
-                    else
-                        balls[ball].GetComponent<Rigidbody>().velocity = new Vector3(0, 5, 0);
-                    balls[ball].SetActive(true);
+                    abilitySpawning(spawnpos, color);
                 }
-                else //collor red
+                else
                 {
-                    int ball = findInactiveRed();
-
-                    balls[ball].transform.position = BallSpawnPoints[spawnpos].position;
-                    if (spawnpos < 3)
-                        balls[ball].GetComponent<Rigidbody>().velocity = new Vector3(0, -5, 0);
-                    else
-                        balls[ball].GetComponent<Rigidbody>().velocity = new Vector3(0, 5, 0);
-                    balls[ball].SetActive(true);
+                    spawnNormal(spawnpos, normalspeed, color);
                 }
             }
-
             lastSpawn = Time.time + spawnRate;
         }
-    }
 
+    }
+    void spawnNormal(int lane, float speed, int color)
+    {
+        int ball = 0;
+        if (color == 0)
+        {
+            ball = findInactiveBlue();
+        }
+        else if(color == 1)
+        {
+            ball = findInactiveRed();
+        }
+        else
+        {
+            ball = findInactiveGold();
+        }
+        balls[ball].transform.position = BallSpawnPoints[lane].position;
+        if (lane < 3)
+            balls[ball].GetComponent<Rigidbody>().velocity = new Vector3(0, -speed, 0);
+        else
+            balls[ball].GetComponent<Rigidbody>().velocity = new Vector3(0, speed, 0);
+        balls[ball].SetActive(true);
+    }
+    public void abilitySpawning(int lane, int color)
+    {
+        switch (currentActive)
+        {
+            case Abilitys.SLOW:
+                spawnNormal(lane, slowSpeed, color);
+                break;
+            case Abilitys.NEUTRAL:
+                spawnNormal(lane, slowSpeed, 2);
+                break;
+            default:
+                break;
+        }
+    }
+    public void activateAbility(GameMaster.Abilitys a, int lane)
+    {
+        abilityActive = true;
+        currentActive = a;
+        activeLane = lane;
+        
+        switch (a)
+        {
+            case Abilitys.SLOW:
+                durationTime = Time.time + SlowDuration;
+                break;
+            case Abilitys.WALL:
+                durationTime = Time.time + WallDuration;
+                break;
+            case Abilitys.MULTIPLIER:
+                durationTime = Time.time + MultiDuration;
+                multiplier = 3;
+                break;
+            case Abilitys.NEUTRAL:
+                durationTime = Time.time + NeutralDuration;
+                break;
+            default:
+
+                break;
+        }
+
+    }
     int findInactiveBlue()
     {
-        for (int i = 0; i < balls.Count / 2 - 1; i++)
+        for (int i = 0; i < 15 - 1; i++)
         {
             if (!balls[i].activeSelf)
             {
@@ -108,7 +172,7 @@ public class GameMaster : MonoBehaviour
     }
     int findInactiveRed()
     {
-        for (int i = balls.Count/2; i < balls.Count; i++)
+        for (int i = 15; i < 30; i++)
         {
             if (!balls[i].activeSelf)
             {
@@ -117,11 +181,20 @@ public class GameMaster : MonoBehaviour
         }
         return 0;
     }
-
-
+    int findInactiveGold()
+    {
+        for (int i = 30; i < 39; i++)
+        {
+            if (!balls[i].activeSelf)
+            {
+                return i;
+            }
+        }
+        return 0;
+    }
     public void addScore()
     {
-        score++;
+        score += 1 * multiplier;
     }
     public void swapBox(int CurrentPos, int newPos)
     {

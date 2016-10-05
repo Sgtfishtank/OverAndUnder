@@ -14,6 +14,7 @@ public class Box : MonoBehaviour
     private bool move = false;
     private float healTimer;
     public float healCD;
+    private int moving;
 
     // Use this for initialization
     void Start ()
@@ -26,7 +27,20 @@ public class Box : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if (!Input.GetMouseButton(0) && transform.position != BoxSlots[Slot].position)
+        if(moving == 2)
+        {
+            for (int i = 0; i < BoxSlots.Length; i++)
+            {
+                if (Mathf.Abs((transform.position.x - BoxSlots[i].position.x)) <= 0.75f && Mathf.Abs((transform.position.y - BoxSlots[i].position.y)) <= 0.75f)
+                {
+                    move = true;
+                    GM.swapBox(Slot, i);
+                    Slot = i;
+                    moving = 0;
+                }
+            }
+        }
+        if (!Input.GetMouseButton(0) && transform.position != BoxSlots[Slot].position && moving == 0)
         {
             transform.position = Vector3.MoveTowards(transform.position, BoxSlots[Slot].position, speed * Time.deltaTime);
                 
@@ -42,7 +56,15 @@ public class Box : MonoBehaviour
     }
     void OnCollisionEnter(Collision col)
     {
-        if(col.transform.tag == transform.tag)
+        if(col.transform.tag == "Red" &&  transform.tag == "Red Box")
+        {
+            GM.addScore();
+        }
+        else if (col.transform.tag == "Blue" && transform.tag == "Blue Box")
+        {
+            GM.addScore();
+        }
+        else if (col.transform.tag == "Gold")
         {
             GM.addScore();
         }
@@ -90,5 +112,8 @@ public class Box : MonoBehaviour
     {
         Slot = pos;
     }
-
+    public void onTheMove(int a)
+    {
+        moving = a;
+    }
 }

@@ -34,6 +34,7 @@ OverAndUnder/Assets/Testing/*
 OverAndUnder/Assets/Testing.meta
 
 OverAndUnder/Library/metadata/**
+OverAndUnder/Library/metadata/*
 
 OverAndUnder/Library/shadercompiler-UnityShaderCompiler.exe0.log
 

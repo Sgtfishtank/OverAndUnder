@@ -8,11 +8,13 @@ public class PhoneMove : MonoBehaviour
     //private Vector3 startPos;
 
     private Transform pickedObject = null;
+    private GameMaster.Abilitys selectedAbility = GameMaster.Abilitys.NONE;
+    private GameMaster GM;
     // Use this for initialization
     void Start ()
     {
-	
-	}
+        GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -35,6 +37,43 @@ public class PhoneMove : MonoBehaviour
                         pickedObject = hit.transform;
                         pickedObject.GetComponent<Box>().onTheMove(1);
                         //startPos = touch.position;
+                    }
+                    else if(hit.transform.tag == "Ability Button")
+                    {
+                        selectedAbility = hit.transform.GetComponent<AbilityButton>().buttontype;
+                    }
+                    else if(hit.transform.tag == "Lane")
+                    {
+                        switch (hit.transform.name)
+                        {
+                            case "mesh_lane1":
+                                GM.activateAbility(selectedAbility, 0);
+
+                                break;
+                            case "mesh_lane2":
+                                GM.activateAbility(selectedAbility, 1);
+
+                                break;
+                            case "mesh_lane3":
+                                GM.activateAbility(selectedAbility, 2);
+
+                                break;
+                            case "mesh_lane4":
+                                GM.activateAbility(selectedAbility, 3);
+
+                                break;
+                            case "mesh_lane5":
+                                GM.activateAbility(selectedAbility, 4);
+
+                                break;
+                            case "mesh_lane6":
+                                GM.activateAbility(selectedAbility, 5);
+
+                                break;
+                            default:
+                                break;
+                        }
+                        selectedAbility = GameMaster.Abilitys.NONE;
                     }
                     
                 }

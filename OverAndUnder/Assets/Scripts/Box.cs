@@ -15,19 +15,21 @@ public class Box : MonoBehaviour
     private float healTimer;
     public float healCD;
     private int moving;
+    public MeshRenderer currentmat;
 
     // Use this for initialization
     void Start ()
     {
         camera = GameObject.Find("Main Camera").GetComponent<Camera>();
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
-        BoxSlots = GameObject.Find("Box Points").GetComponentsInChildren<Transform>().Where(x => x.name != "Box Points").Select(x => x.transform).ToArray();
+        BoxSlots = GameObject.Find("overandunder_main").GetComponentsInChildren<Transform>().Where(x => x.name == "mesh_box").Select(x => x.transform).ToArray();
+        currentmat = transform.GetComponent<MeshRenderer>();
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if(moving == 2)
+        if (moving == 2)
         {
             for (int i = 0; i < BoxSlots.Length; i++)
             {

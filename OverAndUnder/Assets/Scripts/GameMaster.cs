@@ -17,7 +17,7 @@ public class GameMaster : MonoBehaviour
     public int score;
     public float spawnRate;
     private float lastSpawn;
-    private bool abilityActive;
+    public bool abilityActive;
     public float SlowDuration;
     public float WallDuration;
     public float MultiDuration;
@@ -27,7 +27,7 @@ public class GameMaster : MonoBehaviour
     public int activeLane;
     public float slowSpeed;
     public float normalspeed;
-    private int multiplier;
+    public int multiplier;
 
     public enum Abilitys
     {

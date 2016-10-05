@@ -20,7 +20,7 @@ public class Box : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        camera = GameObject.Find("camera_main").GetComponent<Camera>();
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
         BoxSlots = GameObject.Find("overandunder_main").GetComponentsInChildren<Transform>().Where(x => x.name == "mesh_box").Select(x => x.transform).ToArray();
         currentmat = transform.GetComponent<MeshRenderer>();

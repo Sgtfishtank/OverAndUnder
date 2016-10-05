@@ -54,18 +54,23 @@ public class GameMaster : MonoBehaviour
             if(i != 6)
                 boxes[i].transform.GetComponent<Box>().StartPos(i);
         }
-          for (int i = 0; i < 50; i++)
+          for (int i = 0; i < 30; i++)
           {
-              if (i < 25)
+              if (i < 15)
               {
                   balls.Add(Instantiate(blueBall, Vector3.zero, Quaternion.identity) as GameObject);
               }
-              else
+              else if(i<30 && i> 14)
               {
                   balls.Add(Instantiate(redBall, Vector3.zero, Quaternion.identity) as GameObject);
 
               }
-              balls[i].SetActive(false);
+            else 
+            {
+               // balls.Add(Instantiate(Ball, Vector3.zero, Quaternion.identity) as GameObject);
+
+            }
+            balls[i].SetActive(false);
               balls[i].transform.parent = parent;
           }
     }
@@ -112,6 +117,7 @@ public class GameMaster : MonoBehaviour
             ball = findInactiveGold();
         }
         balls[ball].transform.position = BallSpawnPoints[lane].position;
+        balls[ball].transform.GetComponent<Ball>().lane = lane;
         if (lane < 3)
             balls[ball].GetComponent<Rigidbody>().velocity = new Vector3(0, -speed, 0);
         else
@@ -142,6 +148,13 @@ public class GameMaster : MonoBehaviour
         {
             case Abilitys.SLOW:
                 durationTime = Time.time + SlowDuration;
+                for (int i = 0; i < balls.Count; i++)
+                {
+                    if(balls[i].activeSelf && balls[i].transform.GetComponent<Ball>().lane == lane)
+                    {
+                        balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, slowSpeed, 0);
+                    }
+                }
                 break;
             case Abilitys.WALL:
                 durationTime = Time.time + WallDuration;

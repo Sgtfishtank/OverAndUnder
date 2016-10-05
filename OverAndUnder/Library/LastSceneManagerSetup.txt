@@ -1,8 +1,1 @@
-sceneSetups:
-<<<<<<< HEAD
-- path: Assets/Main.unity
-=======
-- path: Assets/Testing/test.unity
->>>>>>> origin/master
-  isLoaded: 1
-  isActive: 1
+sceneSetups: []

@@ -117,6 +117,7 @@ public class GameMaster : MonoBehaviour
             ball = findInactiveGold();
         }
         balls[ball].transform.position = BallSpawnPoints[lane].position;
+        balls[ball].transform.rotation = UnityEngine.Random.rotation;
         balls[ball].transform.GetComponent<Ball>().lane = lane;
         if (lane < 3)
             balls[ball].GetComponent<Rigidbody>().velocity = new Vector3(0, -speed, 0);

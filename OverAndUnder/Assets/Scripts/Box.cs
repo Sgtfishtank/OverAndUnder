@@ -10,7 +10,7 @@ public class Box : MonoBehaviour
     public int Slot;
     public GameMaster GM;
     public float speed;
-    public int hp;
+    public int hp = 25;
     private bool move = false;
     private float healTimer;
     public float healCD;

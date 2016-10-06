@@ -16,6 +16,11 @@ public class Box : MonoBehaviour
     public float healCD;
     private int moving;
     public MeshRenderer currentmat;
+    public ParticleSystem ps;
+    public GameObject psMaster;
+    public GameObject fullBox;
+    public GameObject brokenBox;
+    bool isBroken = false;
 
     // Use this for initialization
     void Start ()
@@ -24,12 +29,30 @@ public class Box : MonoBehaviour
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
         BoxSlots = GameObject.Find("overandunder_main").GetComponentsInChildren<Transform>().Where(x => x.name == "mesh_box").Select(x => x.transform).ToArray();
         currentmat = transform.GetComponent<MeshRenderer>();
+        ps = transform.GetComponentInChildren<ParticleSystem>();
+        //psMaster = transform.GetComponentsInChildren<GameObject>().Where(x => x.name == "particles_explosion").Select(x => x.transform).ToArray()[0].gameObject;
         
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
+        if(!isBroken && hp < 6)
+        {
+            isBroken = true;
+            brokenBox.SetActive(true);
+            fullBox.SetActive(false);
+        }
+        else if(isBroken &&hp > 5)
+        {
+            isBroken = false;
+            brokenBox.SetActive(false);
+            fullBox.SetActive(true);
+        }
+        if(psMaster.activeSelf && ps.isStopped)
+        {
+            psMaster.SetActive(false);
+        }
         if (moving == 2)
         {
             for (int i = 0; i < BoxSlots.Length; i++)
@@ -73,6 +96,10 @@ public class Box : MonoBehaviour
         }
         else
         {
+            print("hit");
+            psMaster.SetActive(true);
+            psMaster.transform.position = col.transform.position;
+            ps.Play();
             hp--;
         }
         col.gameObject.SetActive(false);

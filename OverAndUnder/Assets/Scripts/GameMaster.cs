@@ -38,6 +38,7 @@ public class GameMaster : MonoBehaviour
     public Color wallcolor;
     public Color multicolor;
     public Color neutcolor;
+    public GameObject healEffect;
 
     public enum Abilitys
     {
@@ -54,11 +55,7 @@ public class GameMaster : MonoBehaviour
         ColorUtility.TryParseHtmlString("#330F0F00", out wallcolor);
         ColorUtility.TryParseHtmlString("#300B3300", out multicolor);
         ColorUtility.TryParseHtmlString("#33310E00", out neutcolor);
-
-        /*wallcolor = new Color(0x33, 0x0F, 0x0F);
-        multicolor = new Color(0x30, 0x0B, 0x33);
-        neutcolor = new Color(0x33, 0x31, 0x0E);*/
-
+        healEffect.SetActive(false);
 
         Transform parent = GameObject.Find("Ball Objects").transform;
         lanetextscript = transform.GetComponentsInChildren<Transform>().Where(x => x.tag == "Lane").Select(x => x.transform.GetComponent<ScrollingTexture>()).ToArray();
@@ -138,6 +135,14 @@ public class GameMaster : MonoBehaviour
                 }
             }
             lastSpawn = Time.time + spawnRate;
+        }
+        if(boxes[6].tag == "Blue Box" || boxes[6].tag == "Red Box")
+        {
+            healEffect.SetActive(true);
+        }
+        else  if(healEffect.activeSelf)
+        {
+            healEffect.SetActive(false);
         }
 
     }

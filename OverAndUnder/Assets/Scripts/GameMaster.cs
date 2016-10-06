@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System;
 
 public class GameMaster : MonoBehaviour
@@ -9,6 +10,8 @@ public class GameMaster : MonoBehaviour
     public List<GameObject> balls;
     public List<Transform> boxPoints;
     public List<Transform> BallSpawnPoints;
+    public ScrollingTexture[] lanetextscript;
+    public MeshRenderer[] lanerenders;
     public GameObject blueBox;
     public GameObject redBox;
     public GameObject ghostBox;
@@ -23,13 +26,18 @@ public class GameMaster : MonoBehaviour
     public float WallDuration;
     public float MultiDuration;
     public float NeutralDuration;
-    public float durationTime;
+    private float durationTime;
     public Abilitys currentActive;
     public int activeLane;
     public float slowSpeed;
     public float normalspeed;
     public int multiplier;
     public bool selectingAbility = false;
+    public Color defaultcolor;
+    public Color slowcolor;
+    public Color wallcolor;
+    public Color multicolor;
+    public Color neutcolor;
 
     public enum Abilitys
     {
@@ -41,7 +49,20 @@ public class GameMaster : MonoBehaviour
 
     void Start()
     {
+        ColorUtility.TryParseHtmlString("#00000000", out defaultcolor);
+        ColorUtility.TryParseHtmlString("#121E3300", out slowcolor);
+        ColorUtility.TryParseHtmlString("#330F0F00", out wallcolor);
+        ColorUtility.TryParseHtmlString("#300B3300", out multicolor);
+        ColorUtility.TryParseHtmlString("#33310E00", out neutcolor);
+
+        /*wallcolor = new Color(0x33, 0x0F, 0x0F);
+        multicolor = new Color(0x30, 0x0B, 0x33);
+        neutcolor = new Color(0x33, 0x31, 0x0E);*/
+
+
         Transform parent = GameObject.Find("Ball Objects").transform;
+        lanetextscript = transform.GetComponentsInChildren<Transform>().Where(x => x.tag == "Lane").Select(x => x.transform.GetComponent<ScrollingTexture>()).ToArray();
+        lanerenders = transform.GetComponentsInChildren<Transform>().Where(x => x.tag == "Lane").Select(x => x.transform.GetComponent<MeshRenderer>()).ToArray();
 
         for (int i = 0; i < boxPoints.Count; i++)
         {
@@ -76,10 +97,32 @@ public class GameMaster : MonoBehaviour
     {
         if(Time.time > lastSpawn)
         {
-            if(durationTime < Time.time)
+            if(durationTime < Time.time && abilityActive)
             {
+                switch (currentActive)
+                {
+                    case Abilitys.SLOW:
+                        for (int i = 0; i < balls.Count; i++)
+                        {
+                            if (balls[i].activeSelf && balls[i].transform.GetComponent<Ball>().lane == activeLane)
+                            {
+                                balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, balls[i].GetComponent<Rigidbody>().velocity.y * 2, 0);
+                            }
+                        }
+                        lanetextscript[activeLane].scrollSpeed *= 2;
+                        lanetextscript[activeLane].scrollSpeed2 *= 2;
+                        break;
+                    case Abilitys.WALL:
+                        break;
+                    case Abilitys.NEUTRAL:
+                        break;
+                    default:
+                        break;
+                }
+                lanerenders[activeLane].material.SetColor("_EmissionColor", defaultcolor);
                 abilityActive = false;
-                multiplier = 1;
+                activeLane = 10;
+                currentActive = Abilitys.NONE;
             }
             if(UnityEngine.Random.Range(0,1) ==0)//pattern
             {
@@ -169,6 +212,11 @@ public class GameMaster : MonoBehaviour
                         balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, balls[i].GetComponent<Rigidbody>().velocity.y/2, 0);
                     }
                 }
+                lanetextscript[activeLane].scrollSpeed /= 2;
+                lanetextscript[activeLane].scrollSpeed2 /= 2;
+                
+                lanerenders[activeLane].material.SetColor("_EmissionColor", slowcolor);
+
                 break;
             case Abilitys.WALL:
                 durationTime = Time.time + WallDuration;
@@ -196,13 +244,16 @@ public class GameMaster : MonoBehaviour
                         break;
                 }
                 WallObj.SetActive(true);
+                lanerenders[activeLane].material.SetColor("_EmissionColor", wallcolor);
                 break;
             case Abilitys.MULTIPLIER:
                 durationTime = Time.time + MultiDuration;
+                lanerenders[activeLane].material.SetColor("_EmissionColor", multicolor);
                 multiplier = 3;
                 break;
             case Abilitys.NEUTRAL:
                 durationTime = Time.time + NeutralDuration;
+                lanerenders[activeLane].material.SetColor("_EmissionColor", neutcolor);
                 break;
             default:
 

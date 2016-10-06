@@ -5,8 +5,6 @@ public class PhoneMove : MonoBehaviour
 {
     private float maxPickingDistance = 10000;// increase if needed, depending on your scene size
 
-    //private Vector3 startPos;
-
     private Transform pickedObject = null;
     private GameMaster.Abilitys selectedAbility = GameMaster.Abilitys.NONE;
     private GameMaster GM;
@@ -36,11 +34,20 @@ public class PhoneMove : MonoBehaviour
                     {
                         pickedObject = hit.transform;
                         pickedObject.GetComponent<Box>().onTheMove(1);
-                        //startPos = touch.position;
                     }
                     else if(hit.transform.tag == "Ability Button")
                     {
-                        selectedAbility = hit.transform.GetComponent<AbilityButton>().buttontype;
+                        if (selectedAbility != hit.transform.GetComponent<AbilityButton>().buttontype)
+                        {
+                            selectedAbility = hit.transform.GetComponent<AbilityButton>().buttontype;
+                            GM.highlightLanes(selectedAbility);
+                        }
+                        else
+                        {
+                            selectedAbility = GameMaster.Abilitys.NONE;
+                            GM.unlightLanes();
+                        }
+
                     }
                     else if(hit.transform.tag == "Lane")
                     {

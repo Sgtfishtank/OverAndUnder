@@ -14,6 +14,7 @@ public class GameMaster : MonoBehaviour
     public GameObject ghostBox;
     public GameObject blueBall;
     public GameObject redBall;
+    public GameObject WallObj;
     public int score;
     public float spawnRate;
     private float lastSpawn;
@@ -28,6 +29,7 @@ public class GameMaster : MonoBehaviour
     public float slowSpeed;
     public float normalspeed;
     public int multiplier;
+    public bool selectingAbility = false;
 
     public enum Abilitys
     {
@@ -54,23 +56,18 @@ public class GameMaster : MonoBehaviour
             if(i != 6)
                 boxes[i].transform.GetComponent<Box>().StartPos(i);
         }
-          for (int i = 0; i < 30; i++)
+          for (int i = 0; i < 20; i++)
           {
-              if (i < 15)
+              if (i < 10)
               {
                   balls.Add(Instantiate(blueBall, Vector3.zero, Quaternion.identity) as GameObject);
               }
-              else if(i<30 && i> 14)
+              else if(i<20 && i> 9)
               {
                   balls.Add(Instantiate(redBall, Vector3.zero, Quaternion.identity) as GameObject);
 
               }
-            else 
-            {
-               // balls.Add(Instantiate(Ball, Vector3.zero, Quaternion.identity) as GameObject);
-
-            }
-            balls[i].SetActive(false);
+              balls[i].SetActive(false);
               balls[i].transform.parent = parent;
           }
     }
@@ -101,6 +98,25 @@ public class GameMaster : MonoBehaviour
         }
 
     }
+    public void highlightLanes(Abilitys ability)
+    {
+        currentActive = ability;
+        selectingAbility = true;
+    }
+    public void unlightLanes()
+    {
+        currentActive = Abilitys.NONE;
+        selectingAbility = false;
+    }
+    public void setLane(int lane)
+    {
+        
+        if (selectingAbility)
+        {
+            activeLane = lane;
+            activateAbility(currentActive, lane);
+        }
+    }
     void spawnNormal(int lane, float speed, int color)
     {
         int ball = 0;
@@ -111,10 +127,6 @@ public class GameMaster : MonoBehaviour
         else if(color == 1)
         {
             ball = findInactiveRed();
-        }
-        else
-        {
-            ball = findInactiveGold();
         }
         balls[ball].transform.position = BallSpawnPoints[lane].position;
         balls[ball].transform.rotation = UnityEngine.Random.rotation;
@@ -133,7 +145,7 @@ public class GameMaster : MonoBehaviour
                 spawnNormal(lane, slowSpeed, color);
                 break;
             case Abilitys.NEUTRAL:
-                spawnNormal(lane, slowSpeed, 2);
+                spawnNormal(lane, normalspeed, 0);
                 break;
             default:
                 break;
@@ -142,6 +154,7 @@ public class GameMaster : MonoBehaviour
     public void activateAbility(GameMaster.Abilitys a, int lane)
     {
         abilityActive = true;
+        selectingAbility = false;
         currentActive = a;
         activeLane = lane;
         
@@ -153,12 +166,36 @@ public class GameMaster : MonoBehaviour
                 {
                     if(balls[i].activeSelf && balls[i].transform.GetComponent<Ball>().lane == lane)
                     {
-                        balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, slowSpeed, 0);
+                        balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, balls[i].GetComponent<Rigidbody>().velocity.y/2, 0);
                     }
                 }
                 break;
             case Abilitys.WALL:
                 durationTime = Time.time + WallDuration;
+                switch (lane)
+                {
+                    case 0:
+                        WallObj.transform.position = new Vector3(-2.01f, 1, 0);
+                        break;
+                    case 1:
+                        WallObj.transform.position = new Vector3(-0.59f, 1, 0);
+                        break;
+                    case 2:
+                        WallObj.transform.position = new Vector3(0.81f, 1, 0);
+                        break;
+                    case 3:
+                        WallObj.transform.position = new Vector3(-2.01f, -1, 0);
+                        break;
+                    case 4:
+                        WallObj.transform.position = new Vector3(-0.59f, -1, 0);
+                        break;
+                    case 5:
+                        WallObj.transform.position = new Vector3(0.81f, -1, 0);
+                        break;
+                    default:
+                        break;
+                }
+                WallObj.SetActive(true);
                 break;
             case Abilitys.MULTIPLIER:
                 durationTime = Time.time + MultiDuration;
@@ -175,7 +212,7 @@ public class GameMaster : MonoBehaviour
     }
     int findInactiveBlue()
     {
-        for (int i = 0; i < 15 - 1; i++)
+        for (int i = 0; i < balls.Count/2; i++)
         {
             if (!balls[i].activeSelf)
             {
@@ -186,7 +223,7 @@ public class GameMaster : MonoBehaviour
     }
     int findInactiveRed()
     {
-        for (int i = 15; i < 30; i++)
+        for (int i = balls.Count/2; i < balls.Count; i++)
         {
             if (!balls[i].activeSelf)
             {
@@ -195,20 +232,12 @@ public class GameMaster : MonoBehaviour
         }
         return 0;
     }
-    int findInactiveGold()
+    public void addScore(int lane)
     {
-        for (int i = 30; i < 39; i++)
-        {
-            if (!balls[i].activeSelf)
-            {
-                return i;
-            }
-        }
-        return 0;
-    }
-    public void addScore()
-    {
-        score += 1 * multiplier;
+        if (currentActive == Abilitys.MULTIPLIER && activeLane == lane)
+            score += 1 * multiplier;
+        else
+            score++;
     }
     public void swapBox(int CurrentPos, int newPos)
     {

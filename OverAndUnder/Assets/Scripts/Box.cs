@@ -24,6 +24,7 @@ public class Box : MonoBehaviour
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
         BoxSlots = GameObject.Find("overandunder_main").GetComponentsInChildren<Transform>().Where(x => x.name == "mesh_box").Select(x => x.transform).ToArray();
         currentmat = transform.GetComponent<MeshRenderer>();
+        
     }
 	
 	// Update is called once per frame
@@ -49,7 +50,7 @@ public class Box : MonoBehaviour
         }
         if(Slot == BoxSlots.Length-1)
         {
-            if(healTimer < Time.time)
+            if(healTimer < Time.time && hp < 26)
             {
                 hp++;
                 healTimer = Time.time + healCD;
@@ -60,15 +61,15 @@ public class Box : MonoBehaviour
     {
         if(col.transform.tag == "Red" &&  transform.tag == "Red Box")
         {
-            GM.addScore();
+            GM.addScore(Slot);
         }
         else if (col.transform.tag == "Blue" && transform.tag == "Blue Box")
         {
-            GM.addScore();
+            GM.addScore(Slot);
         }
         else if (col.transform.tag == "Gold")
         {
-            GM.addScore();
+            GM.addScore(Slot);
         }
         else
         {

@@ -12,6 +12,8 @@ public class GameMaster : MonoBehaviour
     public List<Transform> BallSpawnPoints;
     public ScrollingTexture[] lanetextscript;
     public MeshRenderer[] lanerenders;
+    public Vector2[] abilitysInLane;
+    public List<GameObject> wallsprefab;
     public GameObject blueBox;
     public GameObject redBox;
     public GameObject ghostBox;
@@ -28,7 +30,6 @@ public class GameMaster : MonoBehaviour
     public float NeutralDuration;
     private float durationTime;
     public Abilitys currentActive;
-    public int activeLane;
     public float slowSpeed;
     public float normalspeed;
     public int multiplier;
@@ -57,6 +58,7 @@ public class GameMaster : MonoBehaviour
         ColorUtility.TryParseHtmlString("#33310E00", out neutcolor);
         healEffect.SetActive(false);
 
+
         Transform parent = GameObject.Find("Ball Objects").transform;
         lanetextscript = transform.GetComponentsInChildren<Transform>().Where(x => x.tag == "Lane").Select(x => x.transform.GetComponent<ScrollingTexture>()).ToArray();
         lanerenders = transform.GetComponentsInChildren<Transform>().Where(x => x.tag == "Lane").Select(x => x.transform.GetComponent<MeshRenderer>()).ToArray();
@@ -74,58 +76,66 @@ public class GameMaster : MonoBehaviour
             if(i != 6)
                 boxes[i].transform.GetComponent<Box>().StartPos(i);
         }
-          for (int i = 0; i < 20; i++)
-          {
-              if (i < 10)
-              {
-                  balls.Add(Instantiate(blueBall, Vector3.zero, Quaternion.identity) as GameObject);
-              }
-              else if(i<20 && i> 9)
-              {
-                  balls.Add(Instantiate(redBall, Vector3.zero, Quaternion.identity) as GameObject);
+        for (int i = 0; i < 20; i++)
+        {
+            if (i < 10)
+            {
+                balls.Add(Instantiate(blueBall, Vector3.zero, Quaternion.identity) as GameObject);
+            }
+            else if(i<20 && i> 9)
+            {
+                balls.Add(Instantiate(redBall, Vector3.zero, Quaternion.identity) as GameObject);
 
-              }
-              balls[i].SetActive(false);
-              balls[i].transform.parent = parent;
-          }
+            }
+            balls[i].SetActive(false);
+            balls[i].transform.parent = parent;
+        }
+        wallsprefab.Add(Instantiate(WallObj, Vector3.zero, Quaternion.identity) as GameObject);
+        wallsprefab.Add(Instantiate(WallObj, new Vector3(1.4f, 0, 0), Quaternion.identity) as GameObject);
+        wallsprefab.Add(Instantiate(WallObj, new Vector3(2.8f, 0, 0), Quaternion.identity) as GameObject);
+        wallsprefab.Add(Instantiate(WallObj, new Vector3(-4.01f, 0, 0), Quaternion.Euler(0,0,180)) as GameObject);
+        wallsprefab.Add(Instantiate(WallObj, new Vector3(-2.61f, 0, 0), Quaternion.Euler(0, 0, 180)) as GameObject);
+        wallsprefab.Add(Instantiate(WallObj, new Vector3(-1.21f, 0, 0), Quaternion.Euler(0, 0, 180)) as GameObject);
+        for (int i = 0; i < wallsprefab.Count; i++)
+        {
+            wallsprefab[i].SetActive(false);
+        }
+
     }
 
     void Update()
     {
         if(Time.time > lastSpawn)
         {
-            if(durationTime < Time.time && abilityActive)
+            for (int i = 0; i < abilitysInLane.Length; i++)
             {
-                switch (currentActive)
+                if(abilitysInLane[i].y == 1  && abilitysInLane[i].x < Time.time)
                 {
-                    case Abilitys.SLOW:
-                        for (int i = 0; i < balls.Count; i++)
-                        {
-                            if (balls[i].activeSelf && balls[i].transform.GetComponent<Ball>().lane == activeLane)
-                            {
-                                balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, balls[i].GetComponent<Rigidbody>().velocity.y * 2, 0);
-                            }
-                        }
-                        lanetextscript[activeLane].scrollSpeed *= 2;
-                        lanetextscript[activeLane].scrollSpeed2 *= 2;
-                        break;
-                    case Abilitys.WALL:
-                        break;
-                    case Abilitys.NEUTRAL:
-                        break;
-                    default:
-                        break;
+                    if(i < 6)
+                    {
+                        slowReset(i);
+                    }
+                    else if(i <12 && i>5)
+                    {
+                        wallReset(i-6);
+                    }
+                    else if (i < 18 && i > 11)
+                    {
+                        multiReset(i-12);
+                    }
+                    else if (i < 24 && i > 17)
+                    {
+                        neutralReset(i-18);
+                    }
                 }
-                lanerenders[activeLane].material.SetColor("_EmissionColor", defaultcolor);
-                abilityActive = false;
-                activeLane = 10;
-                currentActive = Abilitys.NONE;
             }
-            if(UnityEngine.Random.Range(0,1) ==0)//pattern
+
+
+            if (UnityEngine.Random.Range(0, 1) == 0)//pattern
             {
                 int spawnpos = UnityEngine.Random.Range(0, 5);
                 int color = UnityEngine.Random.Range(0, 2);
-                if(abilityActive && activeLane == spawnpos)
+                if (abilityActive && (abilitysInLane[spawnpos].y == 1 || abilitysInLane[spawnpos+18].y == 1))
                 {
                     abilitySpawning(spawnpos, color);
                 }
@@ -136,6 +146,9 @@ public class GameMaster : MonoBehaviour
             }
             lastSpawn = Time.time + spawnRate;
         }
+        
+    
+
         if(boxes[6].tag == "Blue Box" || boxes[6].tag == "Red Box")
         {
             healEffect.SetActive(true);
@@ -145,6 +158,44 @@ public class GameMaster : MonoBehaviour
             healEffect.SetActive(false);
         }
 
+    }
+    void slowReset(int lane)
+    {
+        for (int i = 0; i < balls.Count; i++)
+        {
+            if (balls[i].activeSelf && balls[i].transform.GetComponent<Ball>().lane == lane)
+            {
+                balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, balls[i].GetComponent<Rigidbody>().velocity.y * 2, 0);
+            }
+        }
+        lanetextscript[lane].scrollSpeed *= 2;
+        lanetextscript[lane].scrollSpeed2 *= 2;
+        lanerenders[lane].material.SetColor("_EmissionColor", defaultcolor);
+        abilitysInLane[lane].y = 0;
+    }
+    void wallReset(int lane)
+    {
+        wallsprefab[lane].SetActive(false);
+        lanerenders[lane].material.SetColor("_EmissionColor", defaultcolor);
+        abilitysInLane[lane + 6].y = 0;
+    }
+    void multiReset(int lane)
+    {
+
+        lanerenders[lane].material.SetColor("_EmissionColor", defaultcolor);
+        abilitysInLane[lane + 12].y = 0;
+    }
+    void neutralReset(int lane)
+    {
+        for (int i = 0; i < balls.Count; i++)
+        {
+            if (balls[i].activeSelf && balls[i].transform.GetComponent<Ball>().lane == lane)
+            {
+                balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, balls[i].GetComponent<Rigidbody>().velocity.y * 2, 0);
+            }
+        }
+        lanerenders[lane].material.SetColor("_EmissionColor", defaultcolor);
+        abilitysInLane[lane + 18].y = 0;
     }
     public void highlightLanes(Abilitys ability)
     {
@@ -158,10 +209,8 @@ public class GameMaster : MonoBehaviour
     }
     public void setLane(int lane)
     {
-        
         if (selectingAbility)
         {
-            activeLane = lane;
             activateAbility(currentActive, lane);
         }
     }
@@ -187,29 +236,21 @@ public class GameMaster : MonoBehaviour
     }
     public void abilitySpawning(int lane, int color)
     {
-        switch (currentActive)
-        {
-            case Abilitys.SLOW:
-                spawnNormal(lane, slowSpeed, color);
-                break;
-            case Abilitys.NEUTRAL:
-                spawnNormal(lane, normalspeed, 0);
-                break;
-            default:
-                break;
-        }
+        if(abilitysInLane[lane+18].y == 1)
+            spawnNormal(lane, normalspeed, color);
+       else
+            spawnNormal(lane, slowSpeed, color);
+        
     }
     public void activateAbility(GameMaster.Abilitys a, int lane)
     {
         abilityActive = true;
-        selectingAbility = false;
-        currentActive = a;
-        activeLane = lane;
-        
+        selectingAbility = false;        
         switch (a)
         {
             case Abilitys.SLOW:
-                durationTime = Time.time + SlowDuration;
+                abilitysInLane[lane].x = Time.time + SlowDuration;
+                abilitysInLane[lane].y = 1;
                 for (int i = 0; i < balls.Count; i++)
                 {
                     if(balls[i].activeSelf && balls[i].transform.GetComponent<Ball>().lane == lane)
@@ -217,48 +258,30 @@ public class GameMaster : MonoBehaviour
                         balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, balls[i].GetComponent<Rigidbody>().velocity.y/2, 0);
                     }
                 }
-                lanetextscript[activeLane].scrollSpeed /= 2;
-                lanetextscript[activeLane].scrollSpeed2 /= 2;
+                lanetextscript[lane].scrollSpeed /= 2;
+                lanetextscript[lane].scrollSpeed2 /= 2;
                 
-                lanerenders[activeLane].material.SetColor("_EmissionColor", slowcolor);
+                lanerenders[lane].material.SetColor("_EmissionColor", slowcolor);
+                
 
                 break;
             case Abilitys.WALL:
-                durationTime = Time.time + WallDuration;
-                switch (lane)
-                {
-                    case 0:
-                        WallObj.transform.position = new Vector3(-2.01f, 1, 0);
-                        break;
-                    case 1:
-                        WallObj.transform.position = new Vector3(-0.59f, 1, 0);
-                        break;
-                    case 2:
-                        WallObj.transform.position = new Vector3(0.81f, 1, 0);
-                        break;
-                    case 3:
-                        WallObj.transform.position = new Vector3(-2.01f, -1, 0);
-                        break;
-                    case 4:
-                        WallObj.transform.position = new Vector3(-0.59f, -1, 0);
-                        break;
-                    case 5:
-                        WallObj.transform.position = new Vector3(0.81f, -1, 0);
-                        break;
-                    default:
-                        break;
-                }
-                WallObj.SetActive(true);
-                lanerenders[activeLane].material.SetColor("_EmissionColor", wallcolor);
+                abilitysInLane[lane + 6].x = Time.time + WallDuration;
+                abilitysInLane[lane + 6].y = 1;
+                
+                wallsprefab[lane].SetActive(true);
+                lanerenders[lane].material.SetColor("_EmissionColor", wallcolor);
                 break;
             case Abilitys.MULTIPLIER:
-                durationTime = Time.time + MultiDuration;
-                lanerenders[activeLane].material.SetColor("_EmissionColor", multicolor);
+                abilitysInLane[lane + 12].x = Time.time + MultiDuration;
+                abilitysInLane[lane + 12].y = 1;
+                lanerenders[lane].material.SetColor("_EmissionColor", multicolor);
                 multiplier = 3;
                 break;
             case Abilitys.NEUTRAL:
-                durationTime = Time.time + NeutralDuration;
-                lanerenders[activeLane].material.SetColor("_EmissionColor", neutcolor);
+                abilitysInLane[lane + 18].x = Time.time + NeutralDuration;
+                abilitysInLane[lane + 18].y = 1;
+                lanerenders[lane].material.SetColor("_EmissionColor", neutcolor);
                 break;
             default:
 
@@ -290,7 +313,7 @@ public class GameMaster : MonoBehaviour
     }
     public void addScore(int lane)
     {
-        if (currentActive == Abilitys.MULTIPLIER && activeLane == lane)
+        if (abilitysInLane[lane + 12].y == 1)
             score += 1 * multiplier;
         else
             score++;
@@ -303,4 +326,3 @@ public class GameMaster : MonoBehaviour
         boxes[CurrentPos].transform.GetComponent<Box>().newPos(CurrentPos);
     }
 }
-

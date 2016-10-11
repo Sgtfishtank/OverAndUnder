@@ -29,7 +29,7 @@ public class Box : MonoBehaviour
     {
         camera = GameObject.Find("camera_main").GetComponent<Camera>();
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
-        BoxSlots = GameObject.Find("overandunder_main").GetComponentsInChildren<Transform>().Where(x => x.name == "mesh_box").Select(x => x.transform).ToArray();
+        BoxSlots = GM.boxPoints.ToArray();
         //ps = transform.GetComponentInChildren<ParticleSystem>();
         //psMaster = transform.GetComponentsInChildren<GameObject>().Where(x => x.name == "particles_explosion").Select(x => x.transform).ToArray()[0].gameObject;
 

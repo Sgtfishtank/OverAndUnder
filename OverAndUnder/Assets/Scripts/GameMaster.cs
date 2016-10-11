@@ -28,8 +28,16 @@ public class GameMaster : MonoBehaviour
     public float SlowDuration;
     public float WallDuration;
     public float MultiDuration;
-    public float NeutralDuration;
-    private float durationTime;
+    public float SwitchDuration;
+    public float slowCD;
+    public float wallCD;
+    public float multiCD;
+    public float switchCD;
+    public float slowTime;
+    public float wallTime;
+    public float multiTime;
+    public float switchTime;
+    //private float durationTime;
     public Abilitys currentActive;
     public float slowSpeed;
     public float normalspeed;
@@ -39,16 +47,17 @@ public class GameMaster : MonoBehaviour
     public Color slowcolor;
     public Color wallcolor;
     public Color multicolor;
-    public Color neutcolor;
+    public Color switchcolor;
     public GameObject healEffect;
     public int slowRemaning;
     public int wallRemaning;
-    public int neutralRemaning;
+    public int switchRemaning;
     public int multiRemaning;
+    private AbilityButton[] abb;
 
     public enum Abilitys
     {
-        SLOW,WALL,MULTIPLIER,NEUTRAL,NONE
+        SLOW,WALL,MULTIPLIER,SWITCH,NONE
     };
 
     
@@ -60,13 +69,14 @@ public class GameMaster : MonoBehaviour
         ColorUtility.TryParseHtmlString("#121E3300", out slowcolor);
         ColorUtility.TryParseHtmlString("#330F0F00", out wallcolor);
         ColorUtility.TryParseHtmlString("#300B3300", out multicolor);
-        ColorUtility.TryParseHtmlString("#33310E00", out neutcolor);
+        ColorUtility.TryParseHtmlString("#33310E00", out switchcolor);
         healEffect.SetActive(false);
 
 
         Transform parent = GameObject.Find("Ball Objects").transform;
         lanetextscript = transform.GetComponentsInChildren<Transform>().Where(x => x.tag == "Lane").Select(x => x.transform.GetComponent<ScrollingTexture>()).ToArray();
         lanerenders = transform.GetComponentsInChildren<Transform>().Where(x => x.tag == "Lane").Select(x => x.transform.GetComponent<MeshRenderer>()).ToArray();
+        abb = transform.GetComponentsInChildren<AbilityButton>();
 
         for (int i = 0; i < boxPoints.Count; i++)
         {
@@ -150,9 +160,25 @@ public class GameMaster : MonoBehaviour
             lastSpawn = Time.time + spawnRate;
         }
         
-    
+        if(slowTime < Time.time)
+        {
+            abb[0].isCD(false);
 
-        if(boxes[6].tag == "Blue Box" || boxes[6].tag == "Red Box")
+        }
+        if (wallTime < Time.time)
+        {
+            abb[1].isCD(false);
+        }
+        if (multiTime < Time.time)
+        {
+            abb[2].isCD(false);
+        }
+        if (switchTime < Time.time)
+        {
+            abb[3].isCD(false);
+        }
+
+        if (boxes[6].tag == "Blue Box" || boxes[6].tag == "Red Box")
         {
             healEffect.SetActive(true);
         }
@@ -160,6 +186,7 @@ public class GameMaster : MonoBehaviour
         {
             healEffect.SetActive(false);
         }
+        
 
     }
     int getLane()
@@ -174,7 +201,6 @@ public class GameMaster : MonoBehaviour
     public void destroyLane(int slot)
     {
         destroyedLanes.Add(slot);
-       // boxPoints.Remove(boxPoints[slot]);
         lanetextscript[slot].scrollSpeed = 0;
         lanetextscript[slot].scrollSpeed2 = 0;
         for (int i = 0; i <balls.Count; i++)
@@ -187,6 +213,7 @@ public class GameMaster : MonoBehaviour
     }
     void slowReset(int lane)
     {
+
         for (int i = 0; i < balls.Count; i++)
         {
             if (balls[i].activeSelf && balls[i].transform.GetComponent<Ball>().lane == lane)
@@ -197,6 +224,11 @@ public class GameMaster : MonoBehaviour
         lanetextscript[lane].scrollSpeed *= 2;
         lanetextscript[lane].scrollSpeed2 *= 2;
         lanerenders[lane].material.SetColor("_EmissionColor", defaultcolor);
+        slowTime = Time.time + slowCD;
+        slowRemaning = Mathf.FloorToInt(slowTime);
+        abb[0].isCD(true);
+        abb[0].active = false;
+        abb[0].setColor();
         abilitysInLane[lane].y = 0;
     }
     void wallReset(int lane)
@@ -204,12 +236,21 @@ public class GameMaster : MonoBehaviour
         wallsprefab[lane].SetActive(false);
         lanerenders[lane].material.SetColor("_EmissionColor", defaultcolor);
         abilitysInLane[lane + 6].y = 0;
+        wallTime = Time.time + wallCD;
+        wallRemaning= Mathf.FloorToInt(wallTime);
+        abb[1].active = false;
+        abb[1].isCD(true);
+        abb[1].setColor();
     }
     void multiReset(int lane)
     {
-
+        multiTime = Time.time + multiCD;
+        multiRemaning = Mathf.FloorToInt(multiTime);
         lanerenders[lane].material.SetColor("_EmissionColor", defaultcolor);
         abilitysInLane[lane + 12].y = 0;
+        abb[2].isCD(true);
+        abb[2].active = false;
+        abb[2].setColor();
     }
     void neutralReset(int lane)
     {
@@ -222,16 +263,64 @@ public class GameMaster : MonoBehaviour
         }
         lanerenders[lane].material.SetColor("_EmissionColor", defaultcolor);
         abilitysInLane[lane + 18].y = 0;
+        switchTime = Time.time + switchCD;
+        switchRemaning = Mathf.FloorToInt(switchTime);
+        abb[3].isCD(true);
+        abb[3].active = false;
+        abb[3].setColor();
     }
     public void highlightLanes(Abilitys ability)
     {
         currentActive = ability;
         selectingAbility = true;
+        switch (currentActive)
+        {
+            case Abilitys.SLOW:
+                abb[0].active = true;
+                abb[0].setColor();
+                break;
+            case Abilitys.WALL:
+                abb[1].active = true;
+                abb[1].setColor();
+                break;
+            case Abilitys.MULTIPLIER:
+                abb[2].active = true;
+                abb[2].setColor();
+                break;
+            case Abilitys.SWITCH:
+                abb[3].active = true;
+                abb[3].setColor();
+                break;
+            default:
+                break;
+        }
     }
     public void unlightLanes()
     {
         currentActive = Abilitys.NONE;
         selectingAbility = false;
+        switch (currentActive)
+        {
+            case Abilitys.SLOW:
+                abb[0].active = false;
+                abb[0].setColor();
+                break;
+            case Abilitys.WALL:
+                abb[1].active = false;
+                abb[1].setColor();
+                break;
+            case Abilitys.MULTIPLIER:
+                abb[2].active = false;
+                abb[2].setColor();
+                break;
+            case Abilitys.SWITCH:
+                abb[3].active = false;
+                abb[3].setColor();
+                break;
+            default:
+                break;
+        }
+
     }
     public void setLane(int lane)
     {
@@ -277,6 +366,8 @@ public class GameMaster : MonoBehaviour
             case Abilitys.SLOW:
                 abilitysInLane[lane].x = Time.time + SlowDuration;
                 abilitysInLane[lane].y = 1;
+                slowRemaning = Mathf.FloorToInt(abilitysInLane[lane].x);
+                
                 for (int i = 0; i < balls.Count; i++)
                 {
                     if(balls[i].activeSelf && balls[i].transform.GetComponent<Ball>().lane == lane)
@@ -294,20 +385,25 @@ public class GameMaster : MonoBehaviour
             case Abilitys.WALL:
                 abilitysInLane[lane + 6].x = Time.time + WallDuration;
                 abilitysInLane[lane + 6].y = 1;
-                
+                wallRemaning = Mathf.FloorToInt(abilitysInLane[lane + 6].x);
+
                 wallsprefab[lane].SetActive(true);
                 lanerenders[lane].material.SetColor("_EmissionColor", wallcolor);
                 break;
             case Abilitys.MULTIPLIER:
                 abilitysInLane[lane + 12].x = Time.time + MultiDuration;
                 abilitysInLane[lane + 12].y = 1;
+                multiRemaning = Mathf.FloorToInt(abilitysInLane[lane + 12].x);
+
                 lanerenders[lane].material.SetColor("_EmissionColor", multicolor);
                 multiplier = 3;
                 break;
-            case Abilitys.NEUTRAL:
-                abilitysInLane[lane + 18].x = Time.time + NeutralDuration;
+            case Abilitys.SWITCH:
+                abilitysInLane[lane + 18].x = Time.time + SwitchDuration;
                 abilitysInLane[lane + 18].y = 1;
-                lanerenders[lane].material.SetColor("_EmissionColor", neutcolor);
+                switchRemaning = Mathf.FloorToInt(abilitysInLane[lane].x);
+
+                lanerenders[lane].material.SetColor("_EmissionColor", switchcolor);
                 break;
             default:
 

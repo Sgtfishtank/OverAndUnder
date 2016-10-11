@@ -129,7 +129,7 @@ public class Box : MonoBehaviour
         {
             psMaster.SetActive(true);
             psMaster.transform.position = col.transform.position;
-            explotionDur = Time.time + 2f;
+            explotionDur = Time.time + 1f;
             hp--;
         }
         col.gameObject.SetActive(false);

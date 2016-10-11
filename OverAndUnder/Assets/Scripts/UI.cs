@@ -16,6 +16,11 @@ public class UI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(boxes.Length == 0)
+        {
+            boxes = GM.boxes.ToArray();
+            return;
+        }
         textfields[0].text = boxes[0].transform.GetComponent<Box>().hp.ToString();
         textfields[0].rectTransform.position = camera.WorldToScreenPoint(boxes[0].transform.localPosition);
         textfields[1].text = boxes[1].transform.GetComponent<Box>().hp.ToString();
@@ -31,10 +36,14 @@ public class UI : MonoBehaviour {
 
         textfields[6].text = GM.score.ToString();
 
-        textfields[8].text  = GM.slowRemaning.ToString();
-        textfields[9].text = GM.wallRemaning.ToString();
-        textfields[10].text = GM.multiRemaning.ToString();
-        textfields[11].text = GM.neutralRemaning.ToString();
+        textfields[8].text = Mathf.Clamp((GM.slowRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
+
+        textfields[9].text = Mathf.Clamp((GM.wallRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
+
+        textfields[10].text = Mathf.Clamp((GM.multiRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
+
+        textfields[11].text = Mathf.Clamp((GM.switchRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
+
 
 
     }

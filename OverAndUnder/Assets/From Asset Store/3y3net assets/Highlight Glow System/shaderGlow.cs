@@ -313,7 +313,7 @@ public class shaderGlow : MonoBehaviour {
 	public void lightOff() {
 		if (labelMode==labelModes.whenGlowIsOn)
 			showLabel=false;
-		int i=0;
+		//int i=0;
 		Component[] renderers;
 		renderers = GetComponentsInChildren<Renderer>();
 		

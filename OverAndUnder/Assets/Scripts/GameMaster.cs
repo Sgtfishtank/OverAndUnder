@@ -14,6 +14,7 @@ public class GameMaster : MonoBehaviour
     public MeshRenderer[] lanerenders;
     public Vector2[] abilitysInLane;
     public List<GameObject> wallsprefab;
+    public List<int> destroyedLanes;
     public GameObject blueBox;
     public GameObject redBox;
     public GameObject ghostBox;
@@ -102,7 +103,6 @@ public class GameMaster : MonoBehaviour
         }
 
     }
-
     void Update()
     {
         if(Time.time > lastSpawn)
@@ -130,10 +130,9 @@ public class GameMaster : MonoBehaviour
                 }
             }
 
-
             if (UnityEngine.Random.Range(0, 1) == 0)//pattern
             {
-                int spawnpos = UnityEngine.Random.Range(0, 5);
+                int spawnpos = getLane();
                 int color = UnityEngine.Random.Range(0, 2);
                 if (abilityActive && (abilitysInLane[spawnpos].y == 1 || abilitysInLane[spawnpos+18].y == 1))
                 {
@@ -158,6 +157,29 @@ public class GameMaster : MonoBehaviour
             healEffect.SetActive(false);
         }
 
+    }
+    int getLane()
+    {
+        int temp = UnityEngine.Random.Range(0,6);
+        if(destroyedLanes.Contains(temp))
+        {
+            temp = getLane();
+        } 
+        return temp;
+    }
+    public void destroyLane(int slot)
+    {
+        destroyedLanes.Add(slot);
+       // boxPoints.Remove(boxPoints[slot]);
+        lanetextscript[slot].scrollSpeed = 0;
+        lanetextscript[slot].scrollSpeed2 = 0;
+        for (int i = 0; i <balls.Count; i++)
+        {
+            if(balls[i].transform.GetComponent<Ball>().lane == slot)
+            {
+                balls[i].SetActive(false);
+            }
+        }
     }
     void slowReset(int lane)
     {

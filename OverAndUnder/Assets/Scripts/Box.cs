@@ -15,13 +15,14 @@ public class Box : MonoBehaviour
     private float healTimer;
     public float healCD;
     private int moving;
-    public MeshRenderer currentmat;
     public ParticleSystem ps;
     public GameObject psMaster;
     public GameObject fullBox;
     public GameObject brokenBox;
+    public GameObject CrystalText;
     bool isBroken = false;
     private float explotionDur;
+    private float crystalTextDur;
 
     // Use this for initialization
     void Start ()
@@ -29,7 +30,6 @@ public class Box : MonoBehaviour
         camera = GameObject.Find("camera_main").GetComponent<Camera>();
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
         BoxSlots = GameObject.Find("overandunder_main").GetComponentsInChildren<Transform>().Where(x => x.name == "mesh_box").Select(x => x.transform).ToArray();
-        currentmat = transform.GetComponent<MeshRenderer>();
         //ps = transform.GetComponentInChildren<ParticleSystem>();
         //psMaster = transform.GetComponentsInChildren<GameObject>().Where(x => x.name == "particles_explosion").Select(x => x.transform).ToArray()[0].gameObject;
 
@@ -40,6 +40,11 @@ public class Box : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        if(hp <= 0)
+        {
+            GM.destroyLane(Slot);
+            gameObject.SetActive(false);
+        }
         if(!isBroken && hp < 6)
         {
             isBroken = true;
@@ -51,6 +56,10 @@ public class Box : MonoBehaviour
             isBroken = false;
             brokenBox.SetActive(false);
             fullBox.SetActive(true);
+        }
+        if(crystalTextDur < Time.time)
+        {
+            CrystalText.SetActive(false);
         }
         if(explotionDur < Time.time)
         {
@@ -85,16 +94,36 @@ public class Box : MonoBehaviour
     }
     void OnCollisionEnter(Collision col)
     {
+        if(1 == GM.abilitysInLane[Slot+12].y)
+        {
+            CrystalText.GetComponentsInChildren<TextMesh>(true)[0].text = "+3";
+        }
+        else
+        {
+            CrystalText.GetComponentsInChildren<TextMesh>(true)[0].text = "+1";
+        }
         if(col.transform.tag == "Red" &&  transform.tag == "Red Box")
         {
+            if(Slot> 2)
+                CrystalText.transform.position = col.transform.position - new Vector3(0,0.2f,0);
+            else
+                CrystalText.transform.position = col.transform.position;
+            crystalTextDur = Time.time + 1;
+            CrystalText.SetActive(true);
             GM.addScore(Slot);
         }
         else if (col.transform.tag == "Blue" && transform.tag == "Blue Box")
         {
+            CrystalText.transform.position = col.transform.position;
+            crystalTextDur = Time.time + 1;
+            CrystalText.SetActive(true);
             GM.addScore(Slot);
         }
         else if (col.transform.tag == "Gold")
         {
+            CrystalText.transform.position = col.transform.position;
+            crystalTextDur = Time.time + 1;
+            CrystalText.SetActive(true);
             GM.addScore(Slot);
         }
         else
@@ -122,10 +151,13 @@ public class Box : MonoBehaviour
             for (int i = 0; i < BoxSlots.Length; i++)
             {
                 if (Mathf.Abs((transform.position.x - BoxSlots[i].position.x)) <= 0.75f && Mathf.Abs((transform.position.y - BoxSlots[i].position.y)) <= 0.75f)
-                { 
-                    move = true; 
-                    GM.swapBox(Slot, i);
-                    Slot = i;
+                {
+                    if (!GM.destroyedLanes.Contains(i))
+                    {
+                        move = true;
+                        GM.swapBox(Slot, i);
+                        Slot = i;
+                    }
                     //transform.position = BoxSlots[i].position;
                 }
             }

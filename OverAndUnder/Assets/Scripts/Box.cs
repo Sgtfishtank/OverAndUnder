@@ -15,7 +15,6 @@ public class Box : MonoBehaviour
     private float healTimer;
     public float healCD;
     private int moving;
-    public ParticleSystem ps;
     public GameObject psMaster;
     public GameObject fullBox;
     public GameObject brokenBox;
@@ -31,8 +30,8 @@ public class Box : MonoBehaviour
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
         BoxSlots = GM.boxPoints.ToArray();
         //ps = transform.GetComponentInChildren<ParticleSystem>();
-        //psMaster = transform.GetComponentsInChildren<GameObject>().Where(x => x.name == "particles_explosion").Select(x => x.transform).ToArray()[0].gameObject;
-
+        //psMaster = transform.fGetComponentsInChildren<GameObject>().Where(x => x.name == "particles_explosion").Select(x => x.transform).ToArray()[0].gameObject;
+        psMaster.SetActive(false);
         brokenBox.SetActive(false);
         
     }

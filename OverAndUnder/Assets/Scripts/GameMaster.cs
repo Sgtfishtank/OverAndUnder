@@ -41,6 +41,10 @@ public class GameMaster : MonoBehaviour
     public Color multicolor;
     public Color neutcolor;
     public GameObject healEffect;
+    public int slowRemaning;
+    public int wallRemaning;
+    public int neutralRemaning;
+    public int multiRemaning;
 
     public enum Abilitys
     {

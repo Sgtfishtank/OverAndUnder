@@ -13,7 +13,6 @@ public class GameMaster : MonoBehaviour
     public ScrollingTexture[] lanetextscript;
     public MeshRenderer[] lanerenders;
     public Vector2[] abilitysInLane;
-    public List<GameObject> wallsprefab;
     public List<int> destroyedLanes;
     public GameObject blueBox;
     public GameObject redBox;
@@ -21,6 +20,10 @@ public class GameMaster : MonoBehaviour
     public GameObject blueBall;
     public GameObject redBall;
     public GameObject WallObj;
+    public GameObject SlowObj;
+    public GameObject healEffect;
+    public GameObject MultiObj;
+    public GameObject SwitchObj;
     public int score;
     public float spawnRate;
     private float lastSpawn;
@@ -37,7 +40,6 @@ public class GameMaster : MonoBehaviour
     public float wallTime;
     public float multiTime;
     public float switchTime;
-    //private float durationTime;
     public Abilitys currentActive;
     public float slowSpeed;
     public float normalspeed;
@@ -48,7 +50,7 @@ public class GameMaster : MonoBehaviour
     public Color wallcolor;
     public Color multicolor;
     public Color switchcolor;
-    public GameObject healEffect;
+    
     public int slowRemaning;
     public int wallRemaning;
     public int switchRemaning;
@@ -60,9 +62,6 @@ public class GameMaster : MonoBehaviour
         SLOW,WALL,MULTIPLIER,SWITCH,NONE
     };
 
-    
-    
-
     void Start()
     {
         ColorUtility.TryParseHtmlString("#00000000", out defaultcolor);
@@ -71,6 +70,10 @@ public class GameMaster : MonoBehaviour
         ColorUtility.TryParseHtmlString("#300B3300", out multicolor);
         ColorUtility.TryParseHtmlString("#33310E00", out switchcolor);
         healEffect.SetActive(false);
+        WallObj = Instantiate(WallObj, Vector3.zero, Quaternion.identity) as GameObject;
+        SlowObj = Instantiate(SlowObj, Vector3.zero, Quaternion.identity) as GameObject;
+        WallObj.SetActive(false);
+        SlowObj.SetActive(false);
 
 
         Transform parent = GameObject.Find("Ball Objects").transform;
@@ -105,16 +108,9 @@ public class GameMaster : MonoBehaviour
             balls[i].SetActive(false);
             balls[i].transform.parent = parent;
         }
-        wallsprefab.Add(Instantiate(WallObj, Vector3.zero, Quaternion.identity) as GameObject);
-        wallsprefab.Add(Instantiate(WallObj, new Vector3(1.4f, 0, 0), Quaternion.identity) as GameObject);
-        wallsprefab.Add(Instantiate(WallObj, new Vector3(2.8f, 0, 0), Quaternion.identity) as GameObject);
-        wallsprefab.Add(Instantiate(WallObj, new Vector3(-4.01f, 0, 0), Quaternion.Euler(0,0,180)) as GameObject);
-        wallsprefab.Add(Instantiate(WallObj, new Vector3(-2.61f, 0, 0), Quaternion.Euler(0, 0, 180)) as GameObject);
-        wallsprefab.Add(Instantiate(WallObj, new Vector3(-1.21f, 0, 0), Quaternion.Euler(0, 0, 180)) as GameObject);
-        for (int i = 0; i < wallsprefab.Count; i++)
-        {
-            wallsprefab[i].SetActive(false);
-        }
+        
+         
+        
 
     }
     void Update()
@@ -230,10 +226,11 @@ public class GameMaster : MonoBehaviour
         abb[0].active = false;
         abb[0].setColor();
         abilitysInLane[lane].y = 0;
+        SlowObj.SetActive(false);
     }
     void wallReset(int lane)
     {
-        wallsprefab[lane].SetActive(false);
+        WallObj.SetActive(false);
         lanerenders[lane].material.SetColor("_EmissionColor", defaultcolor);
         abilitysInLane[lane + 6].y = 0;
         wallTime = Time.time + wallCD;
@@ -379,15 +376,81 @@ public class GameMaster : MonoBehaviour
                 lanetextscript[lane].scrollSpeed2 /= 2;
                 
                 lanerenders[lane].material.SetColor("_EmissionColor", slowcolor);
-                
+                SlowObj.SetActive(true);
+                switch (lane)
+                {
+                    case 0:
+                        SlowObj.transform.position = new Vector3(-2.07f,3,0);
+                        SlowObj.transform.rotation = Quaternion.identity;
+                        SlowObj.transform.GetComponentInChildren<ParticleSystem>().gravityModifier = -1;
+                        break;
+                    case 1:
+                        SlowObj.transform.position = new Vector3(-0.64f, 3, 0);
+                        SlowObj.transform.rotation = Quaternion.identity;
+                        SlowObj.transform.GetComponentInChildren<ParticleSystem>().gravityModifier = -1;
+                        break;
+                    case 2:
+                        SlowObj.transform.position = new Vector3(0.79f, 3, 0);
+                        SlowObj.transform.rotation = Quaternion.identity;
+                        SlowObj.transform.GetComponentInChildren<ParticleSystem>().gravityModifier = -1;
+                        break;
+                    case 3:
+                        SlowObj.transform.position = new Vector3(-2f, -3, 0);
+                        SlowObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                        SlowObj.transform.GetComponentInChildren<ParticleSystem>().gravityModifier = 1;
+                        break;
+                    case 4:
+                        SlowObj.transform.position = new Vector3(-0.6f, -3, 0);
+                        SlowObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                        SlowObj.transform.GetComponentInChildren<ParticleSystem>().gravityModifier = 1;
+                        break;
+                    case 5:
+                        SlowObj.transform.position = new Vector3(0.85f, -3, 0);
+                        SlowObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                        SlowObj.transform.GetComponentInChildren<ParticleSystem>().gravityModifier = 1;
+                        break;
+                    default:
+                        break;
+                }
 
                 break;
             case Abilitys.WALL:
                 abilitysInLane[lane + 6].x = Time.time + WallDuration;
                 abilitysInLane[lane + 6].y = 1;
                 wallRemaning = Mathf.FloorToInt(abilitysInLane[lane + 6].x);
+                
+                
+                switch (lane)
+                {
+                    case 0:
+                        WallObj.transform.position = Vector3.zero;
+                        WallObj.transform.rotation = Quaternion.identity;
 
-                wallsprefab[lane].SetActive(true);
+                        break;
+                    case 1:
+                        WallObj.transform.position = new Vector3(1.4f, 0, 0);
+                        WallObj.transform.rotation = Quaternion.identity;
+                        break;
+                    case 2:
+                        WallObj.transform.position = new Vector3(2.8f, 0, 0);
+                        WallObj.transform.rotation = Quaternion.identity;
+                        break;
+                    case 3:
+                        WallObj.transform.position = new Vector3(-4.01f, 0, 0);
+                        WallObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                        break;
+                    case 4:
+                        WallObj.transform.position = new Vector3(-2.61f, 0, 0);
+                        WallObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                        break;
+                    case 5:
+                        WallObj.transform.position = new Vector3(-1.21f, 0, 0);
+                        WallObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                        break;
+                    default:
+                        break;
+                }
+                WallObj.SetActive(true);
                 lanerenders[lane].material.SetColor("_EmissionColor", wallcolor);
                 break;
             case Abilitys.MULTIPLIER:
@@ -406,7 +469,6 @@ public class GameMaster : MonoBehaviour
                 lanerenders[lane].material.SetColor("_EmissionColor", switchcolor);
                 break;
             default:
-
                 break;
         }
 

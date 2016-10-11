@@ -21,6 +21,7 @@ public class Box : MonoBehaviour
     public GameObject fullBox;
     public GameObject brokenBox;
     bool isBroken = false;
+    private float explotionDur;
 
     // Use this for initialization
     void Start ()
@@ -29,8 +30,10 @@ public class Box : MonoBehaviour
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
         BoxSlots = GameObject.Find("overandunder_main").GetComponentsInChildren<Transform>().Where(x => x.name == "mesh_box").Select(x => x.transform).ToArray();
         currentmat = transform.GetComponent<MeshRenderer>();
-        ps = transform.GetComponentInChildren<ParticleSystem>();
+        //ps = transform.GetComponentInChildren<ParticleSystem>();
         //psMaster = transform.GetComponentsInChildren<GameObject>().Where(x => x.name == "particles_explosion").Select(x => x.transform).ToArray()[0].gameObject;
+
+        brokenBox.SetActive(false);
         
     }
 	
@@ -49,7 +52,7 @@ public class Box : MonoBehaviour
             brokenBox.SetActive(false);
             fullBox.SetActive(true);
         }
-        if(psMaster.activeSelf && ps.isStopped)
+        if(explotionDur < Time.time)
         {
             psMaster.SetActive(false);
         }
@@ -96,10 +99,9 @@ public class Box : MonoBehaviour
         }
         else
         {
-            print("hit");
             psMaster.SetActive(true);
             psMaster.transform.position = col.transform.position;
-            ps.Play();
+            explotionDur = Time.time + 2f;
             hp--;
         }
         col.gameObject.SetActive(false);

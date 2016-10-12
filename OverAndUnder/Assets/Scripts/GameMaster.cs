@@ -133,10 +133,6 @@ public class GameMaster : MonoBehaviour
                     {
                         multiReset(i-12);
                     }
-                    else if (i < 24 && i > 17)
-                    {
-                        neutralReset(i-18);
-                    }
                 }
             }
 
@@ -462,11 +458,12 @@ public class GameMaster : MonoBehaviour
                 multiplier = 3;
                 break;
             case Abilitys.SWITCH:
-                abilitysInLane[lane + 18].x = Time.time + SwitchDuration;
-                abilitysInLane[lane + 18].y = 1;
-                switchRemaning = Mathf.FloorToInt(abilitysInLane[lane].x);
-
-                lanerenders[lane].material.SetColor("_EmissionColor", switchcolor);
+                boxes[lane].transform.GetComponent<Box>().changeColor();
+                switchTime = Time.time + switchCD;
+                switchRemaning = Mathf.FloorToInt(switchTime);
+                abb[3].isCD(true);
+                abb[3].active = false;
+                abb[3].setColor();
                 break;
             default:
                 break;

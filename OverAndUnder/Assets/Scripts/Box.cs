@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public class Box : MonoBehaviour
 {
@@ -19,6 +20,11 @@ public class Box : MonoBehaviour
     public GameObject fullBox;
     public GameObject brokenBox;
     public GameObject CrystalText;
+    public Material mat1;
+    public Material mat2;
+    public Color blue;
+    public Color red;
+
     bool isBroken = false;
     private float explotionDur;
     private float crystalTextDur;
@@ -29,11 +35,8 @@ public class Box : MonoBehaviour
         camera = GameObject.Find("camera_main").GetComponent<Camera>();
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
         BoxSlots = GM.boxPoints.ToArray();
-        //ps = transform.GetComponentInChildren<ParticleSystem>();
-        //psMaster = transform.fGetComponentsInChildren<GameObject>().Where(x => x.name == "particles_explosion").Select(x => x.transform).ToArray()[0].gameObject;
         psMaster.SetActive(false);
         brokenBox.SetActive(false);
-        
     }
 	
 	// Update is called once per frame
@@ -142,7 +145,11 @@ public class Box : MonoBehaviour
             Vector3 pos = Input.mousePosition;
             transform.position = camera.ScreenToWorldPoint(new Vector3(pos.x,pos.y,camera.nearClipPlane));
             transform.position = new Vector3(transform.position.x, transform.position.y, -2f);
-           
+            if (GM.selectingAbility && GM.currentActive == GameMaster.Abilitys.SWITCH)
+            {
+                GM.activateAbility(GameMaster.Abilitys.SWITCH, Slot);
+            }
+
         }
         if(!Input.GetMouseButton(0))
         {
@@ -157,19 +164,14 @@ public class Box : MonoBehaviour
                         GM.swapBox(Slot, i);
                         Slot = i;
                     }
-                    //transform.position = BoxSlots[i].position;
                 }
             }
-            if(!move)
-            {
-                //transform.position = BoxSlots[Slot].position;
-            }
+            
         }
     }
     public void newPos(int pos)
     {
         Slot = pos;
-        //transform.position = BoxSlots[Slot].position;
     }
     public void StartPos(int pos)
     {
@@ -178,5 +180,22 @@ public class Box : MonoBehaviour
     public void onTheMove(int a)
     {
         moving = a;
+    }
+    public void changeColor()
+    {
+        if(transform.tag == "Red Box")
+        {
+            transform.tag = "Blue Box";
+            transform.GetComponentsInChildren<MeshRenderer>(true)[0].sharedMaterial = mat2;
+            transform.GetComponentsInChildren<MeshRenderer>(true)[1].sharedMaterial = mat2;
+            transform.GetComponentInChildren<TextMesh>(true).color = blue;
+        }
+        else
+        {
+            transform.tag = "Red Box";
+            transform.GetComponentsInChildren<Renderer>(true)[0].sharedMaterial = mat1;
+            transform.GetComponentsInChildren<Renderer>(true)[1].sharedMaterial = mat1;
+            transform.GetComponentInChildren<TextMesh>(true).color = red;
+        }
     }
 }

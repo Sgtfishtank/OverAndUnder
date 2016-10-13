@@ -52,6 +52,9 @@ public class GameMaster : MonoBehaviour
     public Color multicolor;
     public Color switchcolor;
     public Color healemissive;
+    public Color blue;
+    public Color red;
+    public Color purple;
 
 
     public int slowRemaning;
@@ -166,13 +169,13 @@ public class GameMaster : MonoBehaviour
             {
                 int spawnpos = getLane();
                 int color = UnityEngine.Random.Range(0, 2);
-                if (abilityActive && (abilitysInLane[spawnpos].y == 1 || abilitysInLane[spawnpos+18].y == 1))
+                if (abilityActive && (abilitysInLane[spawnpos].y == 1 || abilitysInLane[spawnpos+12].y == 1))
                 {
                     abilitySpawning(spawnpos, color);
                 }
                 else
                 {
-                    spawnNormal(spawnpos, normalspeed, color);
+                    spawnNormal(spawnpos, normalspeed, color, false);
                 }
             }
             lastSpawn = Time.time + spawnRate;
@@ -267,6 +270,17 @@ public class GameMaster : MonoBehaviour
     }
     void multiReset(int lane)
     {
+        for (int i = 0; i < balls.Count; i++)
+        {
+            if (balls[i].activeSelf && balls[i].transform.GetComponent<Ball>().lane == lane)
+            {
+                //balls[i].GetComponentInChildren<shaderGlow>().lightOff();
+                if (balls[i].tag == "Red")
+                    balls[i].GetComponentInChildren<ParticleSystem>().startColor = red;
+                else
+                    balls[i].GetComponentInChildren<ParticleSystem>().startColor = blue;
+            }
+        }
         multiTime = Time.time + multiCD;
         multiRemaning = Mathf.FloorToInt(multiTime);
         lanerenders[lane].material.SetColor("_EmissionColor", defaultcolor);
@@ -274,23 +288,6 @@ public class GameMaster : MonoBehaviour
         abb[2].isCD(true);
         abb[2].active = false;
         abb[2].setColor();
-    }
-    void neutralReset(int lane)
-    {
-        for (int i = 0; i < balls.Count; i++)
-        {
-            if (balls[i].activeSelf && balls[i].transform.GetComponent<Ball>().lane == lane)
-            {
-                balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, balls[i].GetComponent<Rigidbody>().velocity.y * 2, 0);
-            }
-        }
-        lanerenders[lane].material.SetColor("_EmissionColor", defaultcolor);
-        abilitysInLane[lane + 18].y = 0;
-        switchTime = Time.time + switchCD;
-        switchRemaning = Mathf.FloorToInt(switchTime);
-        abb[3].isCD(true);
-        abb[3].active = false;
-        abb[3].setColor();
     }
     public void highlightLanes(Abilitys ability)
     {
@@ -352,7 +349,7 @@ public class GameMaster : MonoBehaviour
             activateAbility(currentActive, lane);
         }
     }
-    void spawnNormal(int lane, float speed, int color)
+    void spawnNormal(int lane, float speed, int color, bool multi)
     {
         int ball = 0;
         if (color == 0)
@@ -363,9 +360,22 @@ public class GameMaster : MonoBehaviour
         {
             ball = findInactiveRed();
         }
+        
         balls[ball].transform.position = BallSpawnPoints[lane].position;
         balls[ball].transform.rotation = UnityEngine.Random.rotation;
         balls[ball].transform.GetComponent<Ball>().lane = lane;
+        if (multi)
+        {
+            //balls[ball].GetComponentInChildren<shaderGlow>(true).lightOn();
+        }
+        else
+        {
+
+            if (balls[ball].tag == "Red")
+                balls[ball].GetComponentInChildren<ParticleSystem>().startColor = red;
+            else
+                balls[ball].GetComponentInChildren<ParticleSystem>().startColor = blue;
+        }
         if (lane < 3)
             balls[ball].GetComponent<Rigidbody>().velocity = new Vector3(0, -speed, 0);
         else
@@ -374,10 +384,10 @@ public class GameMaster : MonoBehaviour
     }
     public void abilitySpawning(int lane, int color)
     {
-        if(abilitysInLane[lane+18].y == 1)
-            spawnNormal(lane, normalspeed, color);
+        if(abilitysInLane[lane+12].y == 1)
+            spawnNormal(lane, normalspeed, color, true);
        else
-            spawnNormal(lane, slowSpeed, color);
+            spawnNormal(lane, slowSpeed, color, false);
         
     }
     public void activateAbility(GameMaster.Abilitys a, int lane)
@@ -483,8 +493,16 @@ public class GameMaster : MonoBehaviour
                 abilitysInLane[lane + 12].x = Time.time + MultiDuration;
                 abilitysInLane[lane + 12].y = 1;
                 multiRemaning = Mathf.FloorToInt(abilitysInLane[lane + 12].x);
+                for (int i = 0; i < balls.Count; i++)
+                {
+                    if (balls[i].activeSelf && balls[i].transform.GetComponent<Ball>().lane == lane)
+                    {
+                        //balls[i].GetComponentInChildren<shaderGlow>().lightOn();
+                        balls[i].GetComponentInChildren<ParticleSystem>().startColor = purple;
+                    }
+                }
 
-                lanerenders[lane].material.SetColor("_EmissionColor", multicolor);
+                //lanerenders[lane].material.SetColor("_EmissionColor", multicolor);
                 multiplier = 3;
                 break;
             case Abilitys.SWITCH:

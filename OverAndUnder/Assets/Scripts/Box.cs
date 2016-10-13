@@ -24,10 +24,12 @@ public class Box : MonoBehaviour
     public Material mat2;
     public Color blue;
     public Color red;
+    private float shaketime;
 
     bool isBroken = false;
     private float explotionDur;
     private float crystalTextDur;
+    private bool once = true;
 
     // Use this for initialization
     void Start ()
@@ -37,17 +39,33 @@ public class Box : MonoBehaviour
         BoxSlots = GM.boxPoints.ToArray();
         psMaster.SetActive(false);
         brokenBox.SetActive(false);
-        Transform[] temp = fullBox.transform.GetComponentsInChildren<Transform>();
-        for (int j = 0; j < temp.Length; j++)
-        {
-            temp[j].gameObject.layer = 8;
-        }
+        temp = fullBox.transform.GetComponentsInChildren<Transform>();
+
     }
-	
-	// Update is called once per frame
-	void Update ()
+    Transform[] temp;
+    // Update is called once per frame
+    void Update ()
     {
-        if(hp <= 0)
+        
+        if (once)
+        {
+            temp = fullBox.transform.GetComponentsInChildren<Transform>();
+            
+            for (int j = 0; j < temp.Length; j++)
+            {
+                temp[j].gameObject.layer = 8;
+            }
+            once = false;
+        }
+        if(shaketime > Time.time)
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(0,0,Mathf.Sin(Time.time *70)*2.7f));
+        }
+        else
+        {
+            transform.rotation = Quaternion.identity;
+        }
+        if (hp <= 0)
         {
             GM.destroyLane(Slot);
             gameObject.SetActive(false);
@@ -84,11 +102,11 @@ public class Box : MonoBehaviour
                     moving = 0;
                     if(i == 6)
                     {
-                        fullBox.transform.localScale = new Vector3(21, 21, 21);
+                        fullBox.transform.parent.transform.localScale = new Vector3(21, 21, 21);
                     }
                     else
                     {
-                        fullBox.transform.localScale = new Vector3(24, 24, 24);
+                        fullBox.transform.parent.transform.localScale = new Vector3(24, 24, 24);
                     }
                 }
             }
@@ -146,6 +164,7 @@ public class Box : MonoBehaviour
             psMaster.SetActive(true);
             psMaster.transform.position = col.transform.position;
             explotionDur = Time.time + 1f;
+            shaketime = 0.3f + Time.time;
             hp--;
         }
         col.gameObject.SetActive(false);
@@ -178,11 +197,11 @@ public class Box : MonoBehaviour
                         Slot = i;
                         if(Slot == 6)
                         {
-                            fullBox.transform.localScale = new Vector3(21, 21, 21);
+                            fullBox.transform.parent.transform.localScale = new Vector3(21, 21, 21);
                         }
                         else
                         {
-                            fullBox.transform.localScale = new Vector3(24, 24, 24);
+                            fullBox.transform.parent.transform.localScale = new Vector3(24, 24, 24);
                         }
                     }
                 }

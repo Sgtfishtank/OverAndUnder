@@ -51,13 +51,16 @@ public class GameMaster : MonoBehaviour
     public Color wallcolor;
     public Color multicolor;
     public Color switchcolor;
-    
+    public Color healemissive;
+
+
     public int slowRemaning;
     public int wallRemaning;
     public int switchRemaning;
     public int multiRemaning;
     private AbilityButton[] abb;
     public GameObject coreObj;
+    private GameObject healslot;
 
     public enum Abilitys
     {
@@ -71,11 +74,14 @@ public class GameMaster : MonoBehaviour
         ColorUtility.TryParseHtmlString("#330F0F00", out wallcolor);
         ColorUtility.TryParseHtmlString("#300B3300", out multicolor);
         ColorUtility.TryParseHtmlString("#33310E00", out switchcolor);
+        ColorUtility.TryParseHtmlString("#002D0000", out healemissive);
         healEffect.SetActive(false);
         WallObj = Instantiate(WallObj, Vector3.zero, Quaternion.identity) as GameObject;
         SlowObj = Instantiate(SlowObj, Vector3.zero, Quaternion.identity) as GameObject;
         WallObj.SetActive(false);
         SlowObj.SetActive(false);
+
+        healslot = GameObject.Find("mesh_heal_slot_new");
 
 
         Transform parent = GameObject.Find("Ball Objects").transform;
@@ -98,7 +104,7 @@ public class GameMaster : MonoBehaviour
         }
         for (int i = 0; i < boxPoints.Count-1; i++)
         {
-            cores.Add(Instantiate(coreObj, boxPoints[i].position + new Vector3(0, 0, 0.1f), Quaternion.Euler(new Vector3(90,180,0))) as GameObject);
+            cores.Add(Instantiate(coreObj, boxPoints[i].position + new Vector3(0, 0, 0.1f), Quaternion.identity) as GameObject);
         }
         for (int i = 0; i < 20; i++)
         {
@@ -193,10 +199,14 @@ public class GameMaster : MonoBehaviour
         if (boxes[6].tag == "Blue Box" || boxes[6].tag == "Red Box")
         {
             healEffect.SetActive(true);
+            if(healslot.GetComponent<MeshRenderer>().material.GetColor("_EmissionColor") != healemissive)
+                healslot.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", healemissive);
         }
         else  if(healEffect.activeSelf)
         {
             healEffect.SetActive(false);
+            if (healslot.GetComponent<MeshRenderer>().material.GetColor("_EmissionColor") == healemissive)
+                healslot.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", defaultcolor);
         }
         
 

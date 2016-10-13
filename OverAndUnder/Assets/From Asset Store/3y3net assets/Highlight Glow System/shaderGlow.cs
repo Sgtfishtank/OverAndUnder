@@ -41,7 +41,7 @@ public class shaderGlow : MonoBehaviour {
 	private Shader highightShaderHidden = null;	//Shader used to glow object
     private Shader highightShaderVisibleNormal = null;    //Shader used to glow object
     private Shader highightShaderHiddenNormal = null; //Shader used to glow object
-    private bool highlighted=false;
+    public bool highlighted=false;
 	private float flashPosition=1f;
 	private bool flashDirectionUp = true;
 	private GUIStyle style;

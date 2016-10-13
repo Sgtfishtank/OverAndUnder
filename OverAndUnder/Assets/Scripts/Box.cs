@@ -37,6 +37,11 @@ public class Box : MonoBehaviour
         BoxSlots = GM.boxPoints.ToArray();
         psMaster.SetActive(false);
         brokenBox.SetActive(false);
+        Transform[] temp = fullBox.transform.GetComponentsInChildren<Transform>();
+        for (int j = 0; j < temp.Length; j++)
+        {
+            temp[j].gameObject.layer = 8;
+        }
     }
 	
 	// Update is called once per frame
@@ -77,6 +82,14 @@ public class Box : MonoBehaviour
                     GM.swapBox(Slot, i);
                     Slot = i;
                     moving = 0;
+                    if(i == 6)
+                    {
+                        fullBox.transform.localScale = new Vector3(21, 21, 21);
+                    }
+                    else
+                    {
+                        fullBox.transform.localScale = new Vector3(24, 24, 24);
+                    }
                 }
             }
         }
@@ -163,6 +176,14 @@ public class Box : MonoBehaviour
                         move = true;
                         GM.swapBox(Slot, i);
                         Slot = i;
+                        if(Slot == 6)
+                        {
+                            fullBox.transform.localScale = new Vector3(21, 21, 21);
+                        }
+                        else
+                        {
+                            fullBox.transform.localScale = new Vector3(24, 24, 24);
+                        }
                     }
                 }
             }

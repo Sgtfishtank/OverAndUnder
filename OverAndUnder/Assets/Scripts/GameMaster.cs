@@ -115,7 +115,21 @@ public class GameMaster : MonoBehaviour
     }
     void Update()
     {
-        if(Time.time > lastSpawn)
+        if (destroyedLanes.Count == 5)
+        {
+            for (int i = 0; i < lanetextscript.Length; i++)
+            {
+                lanetextscript[i].scrollSpeed = 0;
+                lanetextscript[i].scrollSpeed2 = 0;
+            }
+            for(int i = 0; i < balls.Count;i++)
+            {
+                balls[i].SetActive(false);
+            }
+            return;
+        }
+
+        if (Time.time > lastSpawn)
         {
             for (int i = 0; i < abilitysInLane.Length; i++)
             {
@@ -419,28 +433,28 @@ public class GameMaster : MonoBehaviour
                 switch (lane)
                 {
                     case 0:
-                        WallObj.transform.position = Vector3.zero;
+                        WallObj.transform.position = new Vector3(-1.44f,0,0);
                         WallObj.transform.rotation = Quaternion.identity;
 
                         break;
                     case 1:
-                        WallObj.transform.position = new Vector3(1.4f, 0, 0);
+                        WallObj.transform.position = new Vector3(0, 0, 0);
                         WallObj.transform.rotation = Quaternion.identity;
                         break;
                     case 2:
-                        WallObj.transform.position = new Vector3(2.8f, 0, 0);
+                        WallObj.transform.position = new Vector3(1.44f, 0, 0);
                         WallObj.transform.rotation = Quaternion.identity;
                         break;
                     case 3:
-                        WallObj.transform.position = new Vector3(-4.01f, 0, 0);
+                        WallObj.transform.position = new Vector3(-2.66f, 0, 0);
                         WallObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
                         break;
                     case 4:
-                        WallObj.transform.position = new Vector3(-2.61f, 0, 0);
+                        WallObj.transform.position = new Vector3(-1.2f, 0, 0);
                         WallObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
                         break;
                     case 5:
-                        WallObj.transform.position = new Vector3(-1.21f, 0, 0);
+                        WallObj.transform.position = new Vector3(0.21f, 0, 0);
                         WallObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
                         break;
                     default:

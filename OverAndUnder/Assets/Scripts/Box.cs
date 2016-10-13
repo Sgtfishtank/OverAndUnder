@@ -38,7 +38,7 @@ public class Box : MonoBehaviour
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
         BoxSlots = GM.boxPoints.ToArray();
         psMaster.SetActive(false);
-        brokenBox.SetActive(false);
+        brokenBox.transform.parent.gameObject.SetActive(false);
         temp = fullBox.transform.GetComponentsInChildren<Transform>();
 
     }
@@ -73,14 +73,14 @@ public class Box : MonoBehaviour
         if(!isBroken && hp < 6)
         {
             isBroken = true;
-            brokenBox.SetActive(true);
-            fullBox.SetActive(false);
+            brokenBox.transform.parent.gameObject.SetActive(true);
+            fullBox.transform.parent.gameObject.SetActive(false);
         }
         else if(isBroken &&hp > 5)
         {
             isBroken = false;
-            brokenBox.SetActive(false);
-            fullBox.SetActive(true);
+            brokenBox.transform.parent.gameObject.SetActive(false);
+            fullBox.transform.parent.gameObject.SetActive(true);
         }
         if(crystalTextDur < Time.time)
         {
@@ -103,10 +103,12 @@ public class Box : MonoBehaviour
                     if(i == 6)
                     {
                         fullBox.transform.parent.transform.localScale = new Vector3(21, 21, 21);
+                        brokenBox.transform.parent.transform.localScale = new Vector3(21, 21, 21);
                     }
                     else
                     {
                         fullBox.transform.parent.transform.localScale = new Vector3(24, 24, 24);
+                        brokenBox.transform.parent.transform.localScale = new Vector3(24, 24, 24);
                     }
                 }
             }
@@ -223,7 +225,7 @@ public class Box : MonoBehaviour
     }
     public void changeColor()
     {
-        if(transform.tag == "Red Box")
+        if (transform.tag == "Red Box")
         {
             transform.tag = "Blue Box";
             transform.GetComponentsInChildren<MeshRenderer>(true)[0].sharedMaterial = mat2;
@@ -237,5 +239,10 @@ public class Box : MonoBehaviour
             transform.GetComponentsInChildren<Renderer>(true)[1].sharedMaterial = mat1;
             transform.GetComponentInChildren<TextMesh>(true).color = red;
         }
+    }
+    public void takeDamage()
+    {
+        hp--;
+        shaketime = 0.3f + Time.time;
     }
 }

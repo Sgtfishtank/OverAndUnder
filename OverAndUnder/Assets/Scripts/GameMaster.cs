@@ -7,6 +7,7 @@ using System;
 public class GameMaster : MonoBehaviour
 {
     public List<GameObject> boxes;
+    public List<GameObject> cores;
     public List<GameObject> balls;
     public List<Transform> boxPoints;
     public List<Transform> BallSpawnPoints;
@@ -56,6 +57,7 @@ public class GameMaster : MonoBehaviour
     public int switchRemaning;
     public int multiRemaning;
     private AbilityButton[] abb;
+    public GameObject coreObj;
 
     public enum Abilitys
     {
@@ -93,6 +95,10 @@ public class GameMaster : MonoBehaviour
             }
             if(i != 6)
                 boxes[i].transform.GetComponent<Box>().StartPos(i);
+        }
+        for (int i = 0; i < boxPoints.Count-1; i++)
+        {
+            cores.Add(Instantiate(coreObj, boxPoints[i].position + new Vector3(0, 0, 0.1f), Quaternion.Euler(new Vector3(90,180,0))) as GameObject);
         }
         for (int i = 0; i < 20; i++)
         {

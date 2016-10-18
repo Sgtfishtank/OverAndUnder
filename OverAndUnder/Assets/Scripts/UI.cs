@@ -6,13 +6,23 @@ public class UI : MonoBehaviour {
     public Text[] textfields;
     public GameObject[] boxes;
     public new Camera camera;
+    public GameObject GameOver;
+    public GameObject MainMenuButton;
+    public GameObject startMenu;
     GameMaster GM;
 	// Use this for initialization
 	void Start () {
         textfields = transform.GetComponentsInChildren<Text>();
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
         boxes = GM.boxes.ToArray();
+        GameOver.SetActive(false);
+        MainMenuButton.SetActive(false);
 	}
+    void Awake()
+    {
+        //GameOver.SetActive(false);
+        MainMenuButton.SetActive(false);
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -45,8 +55,24 @@ public class UI : MonoBehaviour {
 
         textfields[11].text = Mathf.Clamp((GM.switchRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
 
+        if(GM.GameOver)
+        {
+            for (int i = 0; i < 11; i++)
+            {
+                textfields[i].gameObject.SetActive(false);
+            }
+            GameOver.SetActive(true);
+            MainMenuButton.SetActive(true);
+            
+            textfields[12].text = GM.blueScore.ToString();
+            textfields[13].text = GM.redScore.ToString();
+        }
 
-
+    }
+    public void mainMenu()
+    {
+        startMenu.SetActive(true);
+        //gameObject.SetActive(false);
     }
     string checkZero(int value)
     {

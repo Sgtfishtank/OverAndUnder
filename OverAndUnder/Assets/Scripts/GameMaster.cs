@@ -66,6 +66,7 @@ public class GameMaster : MonoBehaviour
     private AbilityButton[] abb;
     public GameObject coreObj;
     private GameObject healslot;
+    public bool GameOver = false;
 
     public enum Abilitys
     {
@@ -133,8 +134,21 @@ public class GameMaster : MonoBehaviour
         
 
     }
+    void Awake()
+    {
+        blueScore = 0;
+        redScore = 0;
+        for (int i = 0; i < boxes.Count-1; i++)
+        {
+            boxes[i].GetComponent<Box>().hp = 6;
+        }
+    }
     void Update()
     {
+        if(GameOver)
+        {
+            return;
+        }
         if (destroyedLanes.Count == 5)
         {
             for (int i = 0; i < lanetextscript.Length; i++)
@@ -146,6 +160,7 @@ public class GameMaster : MonoBehaviour
             {
                 balls[i].SetActive(false);
             }
+            GameOver = true;
             return;
         }
 

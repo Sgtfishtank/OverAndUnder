@@ -30,6 +30,8 @@ public class Box : MonoBehaviour
     private float explotionDur;
     private float crystalTextDur;
     private bool once = true;
+    Transform[] temp;
+    public bool ghost = false;
 
     // Use this for initialization
     void Start ()
@@ -42,11 +44,37 @@ public class Box : MonoBehaviour
         temp = fullBox.transform.GetComponentsInChildren<Transform>();
 
     }
-    Transform[] temp;
+    
+
     // Update is called once per frame
     void Update ()
     {
-        
+        if (moving == 2)
+        {
+            for (int i = 0; i < BoxSlots.Length; i++)
+            {
+                if (Mathf.Abs((transform.position.x - BoxSlots[i].position.x)) <= 0.75f && Mathf.Abs((transform.position.y - BoxSlots[i].position.y)) <= 0.75f)
+                {
+                    move = true;
+                    GM.swapBox(Slot, i);
+                    Slot = i;
+                    moving = 0;
+                    if (ghost)
+                    {
+                        if (i == 6)
+                        {
+                            fullBox.transform.parent.transform.localScale = new Vector3(21, 21, 21);
+                            brokenBox.transform.parent.transform.localScale = new Vector3(21, 21, 21);
+                        }
+                        else
+                        {
+                            fullBox.transform.parent.transform.localScale = new Vector3(24, 24, 24);
+                            brokenBox.transform.parent.transform.localScale = new Vector3(24, 24, 24);
+                        }
+                    }
+                }
+            }
+        }
         if (once)
         {
             temp = fullBox.transform.GetComponentsInChildren<Transform>();
@@ -57,6 +85,11 @@ public class Box : MonoBehaviour
             }
             once = false;
         }
+        if(ghost)
+        {
+            return;
+        }
+
         if(shaketime > Time.time)
         {
             transform.rotation = Quaternion.Euler(new Vector3(0,0,Mathf.Sin(Time.time *70)*2.7f));
@@ -90,29 +123,7 @@ public class Box : MonoBehaviour
         {
             psMaster.SetActive(false);
         }
-        if (moving == 2)
-        {
-            for (int i = 0; i < BoxSlots.Length; i++)
-            {
-                if (Mathf.Abs((transform.position.x - BoxSlots[i].position.x)) <= 0.75f && Mathf.Abs((transform.position.y - BoxSlots[i].position.y)) <= 0.75f)
-                {
-                    move = true;
-                    GM.swapBox(Slot, i);
-                    Slot = i;
-                    moving = 0;
-                    if(i == 6)
-                    {
-                        fullBox.transform.parent.transform.localScale = new Vector3(21, 21, 21);
-                        brokenBox.transform.parent.transform.localScale = new Vector3(21, 21, 21);
-                    }
-                    else
-                    {
-                        fullBox.transform.parent.transform.localScale = new Vector3(24, 24, 24);
-                        brokenBox.transform.parent.transform.localScale = new Vector3(24, 24, 24);
-                    }
-                }
-            }
-        }
+        
         if (!Input.GetMouseButton(0) && transform.position != BoxSlots[Slot].position && moving == 0)
         {
             transform.position = Vector3.MoveTowards(transform.position, BoxSlots[Slot].position, speed * Time.deltaTime);

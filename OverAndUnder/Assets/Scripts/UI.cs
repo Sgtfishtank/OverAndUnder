@@ -21,17 +21,17 @@ public class UI : MonoBehaviour {
             boxes = GM.boxes.ToArray();
             return;
         }
-        textfields[0].text = boxes[0].transform.GetComponent<Box>().hp.ToString();
+        textfields[0].text = checkZero(boxes[0].transform.GetComponent<Box>().hp);
         textfields[0].rectTransform.position = camera.WorldToScreenPoint(boxes[0].transform.localPosition);
-        textfields[1].text = boxes[1].transform.GetComponent<Box>().hp.ToString();
+        textfields[1].text = checkZero(boxes[1].transform.GetComponent<Box>().hp);
         textfields[1].rectTransform.position = camera.WorldToScreenPoint(boxes[1].transform.localPosition);
-        textfields[2].text = boxes[2].transform.GetComponent<Box>().hp.ToString();
+        textfields[2].text = checkZero(boxes[2].transform.GetComponent<Box>().hp);
         textfields[2].rectTransform.position = camera.WorldToScreenPoint(boxes[2].transform.localPosition);
-        textfields[5].text = boxes[3].transform.GetComponent<Box>().hp.ToString();
+        textfields[5].text = checkZero(boxes[3].transform.GetComponent<Box>().hp);
         textfields[5].rectTransform.position = camera.WorldToScreenPoint(boxes[3].transform.localPosition);
-        textfields[4].text = boxes[4].transform.GetComponent<Box>().hp.ToString();
+        textfields[4].text = checkZero(boxes[4].transform.GetComponent<Box>().hp);
         textfields[4].rectTransform.position = camera.WorldToScreenPoint(boxes[4].transform.localPosition);
-        textfields[3].text = boxes[5].transform.GetComponent<Box>().hp.ToString();
+        textfields[3].text = checkZero(boxes[5].transform.GetComponent<Box>().hp);
         textfields[3].rectTransform.position = camera.WorldToScreenPoint(boxes[5].transform.localPosition);
 
         textfields[6].text = GM.blueScore.ToString();
@@ -48,4 +48,12 @@ public class UI : MonoBehaviour {
 
 
     }
+    string checkZero(int value)
+    {
+        if (value <= 0)
+            return "";
+        else
+            return value.ToString();
+    }
+
 }

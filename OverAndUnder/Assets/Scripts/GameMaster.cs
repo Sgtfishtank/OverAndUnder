@@ -25,7 +25,9 @@ public class GameMaster : MonoBehaviour
     public GameObject healEffect;
     public GameObject MultiObj;
     public GameObject SwitchObj;
-    public int score;
+    public int blueScore;
+    public int redScore;
+
     public float spawnRate;
     private float lastSpawn;
     public bool abilityActive;
@@ -79,10 +81,13 @@ public class GameMaster : MonoBehaviour
         ColorUtility.TryParseHtmlString("#33310E00", out switchcolor);
         ColorUtility.TryParseHtmlString("#002D0000", out healemissive);
         healEffect.SetActive(false);
-        WallObj = Instantiate(WallObj, Vector3.zero, Quaternion.identity) as GameObject;
+        
         SlowObj = Instantiate(SlowObj, Vector3.zero, Quaternion.identity) as GameObject;
-        WallObj.SetActive(false);
         SlowObj.SetActive(false);
+        WallObj = Instantiate(WallObj, Vector3.zero, Quaternion.identity) as GameObject;
+        WallObj.SetActive(false);
+        MultiObj = Instantiate(MultiObj, Vector3.zero, Quaternion.identity) as GameObject;
+        MultiObj.SetActive(false);
 
         healslot = GameObject.Find("mesh_heal_slot_new");
 
@@ -274,13 +279,13 @@ public class GameMaster : MonoBehaviour
         {
             if (balls[i].activeSelf && balls[i].transform.GetComponent<Ball>().lane == lane)
             {
-                //balls[i].GetComponentInChildren<shaderGlow>().lightOff();
                 if (balls[i].tag == "Red")
                     balls[i].GetComponentInChildren<ParticleSystem>().startColor = red;
                 else
                     balls[i].GetComponentInChildren<ParticleSystem>().startColor = blue;
             }
         }
+        MultiObj.SetActive(false);
         multiTime = Time.time + multiCD;
         multiRemaning = Mathf.FloorToInt(multiTime);
         lanerenders[lane].material.SetColor("_EmissionColor", defaultcolor);
@@ -364,18 +369,10 @@ public class GameMaster : MonoBehaviour
         balls[ball].transform.position = BallSpawnPoints[lane].position;
         balls[ball].transform.rotation = UnityEngine.Random.rotation;
         balls[ball].transform.GetComponent<Ball>().lane = lane;
-        if (multi)
-        {
-            //balls[ball].GetComponentInChildren<shaderGlow>(true).lightOn();
-        }
+        if (balls[ball].tag == "Red")
+            balls[ball].GetComponentInChildren<ParticleSystem>().startColor = red;
         else
-        {
-
-            if (balls[ball].tag == "Red")
-                balls[ball].GetComponentInChildren<ParticleSystem>().startColor = red;
-            else
-                balls[ball].GetComponentInChildren<ParticleSystem>().startColor = blue;
-        }
+            balls[ball].GetComponentInChildren<ParticleSystem>().startColor = blue;
         if (lane < 3)
             balls[ball].GetComponent<Rigidbody>().velocity = new Vector3(0, -speed, 0);
         else
@@ -497,11 +494,40 @@ public class GameMaster : MonoBehaviour
                 {
                     if (balls[i].activeSelf && balls[i].transform.GetComponent<Ball>().lane == lane)
                     {
-                        //balls[i].GetComponentInChildren<shaderGlow>().lightOn();
                         balls[i].GetComponentInChildren<ParticleSystem>().startColor = purple;
                     }
                 }
+                switch (lane)
+                {
+                    case 0:
+                        MultiObj.transform.position = new Vector3(-2.07f, 0, 0);
+                        MultiObj.transform.rotation = Quaternion.identity;
 
+                        break;
+                    case 1:
+                        MultiObj.transform.position = new Vector3(-0.64f, 0, 0);
+                        MultiObj.transform.rotation = Quaternion.identity;
+                        break;
+                    case 2:
+                        MultiObj.transform.position = new Vector3(0.79f, 0, 0);
+                        MultiObj.transform.rotation = Quaternion.identity;
+                        break;
+                    case 3:
+                        MultiObj.transform.position = new Vector3(-2f, 0, 0);
+                        MultiObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                        break;
+                    case 4:
+                        MultiObj.transform.position = new Vector3(-0.6f, 0, 0);
+                        MultiObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                        break;
+                    case 5:
+                        MultiObj.transform.position = new Vector3(0.85f, 0, 0);
+                        MultiObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                        break;
+                    default:
+                        break;
+                }
+                MultiObj.SetActive(true);
                 //lanerenders[lane].material.SetColor("_EmissionColor", multicolor);
                 multiplier = 3;
                 break;
@@ -540,12 +566,19 @@ public class GameMaster : MonoBehaviour
         }
         return 0;
     }
-    public void addScore(int lane)
+    public void addRedScore(int lane)
     {
         if (abilitysInLane[lane + 12].y == 1)
-            score += 1 * multiplier;
+            redScore += 1 * multiplier;
         else
-            score++;
+            redScore++;
+    }
+    public void addBlueScore(int lane)
+    {
+        if (abilitysInLane[lane + 12].y == 1)
+            blueScore += 1 * multiplier;
+        else
+            blueScore++;
     }
     public void swapBox(int CurrentPos, int newPos)
     {

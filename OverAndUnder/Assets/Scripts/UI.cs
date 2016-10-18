@@ -34,7 +34,8 @@ public class UI : MonoBehaviour {
         textfields[3].text = boxes[5].transform.GetComponent<Box>().hp.ToString();
         textfields[3].rectTransform.position = camera.WorldToScreenPoint(boxes[5].transform.localPosition);
 
-        textfields[6].text = GM.score.ToString();
+        textfields[6].text = GM.blueScore.ToString();
+        textfields[7].text = GM.redScore.ToString();
 
         textfields[8].text = Mathf.Clamp((GM.slowRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
 

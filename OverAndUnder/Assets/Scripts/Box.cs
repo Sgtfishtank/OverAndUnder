@@ -145,21 +145,21 @@ public class Box : MonoBehaviour
                 CrystalText.transform.position = col.transform.position;
             crystalTextDur = Time.time + 1;
             CrystalText.SetActive(true);
-            GM.addScore(Slot);
+            GM.addRedScore(Slot);
         }
         else if (col.transform.tag == "Blue" && transform.tag == "Blue Box")
         {
             CrystalText.transform.position = col.transform.position;
             crystalTextDur = Time.time + 1;
             CrystalText.SetActive(true);
-            GM.addScore(Slot);
+            GM.addBlueScore(Slot);
         }
         else if (col.transform.tag == "Gold")
         {
             CrystalText.transform.position = col.transform.position;
             crystalTextDur = Time.time + 1;
             CrystalText.SetActive(true);
-            GM.addScore(Slot);
+           // GM.addScore(Slot);
         }
         else
         {

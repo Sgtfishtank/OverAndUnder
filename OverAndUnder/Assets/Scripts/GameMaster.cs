@@ -275,6 +275,7 @@ public class GameMaster : MonoBehaviour
         destroyedLanes.Add(slot);
         lanetextscript[slot].scrollSpeed = 0;
         lanetextscript[slot].scrollSpeed2 = 0;
+        cores[slot].SetActive(false);
         for (int i = 0; i <balls.Count; i++)
         {
             if(balls[i].transform.GetComponent<Ball>().lane == slot)

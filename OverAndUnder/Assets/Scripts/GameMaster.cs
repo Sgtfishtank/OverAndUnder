@@ -89,7 +89,7 @@ public class GameMaster : MonoBehaviour
         WallObj.SetActive(false);
         MultiObj = Instantiate(MultiObj, Vector3.zero, Quaternion.identity) as GameObject;
         MultiObj.SetActive(false);
-        SwitchObj = Instantiate(MultiObj, Vector3.zero, Quaternion.identity) as GameObject;
+        SwitchObj = Instantiate(SwitchObj, Vector3.zero, Quaternion.identity) as GameObject;
         SwitchObj.SetActive(false);
 
         healslot = GameObject.Find("mesh_heal_slot_new");
@@ -246,6 +246,7 @@ public class GameMaster : MonoBehaviour
         if (switchTime < Time.time)
         {
             abb[3].isCD(false);
+            SwitchObj.SetActive(false);
         }
 
         if (boxes[6].tag == "Blue Box" || boxes[6].tag == "Red Box")
@@ -580,7 +581,7 @@ public class GameMaster : MonoBehaviour
                 boxes[lane].transform.GetComponent<Box>().changeColor();
                 switchTime = Time.time + switchCD;
                 switchRemaning = Mathf.FloorToInt(switchTime);
-                SwitchObj.transform.position = boxes[lane].transform.position;
+                SwitchObj.transform.position = boxes[lane].transform.position+ new Vector3(0,0,-2);
                 SwitchObj.SetActive(true);
                 abb[3].isCD(true);
                 abb[3].active = false;

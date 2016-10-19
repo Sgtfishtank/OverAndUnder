@@ -240,14 +240,14 @@ public class Box : MonoBehaviour
         {
             transform.tag = "Blue Box";
             transform.GetComponentsInChildren<MeshRenderer>(true)[0].sharedMaterial = mat2;
-            transform.GetComponentsInChildren<MeshRenderer>(true)[1].sharedMaterial = mat2;
+            transform.GetComponentsInChildren<MeshRenderer>(true)[2].sharedMaterial = mat2;
             transform.GetComponentInChildren<TextMesh>(true).color = blue;
         }
         else
         {
             transform.tag = "Red Box";
             transform.GetComponentsInChildren<Renderer>(true)[0].sharedMaterial = mat1;
-            transform.GetComponentsInChildren<Renderer>(true)[1].sharedMaterial = mat1;
+            transform.GetComponentsInChildren<Renderer>(true)[2].sharedMaterial = mat1;
             transform.GetComponentInChildren<TextMesh>(true).color = red;
         }
     }

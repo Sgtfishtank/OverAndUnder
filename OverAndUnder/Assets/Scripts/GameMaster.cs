@@ -571,7 +571,7 @@ public class GameMaster : MonoBehaviour
                         break;
                 }
                 MultiObj.SetActive(true);
-                //lanerenders[lane].material.SetColor("_EmissionColor", multicolor);
+                lanerenders[lane].material.SetColor("_EmissionColor", multicolor);
                 multiplier = 3;
                 break;
             case Abilitys.SWITCH:

@@ -18,6 +18,7 @@ public class UI : MonoBehaviour {
     private int Tut;
     public GameObject Tutorial2;
     public GameObject SettingsButton;
+    public GameObject[] stars;
 
     // Use this for initialization
     void Start () {
@@ -32,6 +33,14 @@ public class UI : MonoBehaviour {
         TutorialButton.SetActive(false);
         NextTutButton.SetActive(false);
         ContinueGameButton.SetActive(false);
+        for (int i = 0; i < stars.Length; i++)
+        {
+            stars[i].SetActive(false);
+        }
+        for (int i = 0; i < stars.Length; i++)
+        {
+            stars[i].transform.parent.gameObject.SetActive(false);
+        }
     }
     public void Reset()
     {
@@ -46,6 +55,14 @@ public class UI : MonoBehaviour {
         }
         GameOver.SetActive(false);
         MainMenuButton.SetActive(false);
+        for (int i = 0; i < stars.Length; i++)
+        {
+            stars[i].SetActive(false);
+        }
+        for (int i = 0; i < stars.Length; i++)
+        {
+            stars[i].transform.parent.gameObject.SetActive(false);
+        }
     }
 	
 	// Update is called once per frame
@@ -57,17 +74,17 @@ public class UI : MonoBehaviour {
             return;
         }
         textfields[0].text = checkZero(boxes[0].transform.GetComponent<Box>().hp);
-        textfields[0].rectTransform.position = camera.WorldToScreenPoint(boxes[0].transform.localPosition);
+        textfields[0].rectTransform.position = camera.WorldToScreenPoint(boxes[0].transform.localPosition) + new Vector3(0, 7, 0);
         textfields[1].text = checkZero(boxes[1].transform.GetComponent<Box>().hp);
-        textfields[1].rectTransform.position = camera.WorldToScreenPoint(boxes[1].transform.localPosition);
+        textfields[1].rectTransform.position = camera.WorldToScreenPoint(boxes[1].transform.localPosition) + new Vector3(0, 7, 0);
         textfields[2].text = checkZero(boxes[2].transform.GetComponent<Box>().hp);
-        textfields[2].rectTransform.position = camera.WorldToScreenPoint(boxes[2].transform.localPosition);
+        textfields[2].rectTransform.position = camera.WorldToScreenPoint(boxes[2].transform.localPosition) + new Vector3(0, 7, 0);
         textfields[5].text = checkZero(boxes[3].transform.GetComponent<Box>().hp);
-        textfields[5].rectTransform.position = camera.WorldToScreenPoint(boxes[3].transform.localPosition);
+        textfields[5].rectTransform.position = camera.WorldToScreenPoint(boxes[3].transform.localPosition) + new Vector3(0, 7, 0);
         textfields[4].text = checkZero(boxes[4].transform.GetComponent<Box>().hp);
-        textfields[4].rectTransform.position = camera.WorldToScreenPoint(boxes[4].transform.localPosition);
+        textfields[4].rectTransform.position = camera.WorldToScreenPoint(boxes[4].transform.localPosition) + new Vector3(0, 7, 0);
         textfields[3].text = checkZero(boxes[5].transform.GetComponent<Box>().hp);
-        textfields[3].rectTransform.position = camera.WorldToScreenPoint(boxes[5].transform.localPosition);
+        textfields[3].rectTransform.position = camera.WorldToScreenPoint(boxes[5].transform.localPosition) + new Vector3(0, 7, 0);
 
         textfields[6].text = GM.blueScore.ToString();
         textfields[7].text = GM.redScore.ToString();
@@ -88,9 +105,27 @@ public class UI : MonoBehaviour {
             }
             GameOver.SetActive(true);
             MainMenuButton.SetActive(true);
+            for (int i = 0; i < stars.Length; i++)
+            {
+                stars[i].transform.parent.gameObject.SetActive(true);
+            }
             
             textfields[12].text = GM.blueScore.ToString();
             textfields[13].text = GM.redScore.ToString();
+            int total = (GM.redScore + GM.blueScore);
+            textfields[14].text = total.ToString();
+            if(total >= 200)
+            {
+                stars[2].SetActive(true);
+            }
+            if(total >= 100)
+            {
+                stars[1].SetActive(true);
+            }
+            if (total >= 50)
+            {
+                stars[0].SetActive(true);
+            }
         }
 
     }
@@ -99,6 +134,10 @@ public class UI : MonoBehaviour {
         startMenu.SetActive(true);
         startMenu.GetComponent<MainMenu>().reset();
         gameObject.SetActive(false);
+        for (int i = 0; i < stars.Length; i++)
+        {
+            stars[i].transform.parent.gameObject.SetActive(false);
+        }
     }
     public void SettingsFunc()
     {

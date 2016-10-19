@@ -24,6 +24,7 @@ public class Box : MonoBehaviour
     public Material mat2;
     public Color blue;
     public Color red;
+    public Color grey;
     private float shaketime;
 
     bool isBroken = false;
@@ -36,6 +37,7 @@ public class Box : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        ColorUtility.TryParseHtmlString("#909090FF", out grey);
         camera = GameObject.Find("camera_main").GetComponent<Camera>();
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
         BoxSlots = GM.boxPoints.ToArray();
@@ -98,10 +100,13 @@ public class Box : MonoBehaviour
         {
             transform.rotation = Quaternion.identity;
         }
-        if (hp <= 0)
+        if (hp == 0)
         {
             GM.destroyLane(Slot);
-            gameObject.SetActive(false);
+            hp--;
+            transform.GetComponent<BoxCollider>().enabled = false;
+            //gameObject.SetActive(false);
+            brokenBox.GetComponent<MeshRenderer>().material.SetColor("_Color", grey);
         }
         if(!isBroken && hp < 6)
         {

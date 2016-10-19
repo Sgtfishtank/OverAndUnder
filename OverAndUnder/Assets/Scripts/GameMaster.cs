@@ -246,6 +246,9 @@ public class GameMaster : MonoBehaviour
         if (switchTime < Time.time)
         {
             abb[3].isCD(false);
+        }
+        if ((switchTime - Time.time - switchCD) < -0.7f)
+        {
             SwitchObj.SetActive(false);
         }
 

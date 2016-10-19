@@ -21,11 +21,11 @@ public class MainMenu : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        GM = GameObject.Find("Game Master");
+        //GM = GameObject.Find("Game Master");
         GM.SetActive(false);
         InGameUI.SetActive(false);
 	}
-    void Awake()
+    public void reset()
     {
         InGameUI.SetActive(false);
     }
@@ -38,7 +38,9 @@ public class MainMenu : MonoBehaviour
     public void StartGameFunc()
     {
         GM.SetActive(true);
+        GM.GetComponent<GameMaster>().Reset();
         InGameUI.SetActive(true);
+        InGameUI.GetComponent<UI>().Reset();
         gameObject.SetActive(false);
     }
     public void SettingsFunc()

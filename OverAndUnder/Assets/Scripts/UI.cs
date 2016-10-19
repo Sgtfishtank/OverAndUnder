@@ -10,17 +10,41 @@ public class UI : MonoBehaviour {
     public GameObject MainMenuButton;
     public GameObject startMenu;
     GameMaster GM;
-	// Use this for initialization
-	void Start () {
-        textfields = transform.GetComponentsInChildren<Text>();
+    public GameObject ContinueGameButton;
+    public GameObject Settings;
+    public GameObject TutorialButton;
+    public GameObject Tutorial1;
+    public GameObject NextTutButton;
+    private int Tut;
+    public GameObject Tutorial2;
+    public GameObject SettingsButton;
+
+    // Use this for initialization
+    void Start () {
+        //textfields = transform.GetComponentsInChildren<Text>();
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
         boxes = GM.boxes.ToArray();
         GameOver.SetActive(false);
         MainMenuButton.SetActive(false);
-	}
-    void Awake()
+        Settings.SetActive(false);
+        Tutorial1.SetActive(false);
+        Tutorial2.SetActive(false);
+        TutorialButton.SetActive(false);
+        NextTutButton.SetActive(false);
+        ContinueGameButton.SetActive(false);
+    }
+    public void Reset()
     {
-        //GameOver.SetActive(false);
+        GameOver.SetActive(true);
+        GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
+        if(textfields.Length == 0)
+            textfields = transform.GetComponentsInChildren<Text>();
+        boxes = GM.boxes.ToArray();
+        for (int i = 0; i < 12; i++)
+        {
+            textfields[i].gameObject.SetActive(true);
+        }
+        GameOver.SetActive(false);
         MainMenuButton.SetActive(false);
     }
 	
@@ -28,6 +52,7 @@ public class UI : MonoBehaviour {
 	void Update () {
         if(boxes.Length == 0)
         {
+            
             boxes = GM.boxes.ToArray();
             return;
         }
@@ -57,7 +82,7 @@ public class UI : MonoBehaviour {
 
         if(GM.GameOver)
         {
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < 12; i++)
             {
                 textfields[i].gameObject.SetActive(false);
             }
@@ -72,7 +97,59 @@ public class UI : MonoBehaviour {
     public void mainMenu()
     {
         startMenu.SetActive(true);
-        //gameObject.SetActive(false);
+        startMenu.GetComponent<MainMenu>().reset();
+        gameObject.SetActive(false);
+    }
+    public void SettingsFunc()
+    {
+        Time.timeScale = 0;
+        Settings.SetActive(true);
+        SettingsButton.SetActive(true);
+        ContinueGameButton.SetActive(true);
+        TutorialButton.SetActive(true);
+        for (int i = 0; i < textfields.Length; i++)
+        {
+            textfields[i].gameObject.SetActive(false);
+        }
+
+    }
+    public void TutorialFunc()
+    {
+        Settings.SetActive(false);
+        TutorialButton.SetActive(false);
+        Tutorial1.SetActive(true);
+        NextTutButton.SetActive(true);
+        Tut = 1;
+    }
+    public void TutorialNextFunc()
+    {
+        if (Tut == 1)
+        {
+            Tutorial1.SetActive(false);
+            Tutorial2.SetActive(true);
+            Tut++;
+        }
+        else
+        {
+            Tutorial2.SetActive(false);
+            NextTutButton.SetActive(false);
+            Settings.SetActive(true);
+            ContinueGameButton.SetActive(true);
+        }
+    }
+    public void Continue()
+    {
+        Settings.SetActive(false);
+        Tutorial1.SetActive(false);
+        Tutorial2.SetActive(false);
+        TutorialButton.SetActive(false);
+        NextTutButton.SetActive(false);
+        ContinueGameButton.SetActive(false);
+        for (int i = 0; i < textfields.Length; i++)
+        {
+            textfields[i].gameObject.SetActive(true);
+        }
+        Time.timeScale = 1;
     }
     string checkZero(int value)
     {

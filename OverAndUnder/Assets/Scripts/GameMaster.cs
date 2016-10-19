@@ -91,27 +91,67 @@ public class GameMaster : MonoBehaviour
         MultiObj.SetActive(false);
 
         healslot = GameObject.Find("mesh_heal_slot_new");
+        clear();
+        initalize();
+    }
+    public void Reset()
+    {
+        clear();
+        initalize();
+        blueScore = 0;
+        redScore = 0;
+        slowTime = 0;
+        wallTime = 0;
+        multiTime = 0;
+        switchTime = 0;
+        destroyedLanes.Clear();
+        GameOver = false;
+        for (int i = 0; i < lanetextscript.Length; i++)
+        {
+            lanetextscript[i].scrollSpeed = -0.192f;
+            lanetextscript[i].scrollSpeed2 = -0.2f;
+        }
+    }
+    void clear()
+    {
+        for (int i = 0; i < boxes.Count; i++)
+        {
+            DestroyImmediate(boxes[i]);
+        }
+        for (int i = 0; i < balls.Count; i++)
+        {
+            DestroyImmediate(balls[i]);
+        }
+        for (int i = 0; i < cores.Count; i++)
+        {
+            DestroyImmediate(cores[i]);
+        }
+        boxes.Clear();
+        balls.Clear();
+        cores.Clear();
 
-
+    }
+    void initalize()
+    {
         Transform parent = GameObject.Find("Ball Objects").transform;
         lanetextscript = transform.GetComponentsInChildren<Transform>().Where(x => x.tag == "Lane").Select(x => x.transform.GetComponent<ScrollingTexture>()).ToArray();
         lanerenders = transform.GetComponentsInChildren<Transform>().Where(x => x.tag == "Lane").Select(x => x.transform.GetComponent<MeshRenderer>()).ToArray();
         abb = transform.GetComponentsInChildren<AbilityButton>();
-
+        
         for (int i = 0; i < boxPoints.Count; i++)
         {
             if (i < 3)
                 boxes.Add(Instantiate(blueBox, boxPoints[i].position, Quaternion.identity) as GameObject);
-            else if (i <6 && i >2 )
+            else if (i < 6 && i > 2)
                 boxes.Add(Instantiate(redBox, boxPoints[i].position, Quaternion.identity) as GameObject);
             else
             {
                 boxes.Add(Instantiate(ghostBox, boxPoints[i].position, Quaternion.identity) as GameObject);
             }
-            if(i != 6)
+            if (i != 6)
                 boxes[i].transform.GetComponent<Box>().StartPos(i);
         }
-        for (int i = 0; i < boxPoints.Count-1; i++)
+        for (int i = 0; i < boxPoints.Count - 1; i++)
         {
             cores.Add(Instantiate(coreObj, boxPoints[i].position + new Vector3(0, 0, 0.1f), Quaternion.identity) as GameObject);
         }
@@ -121,26 +161,13 @@ public class GameMaster : MonoBehaviour
             {
                 balls.Add(Instantiate(blueBall, Vector3.zero, Quaternion.identity) as GameObject);
             }
-            else if(i<20 && i> 9)
+            else if (i < 20 && i > 9)
             {
                 balls.Add(Instantiate(redBall, Vector3.zero, Quaternion.identity) as GameObject);
 
             }
             balls[i].SetActive(false);
             balls[i].transform.parent = parent;
-        }
-        
-         
-        
-
-    }
-    void Awake()
-    {
-        blueScore = 0;
-        redScore = 0;
-        for (int i = 0; i < boxes.Count-1; i++)
-        {
-            boxes[i].GetComponent<Box>().hp = 6;
         }
     }
     void Update()

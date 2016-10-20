@@ -267,6 +267,22 @@ public class GameMaster : MonoBehaviour
         
 
     }
+    public void unLockBoxes(int slot)
+    {
+        for (int i = 0; i < boxes.Count; i++)
+        {
+            boxes[i].GetComponent<Box>().canMove();
+        }
+    }
+    public void LockBoxes(int slot)
+    {
+        for (int i = 0; i < boxes.Count; i++)
+        {
+            if(i != slot)
+                boxes[i].GetComponent<Box>().cantMove();
+        }
+    }
+
     int getLane()
     {
         int temp = UnityEngine.Random.Range(0,6);

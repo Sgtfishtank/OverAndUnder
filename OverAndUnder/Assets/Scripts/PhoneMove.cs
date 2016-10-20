@@ -32,8 +32,11 @@ public class PhoneMove : MonoBehaviour
                 {
                     if (hit.transform.tag == "Blue Box" || hit.transform.tag == "Red Box")
                     {
-                        pickedObject = hit.transform;
-                        pickedObject.GetComponent<Box>().onTheMove(1);
+                        if (pickedObject == null)
+                        {
+                            pickedObject = hit.transform;
+                            pickedObject.GetComponent<Box>().onTheMove(1);
+                        }
                     }
                     else if(hit.transform.tag == "Ability Button")
                     {

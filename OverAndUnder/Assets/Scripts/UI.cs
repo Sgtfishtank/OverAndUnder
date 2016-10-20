@@ -134,6 +134,7 @@ public class UI : MonoBehaviour {
         startMenu.SetActive(true);
         startMenu.GetComponent<MainMenu>().reset();
         gameObject.SetActive(false);
+        GM.gameObject.SetActive(false);
         for (int i = 0; i < stars.Length; i++)
         {
             stars[i].transform.parent.gameObject.SetActive(false);

@@ -33,6 +33,8 @@ public class Box : MonoBehaviour
     private bool once = true;
     Transform[] temp;
     public bool ghost = false;
+    private bool movable = true;
+    private bool selected = false;
 
     // Use this for initialization
     void Start ()
@@ -91,7 +93,12 @@ public class Box : MonoBehaviour
         {
             return;
         }
-
+        if(selected)
+        {
+            Vector3 pos = Input.mousePosition;
+            transform.position = camera.ScreenToWorldPoint(new Vector3(pos.x, pos.y, camera.nearClipPlane));
+            transform.position = new Vector3(transform.position.x, transform.position.y, -2f);
+        }
         if(shaketime > Time.time)
         {
             transform.rotation = Quaternion.Euler(new Vector3(0,0,Mathf.Sin(Time.time *70)*2.7f));
@@ -190,11 +197,16 @@ public class Box : MonoBehaviour
 
     void OnMouseOver()
     {
-        if(Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0))
         {
-            Vector3 pos = Input.mousePosition;
-            transform.position = camera.ScreenToWorldPoint(new Vector3(pos.x,pos.y,camera.nearClipPlane));
-            transform.position = new Vector3(transform.position.x, transform.position.y, -2f);
+            if (movable)
+            {
+                selected = true; 
+                Vector3 pos = Input.mousePosition;
+                transform.position = camera.ScreenToWorldPoint(new Vector3(pos.x, pos.y, camera.nearClipPlane));
+                transform.position = new Vector3(transform.position.x, transform.position.y, -2f);
+            }
+            GM.LockBoxes(Slot);
             if (GM.selectingAbility && GM.currentActive == GameMaster.Abilitys.SWITCH)
             {
                 GM.activateAbility(GameMaster.Abilitys.SWITCH, Slot);
@@ -204,6 +216,8 @@ public class Box : MonoBehaviour
         if(!Input.GetMouseButton(0))
         {
             move = false;
+            selected = false;
+            GM.unLockBoxes(Slot);
             for (int i = 0; i < BoxSlots.Length; i++)
             {
                 if (Mathf.Abs((transform.position.x - BoxSlots[i].position.x)) <= 0.75f && Mathf.Abs((transform.position.y - BoxSlots[i].position.y)) <= 0.75f)
@@ -255,6 +269,14 @@ public class Box : MonoBehaviour
             transform.GetComponentsInChildren<Renderer>(true)[2].sharedMaterial = mat1;
             transform.GetComponentInChildren<TextMesh>(true).color = red;
         }
+    }
+    public void canMove()
+    {
+        movable = true;
+    }
+    public void cantMove()
+    {
+        movable = false;
     }
     public void takeDamage()
     {

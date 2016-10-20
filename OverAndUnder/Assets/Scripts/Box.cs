@@ -143,7 +143,7 @@ public class Box : MonoBehaviour
         }
         if(Slot == BoxSlots.Length-1)
         {
-            if(healTimer < Time.time && hp < 26)
+            if(healTimer < Time.time && hp < 11)
             {
                 hp++;
                 healTimer = Time.time + healCD;

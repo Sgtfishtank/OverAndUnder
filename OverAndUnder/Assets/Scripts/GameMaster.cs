@@ -67,6 +67,8 @@ public class GameMaster : MonoBehaviour
     public GameObject coreObj;
     private GameObject healslot;
     public bool GameOver = false;
+    private float speedUpTime;
+    private float spawnRateTime;
 
     public enum Abilitys
     {
@@ -92,6 +94,8 @@ public class GameMaster : MonoBehaviour
         SwitchObj = Instantiate(SwitchObj, Vector3.zero, Quaternion.identity) as GameObject;
         SwitchObj.SetActive(false);
 
+        speedUpTime = Time.time + 10;
+
         healslot = GameObject.Find("mesh_heal_slot_new");
         clear();
         initalize();
@@ -106,12 +110,17 @@ public class GameMaster : MonoBehaviour
         wallTime = 0;
         multiTime = 0;
         switchTime = 0;
+        normalspeed = 0.75f;
         destroyedLanes.Clear();
         GameOver = false;
+        speedUpTime = Time.time + 10;
         for (int i = 0; i < lanetextscript.Length; i++)
         {
-            lanetextscript[i].scrollSpeed = -0.192f;
-            lanetextscript[i].scrollSpeed2 = -0.2f;
+            if (lanetextscript[i].scrollSpeed != 0)
+            {
+                lanetextscript[i].scrollSpeed = -0.144f;
+                lanetextscript[i].scrollSpeed2 = -0.15f;
+            }
         }
     }
     void clear()
@@ -230,7 +239,23 @@ public class GameMaster : MonoBehaviour
             lastSpawn = Time.time + spawnRate;
         }
         
-        if(slowTime < Time.time)
+        if(speedUpTime < Time.time)
+        {
+            speedUp();
+            speedUpTime = Time.time + 24;
+            for (int i = 0; i < lanetextscript.Length; i++)
+            {
+                lanetextscript[i].scrollSpeed -= 0.0096f;
+                lanetextscript[i].scrollSpeed2 -= 0.01f;
+            }
+        }
+        if (spawnRateTime < Time.time)
+        {
+            spawnrateUp();
+            spawnRateTime = Time.time + 30f;
+        }
+
+        if (slowTime < Time.time)
         {
             abb[0].isCD(false);
 
@@ -267,6 +292,16 @@ public class GameMaster : MonoBehaviour
         
 
     }
+    void speedUp()
+    {
+        if(normalspeed < 1.96f)
+            normalspeed += 0.05f;
+    }
+    void spawnrateUp()
+    {
+        if (spawnRate > 0.54f)
+            spawnRate -= 0.05f;
+    }
     public void unLockBoxes(int slot)
     {
         for (int i = 0; i < boxes.Count; i++)
@@ -282,7 +317,6 @@ public class GameMaster : MonoBehaviour
                 boxes[i].GetComponent<Box>().cantMove();
         }
     }
-
     int getLane()
     {
         int temp = UnityEngine.Random.Range(0,6);

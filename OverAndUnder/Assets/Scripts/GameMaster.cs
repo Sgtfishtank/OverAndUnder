@@ -600,7 +600,7 @@ public class GameMaster : MonoBehaviour
                 boxes[lane].transform.GetComponent<Box>().changeColor();
                 switchTime = Time.time + switchCD;
                 switchRemaning = Mathf.FloorToInt(switchTime);
-                SwitchObj.transform.position = boxes[lane].transform.position+ new Vector3(0,0,-2);
+                SwitchObj.transform.position = boxPoints[lane].transform.position+ new Vector3(0,0,-2);
                 SwitchObj.SetActive(true);
                 abb[3].isCD(true);
                 abb[3].active = false;

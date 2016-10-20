@@ -24,6 +24,7 @@ public class MainMenu : MonoBehaviour
         //GM = GameObject.Find("Game Master");
         GM.SetActive(false);
         InGameUI.SetActive(false);
+        //Screen.SetResolution(640, 1136, false);
 	}
     public void reset()
     {

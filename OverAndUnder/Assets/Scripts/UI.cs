@@ -17,9 +17,11 @@ public class UI : MonoBehaviour {
     public GameObject Tutorial1;
     public GameObject NextTutButton;
     private int Tut;
+    private int totalScore;
     public GameObject Tutorial2;
     public GameObject SettingsButton;
-    public GameObject[] stars;
+    public GameObject[] GameOverStars;
+    public GameObject[] inGameStars;
 
     // Use this for initialization
     void Start () {
@@ -35,13 +37,14 @@ public class UI : MonoBehaviour {
         TutorialButton.SetActive(false);
         NextTutButton.SetActive(false);
         ContinueGameButton.SetActive(false);
-        for (int i = 0; i < stars.Length; i++)
+        for (int i = 0; i < GameOverStars.Length; i++)
         {
-            stars[i].SetActive(false);
+            GameOverStars[i].SetActive(false);
+            GameOverStars[i].transform.parent.gameObject.SetActive(false);
         }
-        for (int i = 0; i < stars.Length; i++)
+        for (int i = 0; i < inGameStars.Length; i++)
         {
-            stars[i].transform.parent.gameObject.SetActive(false);
+            GameOverStars[i].SetActive(false);
         }
     }
     public void Reset()
@@ -57,13 +60,15 @@ public class UI : MonoBehaviour {
         }
         GameOver.SetActive(false);
         MainMenuButton.SetActive(false);
-        for (int i = 0; i < stars.Length; i++)
+        for (int i = 0; i < GameOverStars.Length; i++)
         {
-            stars[i].SetActive(false);
+            GameOverStars[i].SetActive(false);
+            GameOverStars[i].transform.parent.gameObject.SetActive(false);
         }
-        for (int i = 0; i < stars.Length; i++)
+        for (int i = 0; i < inGameStars.Length; i++)
         {
-            stars[i].transform.parent.gameObject.SetActive(false);
+            inGameStars[i].SetActive(false);
+            inGameStars[i].transform.parent.gameObject.SetActive(true);
         }
     }
 	
@@ -99,34 +104,60 @@ public class UI : MonoBehaviour {
 
         textfields[11].text = Mathf.Clamp((AM.switchRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
 
+
+        totalScore = (GM.redScore + GM.blueScore);
+
+        for (int i = 0; i < inGameStars.Length; i++)
+        {
+            if (totalScore >= 200)
+            {
+                inGameStars[2].SetActive(true);
+            }
+            if (totalScore >= 100)
+            {
+                inGameStars[1].SetActive(true);
+            }
+            if (totalScore >= 50)
+            {
+                inGameStars[0].SetActive(true);
+            }
+        }
+
+
+
         if(GM.GameOver)
         {
+            for (int i = 0; i < inGameStars.Length; i++)
+            {
+                inGameStars[i].SetActive(false);
+                inGameStars[i].transform.parent.gameObject.SetActive(false);
+            }
             for (int i = 0; i < 12; i++)
             {
                 textfields[i].gameObject.SetActive(false);
             }
             GameOver.SetActive(true);
             MainMenuButton.SetActive(true);
-            for (int i = 0; i < stars.Length; i++)
+            for (int i = 0; i < GameOverStars.Length; i++)
             {
-                stars[i].transform.parent.gameObject.SetActive(true);
+                GameOverStars[i].transform.parent.gameObject.SetActive(true);
             }
             
             textfields[12].text = GM.blueScore.ToString();
             textfields[13].text = GM.redScore.ToString();
-            int total = (GM.redScore + GM.blueScore);
-            textfields[14].text = total.ToString();
-            if(total >= 200)
+            
+            textfields[14].text = totalScore.ToString();
+            if(totalScore >= 200)
             {
-                stars[2].SetActive(true);
+                GameOverStars[2].SetActive(true);
             }
-            if(total >= 100)
+            if(totalScore >= 100)
             {
-                stars[1].SetActive(true);
+                GameOverStars[1].SetActive(true);
             }
-            if (total >= 50)
+            if (totalScore >= 50)
             {
-                stars[0].SetActive(true);
+                GameOverStars[0].SetActive(true);
             }
         }
 
@@ -137,9 +168,9 @@ public class UI : MonoBehaviour {
         startMenu.GetComponent<MainMenu>().reset();
         gameObject.SetActive(false);
         GM.gameObject.SetActive(false);
-        for (int i = 0; i < stars.Length; i++)
+        for (int i = 0; i < GameOverStars.Length; i++)
         {
-            stars[i].transform.parent.gameObject.SetActive(false);
+            GameOverStars[i].transform.parent.gameObject.SetActive(false);
         }
     }
     public void SettingsFunc()

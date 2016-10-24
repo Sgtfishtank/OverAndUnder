@@ -59,16 +59,14 @@ public class GameMaster : MonoBehaviour
         blueScore = 0;
         redScore = 0;
         normalspeed = 0.75f;
+        spawnRate = 1.5f;
         destroyedLanes.Clear();
         GameOver = false;
         speedUpTime = Time.time + 10;
         for (int i = 0; i < lanetextscript.Length; i++)
         {
-            if (lanetextscript[i].scrollSpeed != 0)
-            {
-                lanetextscript[i].scrollSpeed = -0.144f;
-                lanetextscript[i].scrollSpeed2 = -0.15f;
-            }
+            lanetextscript[i].scrollSpeed = -0.144f;
+            lanetextscript[i].scrollSpeed2 = -0.15f;
         }
     }
     void clear()
@@ -172,6 +170,7 @@ public class GameMaster : MonoBehaviour
             speedUpTime = Time.time + 24;
             for (int i = 0; i < lanetextscript.Length; i++)
             {
+                if(!destroyedLanes.Contains(i))
                 lanetextscript[i].scrollSpeed -= 0.0096f;
                 lanetextscript[i].scrollSpeed2 -= 0.01f;
             }

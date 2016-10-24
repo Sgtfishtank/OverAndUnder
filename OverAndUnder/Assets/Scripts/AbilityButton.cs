@@ -3,8 +3,8 @@ using System.Collections;
 
 public class AbilityButton : MonoBehaviour
 {
-    public GameMaster.Abilitys buttontype;
-    public GameMaster GM;
+    public Abilitys.AbilitysEnum buttontype;
+    public Abilitys AM;
     public bool active;
     public Color defaultcolorEmisson;
     public Color slowcolorEmission;
@@ -20,7 +20,7 @@ public class AbilityButton : MonoBehaviour
 
     void Start ()
     {
-        GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
+        AM = GameObject.Find("Game Master").GetComponent<Abilitys>();
         active = false;
         ColorUtility.TryParseHtmlString("#00000000", out defaultcolorEmisson);
         ColorUtility.TryParseHtmlString("#32538A00", out slowcolorEmission);
@@ -43,16 +43,16 @@ public class AbilityButton : MonoBehaviour
         {
             switch (buttontype)
             {
-                case GameMaster.Abilitys.SLOW:
+                case Abilitys.AbilitysEnum.SLOW:
                     transform.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", slowcolorEmission);
                     break;
-                case GameMaster.Abilitys.WALL:
+                case Abilitys.AbilitysEnum.WALL:
                     transform.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", wallcolorEmisson);
                     break;
-                case GameMaster.Abilitys.MULTIPLIER:
+                case Abilitys.AbilitysEnum.MULTIPLIER:
                     transform.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", multicolorEmisson);
                     break;
-                case GameMaster.Abilitys.SWITCH:
+                case Abilitys.AbilitysEnum.SWITCH:
                     transform.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", switchcolorEmisson);
                     break;
                 default:
@@ -70,16 +70,16 @@ public class AbilityButton : MonoBehaviour
         {
             switch (buttontype)
             {
-                case GameMaster.Abilitys.SLOW:
+                case Abilitys.AbilitysEnum.SLOW:
                     transform.GetComponent<MeshRenderer>().material.SetColor("_Color", slowcolor);
                     break;
-                case GameMaster.Abilitys.WALL:
+                case Abilitys.AbilitysEnum.WALL:
                     transform.GetComponent<MeshRenderer>().material.SetColor("_Color", wallcolor);
                     break;
-                case GameMaster.Abilitys.MULTIPLIER:
+                case Abilitys.AbilitysEnum.MULTIPLIER:
                     transform.GetComponent<MeshRenderer>().material.SetColor("_Color", multicolor);
                     break;
-                case GameMaster.Abilitys.SWITCH:
+                case Abilitys.AbilitysEnum.SWITCH:
                     transform.GetComponent<MeshRenderer>().material.SetColor("_Color", switchcolor);
                     break;
                 default:
@@ -97,14 +97,16 @@ public class AbilityButton : MonoBehaviour
         {
             if (!active)
             {
-                GM.highlightLanes(buttontype);
-                active = GM.selectingAbility;
-                setColor();
+                if (AM.highlightLanes(buttontype))
+                {
+                    active = AM.selectingAbility;
+                    setColor();
+                }
             }
             else
             {
-                active = GM.selectingAbility;
-                GM.unlightLanes();
+                active = AM.selectingAbility;
+                AM.unlightLanes();
                 setColor();
             }
         }

@@ -6,12 +6,12 @@ public class PhoneMove : MonoBehaviour
     private float maxPickingDistance = 10000;// increase if needed, depending on your scene size
 
     private Transform pickedObject = null;
-    private GameMaster.Abilitys selectedAbility = GameMaster.Abilitys.NONE;
-    private GameMaster GM;
+    private Abilitys.AbilitysEnum selectedAbility = Abilitys.AbilitysEnum.NONE;
+    private Abilitys AM;
     // Use this for initialization
     void Start ()
     {
-        GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
+        AM = GameObject.Find("Game Master").GetComponent<Abilitys>();
     }
 	
 	// Update is called once per frame
@@ -43,12 +43,12 @@ public class PhoneMove : MonoBehaviour
                         if (selectedAbility != hit.transform.GetComponent<AbilityButton>().buttontype)
                         {
                             selectedAbility = hit.transform.GetComponent<AbilityButton>().buttontype;
-                            GM.highlightLanes(selectedAbility);
+                            AM.highlightLanes(selectedAbility);
                         }
                         else
                         {
-                            selectedAbility = GameMaster.Abilitys.NONE;
-                            GM.unlightLanes();
+                            selectedAbility = Abilitys.AbilitysEnum.NONE;
+                            AM.unlightLanes();
                         }
 
                     }
@@ -57,33 +57,33 @@ public class PhoneMove : MonoBehaviour
                         switch (hit.transform.name)
                         {
                             case "mesh_lane1":
-                                GM.activateAbility(selectedAbility, 0);
+                                AM.activateAbility(selectedAbility, 0);
 
                                 break;
                             case "mesh_lane2":
-                                GM.activateAbility(selectedAbility, 1);
+                                AM.activateAbility(selectedAbility, 1);
 
                                 break;
                             case "mesh_lane3":
-                                GM.activateAbility(selectedAbility, 2);
+                                AM.activateAbility(selectedAbility, 2);
 
                                 break;
                             case "mesh_lane4":
-                                GM.activateAbility(selectedAbility, 3);
+                                AM.activateAbility(selectedAbility, 3);
 
                                 break;
                             case "mesh_lane5":
-                                GM.activateAbility(selectedAbility, 4);
+                                AM.activateAbility(selectedAbility, 4);
 
                                 break;
                             case "mesh_lane6":
-                                GM.activateAbility(selectedAbility, 5);
+                                AM.activateAbility(selectedAbility, 5);
 
                                 break;
                             default:
                                 break;
                         }
-                        selectedAbility = GameMaster.Abilitys.NONE;
+                        selectedAbility = Abilitys.AbilitysEnum.NONE;
                     }
                     
                 }

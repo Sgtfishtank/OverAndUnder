@@ -10,6 +10,7 @@ public class UI : MonoBehaviour {
     public GameObject MainMenuButton;
     public GameObject startMenu;
     GameMaster GM;
+    Abilitys AM;
     public GameObject ContinueGameButton;
     public GameObject Settings;
     public GameObject TutorialButton;
@@ -24,6 +25,7 @@ public class UI : MonoBehaviour {
     void Start () {
         //textfields = transform.GetComponentsInChildren<Text>();
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
+        AM = GameObject.Find("Game Master").GetComponent<Abilitys>();
         boxes = GM.boxes.ToArray();
         GameOver.SetActive(false);
         MainMenuButton.SetActive(false);
@@ -89,13 +91,13 @@ public class UI : MonoBehaviour {
         textfields[6].text = GM.blueScore.ToString();
         textfields[7].text = GM.redScore.ToString();
 
-        textfields[8].text = Mathf.Clamp((GM.slowRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
+        textfields[8].text = Mathf.Clamp((AM.slowRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
 
-        textfields[9].text = Mathf.Clamp((GM.wallRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
+        textfields[9].text = Mathf.Clamp((AM.wallRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
 
-        textfields[10].text = Mathf.Clamp((GM.multiRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
+        textfields[10].text = Mathf.Clamp((AM.multiRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
 
-        textfields[11].text = Mathf.Clamp((GM.switchRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
+        textfields[11].text = Mathf.Clamp((AM.switchRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
 
         if(GM.GameOver)
         {

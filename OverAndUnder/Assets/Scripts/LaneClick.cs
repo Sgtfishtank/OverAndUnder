@@ -3,12 +3,12 @@ using System.Collections;
 
 public class LaneClick : MonoBehaviour
 {
-    public GameMaster GM;
+    public Abilitys GM;
     public int lane;
     
     void Start()
     {
-        GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
+        GM = GameObject.Find("Game Master").GetComponent<Abilitys>();
         
     }
 

@@ -40,6 +40,7 @@ public class MainMenu : MonoBehaviour
     {
         GM.SetActive(true);
         GM.GetComponent<GameMaster>().Reset();
+        GM.GetComponent<Abilitys>().Reset();
         InGameUI.SetActive(true);
         InGameUI.GetComponent<UI>().Reset();
         gameObject.SetActive(false);

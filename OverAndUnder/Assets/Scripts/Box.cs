@@ -10,6 +10,7 @@ public class Box : MonoBehaviour
     public Transform[] BoxSlots;
     public int Slot;
     public GameMaster GM;
+
     public float speed;
     public int hp = 25;
     private bool move = false;
@@ -30,6 +31,7 @@ public class Box : MonoBehaviour
     bool isBroken = false;
     private float explotionDur;
     private float crystalTextDur;
+    private Abilitys AM;
     private bool once = true;
     Transform[] temp;
     public bool ghost = false;
@@ -42,6 +44,7 @@ public class Box : MonoBehaviour
         ColorUtility.TryParseHtmlString("#909090FF", out grey);
         camera = GameObject.Find("camera_main").GetComponent<Camera>();
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
+        AM = GameObject.Find("Game Master").GetComponent<Abilitys>();
         BoxSlots = GM.boxPoints.ToArray();
         psMaster.SetActive(false);
         brokenBox.transform.parent.gameObject.SetActive(false);
@@ -112,7 +115,6 @@ public class Box : MonoBehaviour
             GM.destroyLane(Slot);
             hp--;
             transform.GetComponent<BoxCollider>().enabled = false;
-            //gameObject.SetActive(false);
             brokenBox.GetComponent<MeshRenderer>().material.SetColor("_Color", grey);
         }
         if(!isBroken && hp < 6)
@@ -143,7 +145,7 @@ public class Box : MonoBehaviour
         }
         if(Slot == BoxSlots.Length-1)
         {
-            if(healTimer < Time.time && hp < 11)
+            if(healTimer < Time.time && hp < 10)
             {
                 hp++;
                 healTimer = Time.time + healCD;
@@ -152,7 +154,7 @@ public class Box : MonoBehaviour
     }
     void OnCollisionEnter(Collision col)
     {
-        if(1 == GM.abilitysInLane[Slot+12].y)
+        if(1 == AM.abilitysInLane[2].y && AM.abilitysInLane[2].z == Slot)
         {
             CrystalText.GetComponentsInChildren<TextMesh>(true)[0].text = "+3";
         }
@@ -177,13 +179,6 @@ public class Box : MonoBehaviour
             CrystalText.SetActive(true);
             GM.addBlueScore(Slot);
         }
-        else if (col.transform.tag == "Gold")
-        {
-            CrystalText.transform.position = col.transform.position;
-            crystalTextDur = Time.time + 1;
-            CrystalText.SetActive(true);
-           // GM.addScore(Slot);
-        }
         else
         {
             psMaster.SetActive(true);
@@ -207,9 +202,9 @@ public class Box : MonoBehaviour
                 transform.position = new Vector3(transform.position.x, transform.position.y, -2f);
             }
             GM.LockBoxes(Slot);
-            if (GM.selectingAbility && GM.currentActive == GameMaster.Abilitys.SWITCH)
+            if (AM.selectingAbility && AM.currentActive == Abilitys.AbilitysEnum.SWITCH)
             {
-                GM.activateAbility(GameMaster.Abilitys.SWITCH, Slot);
+                AM.activateAbility(Abilitys.AbilitysEnum.SWITCH, Slot);
             }
 
         }

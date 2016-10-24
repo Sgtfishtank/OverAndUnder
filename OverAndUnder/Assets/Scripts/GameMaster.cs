@@ -172,7 +172,7 @@ public class GameMaster : MonoBehaviour
             {
                 if(!destroyedLanes.Contains(i))
                 lanetextscript[i].scrollSpeed -= 0.0096f;
-                lanetextscript[i].scrollSpeed2 -= 0.01f;
+                //lanetextscript[i].scrollSpeed2 -= 0.01f;
             }
         }
         if (spawnRateTime < Time.time)

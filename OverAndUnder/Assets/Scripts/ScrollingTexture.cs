@@ -16,8 +16,8 @@ public class ScrollingTexture : MonoBehaviour {
     {
         
         var offset = Time.time * scrollSpeed;
-        var offset2 = Time.time * scrollSpeed2;
-       ren.material.mainTextureOffset = new Vector2(offset2, -offset);
+        var offset2 = Time.time * 0;
+       ren.material.mainTextureOffset = new Vector2(0, -offset);
     }
     // Update is called once per frame
     void Update () {

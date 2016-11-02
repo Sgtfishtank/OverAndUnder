@@ -103,12 +103,6 @@ public class UI : MonoBehaviour {
         else
             textfields[9].text = temp.ToString();
 
-        /*textfields[9].text = Mathf.Clamp((AM.wallRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
-
-        textfields[10].text = Mathf.Clamp((AM.multiRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
-
-        textfields[11].text = Mathf.Clamp((AM.switchRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();*/
-
         if(GM.GameOver)
         {
             for (int i = 0; i < 10; i++)

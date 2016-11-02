@@ -16,6 +16,7 @@ public class AbilityButton : MonoBehaviour
     public Color wallcolor;
     public Color multicolor;
     public Color switchcolor;
+    bool cd;
     
 
     void Start ()
@@ -66,6 +67,7 @@ public class AbilityButton : MonoBehaviour
     }
     public void isCD(bool CD)
     {
+        cd = CD;
         if (!CD)
         {
             switch (buttontype)
@@ -95,21 +97,20 @@ public class AbilityButton : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            if (!active)
+            if (!cd)
             {
                 if (AM.highlightLanes(buttontype))
                 {
                     AM.activateAbility(buttontype, 0);
-                    active = true;
                     setColor();
                 }
             }
-            else
+            /*else
             {
                 active = AM.selectingAbility;
                 AM.unlightLanes();
                 setColor();
-            }
+            }*/
         }
     }
 

@@ -174,7 +174,10 @@ public class Box : MonoBehaviour
         }
         else if (col.transform.tag == "Blue" && transform.tag == "Blue Box")
         {
-            CrystalText.transform.position = col.transform.position;
+            if (Slot > 2)
+                CrystalText.transform.position = col.transform.position - new Vector3(0, 0.2f, 0);
+            else
+                CrystalText.transform.position = col.transform.position;
             crystalTextDur = Time.time + 1;
             CrystalText.SetActive(true);
             GM.addBlueScore(Slot);

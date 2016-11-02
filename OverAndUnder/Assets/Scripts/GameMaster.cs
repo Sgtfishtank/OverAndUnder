@@ -13,6 +13,8 @@ public class GameMaster : MonoBehaviour
     public List<Transform> BallSpawnPoints;
     public ScrollingTexture[] lanetextscript;
     public List<int> destroyedLanes;
+    public GameObject scoreMeterBlue;
+    public GameObject scoreMeterRed;
     public GameObject blueBox;
     public GameObject redBox;
     public GameObject ghostBox;
@@ -37,6 +39,8 @@ public class GameMaster : MonoBehaviour
     private float lastSpawn;
     private float speedUpTime;
     private float spawnRateTime;
+    private float scalefactor = (0.4102587f-0.007611176f)/300;
+    private float posfactor = (0.0831f-0.08201796f)/300;
 
     void Start()
     {
@@ -193,7 +197,10 @@ public class GameMaster : MonoBehaviour
             if (healslot.GetComponent<MeshRenderer>().material.GetColor("_EmissionColor") == healemissive)
                 healslot.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", defaultcolor);
         }
-        
+        scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.08201796f + (posfactor * blueScore), 0);
+        scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.007611176f + (scalefactor * blueScore), scoreMeterBlue.transform.localScale.z);
+        scoreMeterRed.transform.localPosition = new Vector3(scoreMeterRed.transform.localPosition.x, 0.08201796f + (posfactor * redScore), 0);
+        scoreMeterRed.transform.localScale = new Vector3(scoreMeterRed.transform.localScale.x, 0.007611176f + (scalefactor * redScore), scoreMeterBlue.transform.localScale.z);
 
     }
     void speedUp()

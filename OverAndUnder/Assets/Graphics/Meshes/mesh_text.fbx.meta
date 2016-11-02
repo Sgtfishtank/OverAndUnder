@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 2a605a484645ec04c953007f45a36435
-timeCreated: 1477939777
+timeCreated: 1478016786
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -23,10 +23,10 @@ ModelImporter:
     3300002: mesh_text_score
     3300004: mesh_text_settings
     3300006: mesh_text_slow
-    4300000: mesh_text_slow
-    4300002: mesh_text_heal
-    4300004: mesh_text_score
-    4300006: mesh_text_settings
+    4300000: mesh_text_score
+    4300002: mesh_text_settings
+    4300004: mesh_text_slow
+    4300006: mesh_text_heal
     9500000: //RootNode
   materials:
     importMaterials: 1

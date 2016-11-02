@@ -5,10 +5,12 @@ using UnityEngine.UI;
 public class UI : MonoBehaviour {
     public Text[] textfields;
     public GameObject[] boxes;
+    public GameObject[] scoreMeterStars;
     public new Camera camera;
     public GameObject GameOver;
     public GameObject MainMenuButton;
     public GameObject startMenu;
+
     GameMaster GM;
     Abilitys AM;
     public GameObject ContinueGameButton;
@@ -20,7 +22,12 @@ public class UI : MonoBehaviour {
     private int totalScore;
     public GameObject Tutorial2;
     public GameObject SettingsButton;
+    public GameObject scoreMeterBlue;
+    public GameObject scoreMeterRed;
     public GameObject[] GameOverStars;
+
+    private float scalefactor = (1.17854f - 0.01006653f) / 300;
+    private float posfactor = (0.0819f - 0.08251023f) / 300;
 
     // Use this for initialization
     void Start () {
@@ -41,8 +48,8 @@ public class UI : MonoBehaviour {
             GameOverStars[i].SetActive(false);
             GameOverStars[i].transform.parent.gameObject.SetActive(false);
         }
-        if (textfields.Length == 0)
-            textfields = transform.GetComponentsInChildren<Text>();
+        //if (textfields.Length == 0)
+            //textfields = transform.GetComponentsInChildren<Text>();
     }
     public void Reset()
     {
@@ -119,19 +126,29 @@ public class UI : MonoBehaviour {
             textfields[11].text = GM.redScore.ToString();
             
             textfields[12].text = totalScore.ToString();
-            if(totalScore >= 300)
+            if (GM.blueScore > 299 && GM.redScore > 299)
             {
                 GameOverStars[2].SetActive(true);
             }
-            if(totalScore >= 200)
+            if (GM.blueScore > 199 && GM.redScore > 199)
             {
                 GameOverStars[1].SetActive(true);
             }
-            if (totalScore >= 100)
+            if (GM.blueScore > 99 && GM.redScore > 99)
             {
                 GameOverStars[0].SetActive(true);
             }
         }
+        scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.08251023f + (posfactor * GM.blueScore), scoreMeterBlue.transform.localPosition.z);
+        scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01006653f + (scalefactor * GM.blueScore), scoreMeterBlue.transform.localScale.z);
+        scoreMeterRed.transform.localPosition = new Vector3(scoreMeterRed.transform.localPosition.x, 0.08251023f + (posfactor * GM.redScore), scoreMeterRed.transform.localPosition.z);
+        scoreMeterRed.transform.localScale = new Vector3(scoreMeterRed.transform.localScale.x, 0.01006653f + (scalefactor * GM.redScore), scoreMeterBlue.transform.localScale.z);
+        if (GM.blueScore > 99 && GM.redScore > 99)
+            scoreMeterStars[0].SetActive(true);
+        if (GM.blueScore > 199 && GM.redScore > 199)
+            scoreMeterStars[1].SetActive(true);
+        if (GM.blueScore > 299 && GM.redScore > 299)
+            scoreMeterStars[2].SetActive(true);
 
     }
     public void mainMenu()
@@ -140,6 +157,11 @@ public class UI : MonoBehaviour {
         startMenu.GetComponent<MainMenu>().reset();
         gameObject.SetActive(false);
         GM.gameObject.SetActive(false);
+        for(int i = 0; i < 6;i++)
+        {
+            GM.boxes[i].SetActive(false);
+        }
+
         for (int i = 0; i < GameOverStars.Length; i++)
         {
             GameOverStars[i].transform.parent.gameObject.SetActive(false);

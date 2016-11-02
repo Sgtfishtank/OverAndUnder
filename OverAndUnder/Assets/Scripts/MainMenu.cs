@@ -30,6 +30,7 @@ public class MainMenu : MonoBehaviour
     public void reset()
     {
         InGameUI.SetActive(false);
+        StartScreen.SetActive(true);
     }
 	
 	// Update is called once per frame

@@ -100,8 +100,11 @@ public class UI : MonoBehaviour {
 
         textfields[7].text = GM.blueScore.ToString();
         textfields[8].text = GM.redScore.ToString();
-
-        textfields[9].text = Mathf.Clamp((AM.slowRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
+        float temp = Mathf.Clamp((AM.slowRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity);
+        if (temp == 0)
+            textfields[9].text = "";
+        else
+            textfields[9].text = temp.ToString();
 
         /*textfields[9].text = Mathf.Clamp((AM.wallRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
 
@@ -110,7 +113,7 @@ public class UI : MonoBehaviour {
         textfields[11].text = Mathf.Clamp((AM.switchRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();*/
 
 
-        
+
 
         for (int i = 0; i < inGameStars.Length; i++)
         {

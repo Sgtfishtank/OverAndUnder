@@ -7,9 +7,9 @@ public class Abilitys : MonoBehaviour
 {
     public MeshRenderer[] lanerenders;
     public Vector3[] abilitysInLane;
-    private AbilityButton[] abb;
-    public GameObject WallObj;
+    public AbilityButton[] abb;
     public GameObject SlowObj;
+    public GameObject WallObj;
     public GameObject MultiObj;
     public GameObject SwitchObj;
     
@@ -110,7 +110,7 @@ public class Abilitys : MonoBehaviour
         {
             abb[0].isCD(false);
         }
-        if (wallTime < Time.time)
+        /*if (wallTime < Time.time)
         {
             abb[1].isCD(false);
         }
@@ -125,7 +125,7 @@ public class Abilitys : MonoBehaviour
         if ((switchTime - Time.time - switchCD) < -0.7f)
         {
             SwitchObj.SetActive(false);
-        }
+        }*/
     }
     void slowReset(int lane)
     {
@@ -137,9 +137,15 @@ public class Abilitys : MonoBehaviour
                 GM.balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, GM.balls[i].GetComponent<Rigidbody>().velocity.y * 2, 0);
             }
         }
-        GM.lanetextscript[lane].scrollSpeed *= 2;
-        GM.lanetextscript[lane].scrollSpeed2 *= 2;
-        lanerenders[lane].material.SetColor("_EmissionColor", defaultcolor);
+        for (int i = 0; i < GM.lanetextscript.Length; i++)
+        {
+            GM.lanetextscript[i].scrollSpeed /= 2;
+            GM.lanetextscript[i].scrollSpeed2 /= 2;
+            lanerenders[i].material.SetColor("_EmissionColor", defaultcolor);
+        }
+        //GM.lanetextscript[lane].scrollSpeed *= 2;
+        //GM.lanetextscript[lane].scrollSpeed2 *= 2;
+        //lanerenders[lane].material.SetColor("_EmissionColor", defaultcolor);
         slowTime = Time.time + slowCD;
         slowRemaning = Mathf.FloorToInt(slowTime);
         abb[0].isCD(true);
@@ -257,16 +263,23 @@ public void activateAbility(AbilitysEnum a, int lane)
 
                 for (int i = 0; i < GM.balls.Count; i++)
                 {
-                    if (GM.balls[i].activeSelf && GM.balls[i].transform.GetComponent<Ball>().lane == lane)
-                    {
+                    /*if (GM.balls[i].activeSelf && GM.balls[i].transform.GetComponent<Ball>().lane == lane)
+                    {*/
                         GM.balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, GM.balls[i].GetComponent<Rigidbody>().velocity.y / 2, 0);
-                    }
+                    //}
                 }
-                GM.lanetextscript[lane].scrollSpeed /= 2;
-                GM.lanetextscript[lane].scrollSpeed2 /= 2;
+                for (int i = 0; i < GM.lanetextscript.Length; i++)
+                {
+                    GM.lanetextscript[i].scrollSpeed /= 2;
+                    GM.lanetextscript[i].scrollSpeed2 /= 2;
+                    lanerenders[i].material.SetColor("_EmissionColor", slowcolor);
+                }
+                //GM.lanetextscript[lane].scrollSpeed /= 2;
+                //GM.lanetextscript[lane].scrollSpeed2 /= 2;
 
-                lanerenders[lane].material.SetColor("_EmissionColor", slowcolor);
+                
                 SlowObj.SetActive(true);
+                /*
                 switch (lane)
                 {
                     case 0:
@@ -301,7 +314,7 @@ public void activateAbility(AbilitysEnum a, int lane)
                         break;
                     default:
                         break;
-                }
+                }*/
 
                 break;
             case AbilitysEnum.WALL:

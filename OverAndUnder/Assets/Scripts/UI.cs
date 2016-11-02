@@ -46,6 +46,8 @@ public class UI : MonoBehaviour {
         {
             GameOverStars[i].SetActive(false);
         }
+        if (textfields.Length == 0)
+            textfields = transform.GetComponentsInChildren<Text>();
     }
     public void Reset()
     {
@@ -93,19 +95,22 @@ public class UI : MonoBehaviour {
         textfields[3].text = checkZero(boxes[5].transform.GetComponent<Box>().hp);
         textfields[3].rectTransform.position = camera.WorldToScreenPoint(boxes[5].transform.localPosition) + new Vector3(0, 7, 0);
 
-        textfields[6].text = GM.blueScore.ToString();
-        textfields[7].text = GM.redScore.ToString();
+        totalScore = (GM.redScore + GM.blueScore);
+        textfields[6].text = totalScore.ToString();
 
-        textfields[8].text = Mathf.Clamp((AM.slowRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
+        textfields[7].text = GM.blueScore.ToString();
+        textfields[8].text = GM.redScore.ToString();
 
-        textfields[9].text = Mathf.Clamp((AM.wallRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
+        textfields[9].text = Mathf.Clamp((AM.slowRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
+
+        /*textfields[9].text = Mathf.Clamp((AM.wallRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
 
         textfields[10].text = Mathf.Clamp((AM.multiRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
 
-        textfields[11].text = Mathf.Clamp((AM.switchRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();
+        textfields[11].text = Mathf.Clamp((AM.switchRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();*/
 
 
-        totalScore = (GM.redScore + GM.blueScore);
+        
 
         for (int i = 0; i < inGameStars.Length; i++)
         {

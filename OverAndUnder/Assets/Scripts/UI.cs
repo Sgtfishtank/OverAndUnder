@@ -133,10 +133,16 @@ public class UI : MonoBehaviour {
                 GameOverStars[0].SetActive(true);
             }
         }
-        scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.08251023f + (posfactor * GM.blueScore), scoreMeterBlue.transform.localPosition.z);
-        scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01006653f + (scalefactor * GM.blueScore), scoreMeterBlue.transform.localScale.z);
-        scoreMeterRed.transform.localPosition = new Vector3(scoreMeterRed.transform.localPosition.x, 0.08251023f + (posfactor * GM.redScore), scoreMeterRed.transform.localPosition.z);
-        scoreMeterRed.transform.localScale = new Vector3(scoreMeterRed.transform.localScale.x, 0.01006653f + (scalefactor * GM.redScore), scoreMeterBlue.transform.localScale.z);
+        if (GM.blueScore < 301)
+        {
+            scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.08251023f + (posfactor * GM.blueScore), scoreMeterBlue.transform.localPosition.z);
+            scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01006653f + (scalefactor * GM.blueScore), scoreMeterBlue.transform.localScale.z);
+        }
+        if (GM.redScore < 301)
+        {
+            scoreMeterRed.transform.localPosition = new Vector3(scoreMeterRed.transform.localPosition.x, 0.08251023f + (posfactor * GM.redScore), scoreMeterRed.transform.localPosition.z);
+            scoreMeterRed.transform.localScale = new Vector3(scoreMeterRed.transform.localScale.x, 0.01006653f + (scalefactor * GM.redScore), scoreMeterBlue.transform.localScale.z);
+        }
         if (GM.blueScore > 99 && GM.redScore > 99)
             scoreMeterStars[0].SetActive(true);
         if (GM.blueScore > 199 && GM.redScore > 199)

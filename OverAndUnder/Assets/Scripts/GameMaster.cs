@@ -209,10 +209,16 @@ public class GameMaster : MonoBehaviour
             if (healslot.GetComponent<MeshRenderer>().material.GetColor("_EmissionColor") == healemissive)
                 healslot.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", defaultcolor);
         }
-        scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.08251023f + (posfactor * blueScore), scoreMeterBlue.transform.localPosition.z);
-        scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01006653f + (scalefactor * blueScore), scoreMeterBlue.transform.localScale.z);
-        scoreMeterRed.transform.localPosition = new Vector3(scoreMeterRed.transform.localPosition.x, 0.08251023f + (posfactor * redScore), scoreMeterRed.transform.localPosition.z);
-        scoreMeterRed.transform.localScale = new Vector3(scoreMeterRed.transform.localScale.x, 0.01006653f + (scalefactor * redScore), scoreMeterBlue.transform.localScale.z);
+        if (blueScore < 301)
+        {
+            scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.08251023f + (posfactor * blueScore), scoreMeterBlue.transform.localPosition.z);
+            scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01006653f + (scalefactor * blueScore), scoreMeterBlue.transform.localScale.z);
+        }
+        if (redScore < 301)
+        {
+            scoreMeterRed.transform.localPosition = new Vector3(scoreMeterRed.transform.localPosition.x, 0.08251023f + (posfactor * redScore), scoreMeterRed.transform.localPosition.z);
+            scoreMeterRed.transform.localScale = new Vector3(scoreMeterRed.transform.localScale.x, 0.01006653f + (scalefactor * redScore), scoreMeterBlue.transform.localScale.z);
+        }
         if (blueScore > 99 && redScore > 99)
             scoreMeterStars[0].SetActive(true);
         if (blueScore > 199 && redScore > 199)

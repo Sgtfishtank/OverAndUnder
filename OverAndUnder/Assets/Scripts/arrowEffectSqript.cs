@@ -2,14 +2,18 @@
 using System.Collections;
 
 public class arrowEffectSqript : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
+    float orgScale;
+    public bool Gameover;
+    // Use this for initialization
+    void Start () {
+        orgScale = transform.localScale.y;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        transform.localScale = new Vector3(transform.localScale.x, 0.01721507f+Mathf.Sin(Time.time *2) * 0.001f, transform.localScale.z);
+        if(Gameover)
+            transform.localScale = new Vector3(transform.localScale.x, orgScale+Mathf.Sin(Time.time *2) * 0.01f, transform.localScale.z);
+        else
+            transform.localScale = new Vector3(transform.localScale.x, orgScale + Mathf.Sin(Time.time * 2) * 0.001f, transform.localScale.z);
     }
 }

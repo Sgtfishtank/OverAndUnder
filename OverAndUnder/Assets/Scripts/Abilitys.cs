@@ -51,13 +51,9 @@ public class Abilitys : MonoBehaviour
     void Start()
     {
         ColorUtility.TryParseHtmlString("#00000000", out defaultcolor);
-        //ColorUtility.TryParseHtmlString("#121E3300", out slowcolor);
         ColorUtility.TryParseHtmlString("#330F0F00", out wallcolor);
         ColorUtility.TryParseHtmlString("#300B3300", out multicolor);
         ColorUtility.TryParseHtmlString("#33310E00", out switchcolor);
-        /*ColorUtility.TryParseHtmlString("#00FAFFFF", out blue);
-        ColorUtility.TryParseHtmlString("#FF8E00FF", out red);
-        ColorUtility.TryParseHtmlString("#D841FBFF", out purple);*/
 
         SlowObj = Instantiate(SlowObj, Vector3.zero, Quaternion.identity) as GameObject;
         SlowObj.SetActive(false);
@@ -132,19 +128,14 @@ public class Abilitys : MonoBehaviour
 
         for (int i = 0; i < GM.balls.Count; i++)
         {
-            if (GM.balls[i].activeSelf && GM.balls[i].transform.GetComponent<Ball>().lane == lane)
-            {
-                GM.balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, GM.balls[i].GetComponent<Rigidbody>().velocity.y * 2, 0);
-            }
+            GM.balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, GM.balls[i].GetComponent<Rigidbody>().velocity.y * 4, 0);
         }
         for (int i = 0; i < GM.lanetextscript.Length; i++)
         {
-            GM.lanetextscript[i].scrollSpeed *= 2;
+            GM.lanetextscript[i].scrollSpeed *= 4;
             lanerenders[i].material.SetColor("_EmissionColor", defaultcolor);
         }
-        //GM.lanetextscript[lane].scrollSpeed *= 2;
-        //GM.lanetextscript[lane].scrollSpeed2 *= 2;
-        //lanerenders[lane].material.SetColor("_EmissionColor", defaultcolor);
+        GM.spawnRate /= 2f;
         slowTime = Time.time + slowCD;
         slowRemaning = Mathf.FloorToInt(slowTime);
         abb[0].isCD(true);
@@ -255,7 +246,7 @@ public void activateAbility(AbilitysEnum a, int lane)
         switch (a)
         {
             case AbilitysEnum.SLOW:
-                if (slowTime > Time.time || abilitysInLane[0].x < Time.time)
+                if (slowTime > Time.time || abilitysInLane[0].x > Time.time)
                     return;
                 abilitysInLane[0].x = Time.time + SlowDuration;
                 abilitysInLane[0].y = 1;
@@ -264,20 +255,14 @@ public void activateAbility(AbilitysEnum a, int lane)
 
                 for (int i = 0; i < GM.balls.Count; i++)
                 {
-                    /*if (GM.balls[i].activeSelf && GM.balls[i].transform.GetComponent<Ball>().lane == lane)
-                    {*/
-                        GM.balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, GM.balls[i].GetComponent<Rigidbody>().velocity.y / 2, 0);
-                    //}
+                    GM.balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, GM.balls[i].GetComponent<Rigidbody>().velocity.y / 4, 0);
                 }
                 for (int i = 0; i < GM.lanetextscript.Length; i++)
                 {
-                    GM.lanetextscript[i].scrollSpeed /= 2;
+                    GM.lanetextscript[i].scrollSpeed /= 4;
                     lanerenders[i].material.SetColor("_EmissionColor", slowcolor);
                 }
-                //GM.lanetextscript[lane].scrollSpeed /= 2;
-                //GM.lanetextscript[lane].scrollSpeed2 /= 2;
-
-                
+                GM.spawnRate *= 2f;
                 SlowObj.SetActive(true);
                 /*
                 switch (lane)

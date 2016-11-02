@@ -37,7 +37,7 @@ public class GameMaster : MonoBehaviour
 
     private Abilitys AM;
     private GameObject healslot;
-    private float lastSpawn;
+    internal float lastSpawn;
     private float speedUpTime;
     private float spawnRateTime;
     private float scalefactor = (1.17854f - 0.01006653f) /300;
@@ -173,6 +173,11 @@ public class GameMaster : MonoBehaviour
         
         if(speedUpTime < Time.time)
         {
+            if (AM.abilityActive && (AM.abilitysInLane[0].y == 1))
+            {
+                speedUpTime = Time.time + 24;
+                return;
+            }
             speedUp();
             speedUpTime = Time.time + 24;
             for (int i = 0; i < lanetextscript.Length; i++)
@@ -183,6 +188,11 @@ public class GameMaster : MonoBehaviour
         }
         if (spawnRateTime < Time.time)
         {
+            if (AM.abilityActive && (AM.abilitysInLane[0].y == 1))
+            {
+                spawnRateTime = Time.time + 30;
+                return;
+            }
             spawnrateUp();
             spawnRateTime = Time.time + 30f;
         }
@@ -212,14 +222,16 @@ public class GameMaster : MonoBehaviour
     }
     void speedUp()
     {
-        if(normalspeed < 1.96f)
-            normalspeed += 0.05f;
-        for (int i = 0; i < balls.Count; i++)
+        if (normalspeed < 1.96f)
         {
-            if(balls[i].GetComponent<Ball>().lane < 3)
-                balls[i].transform.GetComponent<Rigidbody>().velocity = new Vector3(0, -normalspeed,0);
-            else
-                balls[i].transform.GetComponent<Rigidbody>().velocity = new Vector3(0, normalspeed, 0);
+            normalspeed += 0.05f;
+            for (int i = 0; i < balls.Count; i++)
+            {
+                if (balls[i].GetComponent<Ball>().lane < 3)
+                    balls[i].transform.GetComponent<Rigidbody>().velocity += new Vector3(0, -0.05f, 0);
+                else
+                    balls[i].transform.GetComponent<Rigidbody>().velocity += new Vector3(0, 0.05f, 0);
+            }
         }
     }
     void spawnrateUp()
@@ -296,7 +308,7 @@ public class GameMaster : MonoBehaviour
         if(AM.abilitysInLane[2].y == 1)
             spawnNormal(lane, normalspeed, color, true);
        else
-            spawnNormal(lane, normalspeed/2, color, false);
+            spawnNormal(lane, normalspeed/4, color, false);
         
     }
     public void patternSpawn(int lane, float speed, int color)

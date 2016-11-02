@@ -56,7 +56,7 @@ public class UI : MonoBehaviour {
         if(textfields.Length == 0)
             textfields = transform.GetComponentsInChildren<Text>();
         boxes = GM.boxes.ToArray();
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 10; i++)
         {
             textfields[i].gameObject.SetActive(true);
         }

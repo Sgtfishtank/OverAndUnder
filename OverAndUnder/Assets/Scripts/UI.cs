@@ -21,7 +21,6 @@ public class UI : MonoBehaviour {
     public GameObject Tutorial2;
     public GameObject SettingsButton;
     public GameObject[] GameOverStars;
-    public GameObject[] inGameStars;
 
     // Use this for initialization
     void Start () {
@@ -41,10 +40,6 @@ public class UI : MonoBehaviour {
         {
             GameOverStars[i].SetActive(false);
             GameOverStars[i].transform.parent.gameObject.SetActive(false);
-        }
-        for (int i = 0; i < inGameStars.Length; i++)
-        {
-            GameOverStars[i].SetActive(false);
         }
         if (textfields.Length == 0)
             textfields = transform.GetComponentsInChildren<Text>();
@@ -66,11 +61,6 @@ public class UI : MonoBehaviour {
         {
             GameOverStars[i].SetActive(false);
             GameOverStars[i].transform.parent.gameObject.SetActive(false);
-        }
-        for (int i = 0; i < inGameStars.Length; i++)
-        {
-            inGameStars[i].SetActive(false);
-            inGameStars[i].transform.parent.gameObject.SetActive(true);
         }
     }
 	
@@ -112,35 +102,9 @@ public class UI : MonoBehaviour {
 
         textfields[11].text = Mathf.Clamp((AM.switchRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity).ToString();*/
 
-
-
-
-        for (int i = 0; i < inGameStars.Length; i++)
-        {
-            if (totalScore >= 200)
-            {
-                inGameStars[2].SetActive(true);
-            }
-            if (totalScore >= 100)
-            {
-                inGameStars[1].SetActive(true);
-            }
-            if (totalScore >= 50)
-            {
-                inGameStars[0].SetActive(true);
-            }
-        }
-
-
-
         if(GM.GameOver)
         {
-            for (int i = 0; i < inGameStars.Length; i++)
-            {
-                inGameStars[i].SetActive(false);
-                inGameStars[i].transform.parent.gameObject.SetActive(false);
-            }
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 10; i++)
             {
                 textfields[i].gameObject.SetActive(false);
             }
@@ -151,19 +115,19 @@ public class UI : MonoBehaviour {
                 GameOverStars[i].transform.parent.gameObject.SetActive(true);
             }
             
-            textfields[12].text = GM.blueScore.ToString();
-            textfields[13].text = GM.redScore.ToString();
+            textfields[10].text = GM.blueScore.ToString();
+            textfields[11].text = GM.redScore.ToString();
             
-            textfields[14].text = totalScore.ToString();
-            if(totalScore >= 200)
+            textfields[12].text = totalScore.ToString();
+            if(totalScore >= 300)
             {
                 GameOverStars[2].SetActive(true);
             }
-            if(totalScore >= 100)
+            if(totalScore >= 200)
             {
                 GameOverStars[1].SetActive(true);
             }
-            if (totalScore >= 50)
+            if (totalScore >= 100)
             {
                 GameOverStars[0].SetActive(true);
             }

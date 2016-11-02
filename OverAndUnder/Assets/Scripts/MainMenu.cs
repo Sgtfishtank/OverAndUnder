@@ -5,6 +5,7 @@ using System.Collections;
 public class MainMenu : MonoBehaviour
 {
     public GameObject StartGameButton;
+    public GameObject StartScreen;
     public GameObject SettingsButton;
     public GameObject TutorialButton;
     public GameObject NextTutButton;
@@ -43,6 +44,7 @@ public class MainMenu : MonoBehaviour
         GM.GetComponent<Abilitys>().Reset();
         InGameUI.SetActive(true);
         InGameUI.GetComponent<UI>().Reset();
+        StartScreen.SetActive(false);
         gameObject.SetActive(false);
     }
     public void SettingsFunc()

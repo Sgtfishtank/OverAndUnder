@@ -13,6 +13,7 @@ public class GameMaster : MonoBehaviour
     public List<Transform> BallSpawnPoints;
     public ScrollingTexture[] lanetextscript;
     public List<int> destroyedLanes;
+    public GameObject[] scoreMeterStars;
     public GameObject scoreMeterBlue;
     public GameObject scoreMeterRed;
     public GameObject blueBox;
@@ -70,7 +71,10 @@ public class GameMaster : MonoBehaviour
         for (int i = 0; i < lanetextscript.Length; i++)
         {
             lanetextscript[i].scrollSpeed = -0.144f;
-            lanetextscript[i].scrollSpeed2 = -0.15f;
+        }
+        for (int i = 0; i < scoreMeterStars.Length; i++)
+        {
+            scoreMeterStars[i].SetActive(false);
         }
     }
     void clear()
@@ -140,7 +144,6 @@ public class GameMaster : MonoBehaviour
             for (int i = 0; i < lanetextscript.Length; i++)
             {
                 lanetextscript[i].scrollSpeed = 0;
-                lanetextscript[i].scrollSpeed2 = 0;
             }
             for(int i = 0; i < balls.Count;i++)
             {
@@ -175,8 +178,7 @@ public class GameMaster : MonoBehaviour
             for (int i = 0; i < lanetextscript.Length; i++)
             {
                 if(!destroyedLanes.Contains(i))
-                lanetextscript[i].scrollSpeed -= 0.0096f;
-                //lanetextscript[i].scrollSpeed2 -= 0.01f;
+                    lanetextscript[i].scrollSpeed -= 0.0096f;
             }
         }
         if (spawnRateTime < Time.time)
@@ -201,12 +203,24 @@ public class GameMaster : MonoBehaviour
         scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01006653f + (scalefactor * blueScore), scoreMeterBlue.transform.localScale.z);
         scoreMeterRed.transform.localPosition = new Vector3(scoreMeterRed.transform.localPosition.x, 0.08251023f + (posfactor * redScore), scoreMeterRed.transform.localPosition.z);
         scoreMeterRed.transform.localScale = new Vector3(scoreMeterRed.transform.localScale.x, 0.01006653f + (scalefactor * redScore), scoreMeterBlue.transform.localScale.z);
-
+        if (blueScore > 99 && redScore > 99)
+            scoreMeterStars[0].SetActive(true);
+        if (blueScore > 199 && redScore > 199)
+                scoreMeterStars[1].SetActive(true);
+        if (blueScore > 299 && redScore > 299)
+            scoreMeterStars[2].SetActive(true);
     }
     void speedUp()
     {
         if(normalspeed < 1.96f)
             normalspeed += 0.05f;
+        for (int i = 0; i < balls.Count; i++)
+        {
+            if(balls[i].GetComponent<Ball>().lane < 3)
+                balls[i].transform.GetComponent<Rigidbody>().velocity = new Vector3(0, -normalspeed,0);
+            else
+                balls[i].transform.GetComponent<Rigidbody>().velocity = new Vector3(0, normalspeed, 0);
+        }
     }
     void spawnrateUp()
     {
@@ -241,7 +255,6 @@ public class GameMaster : MonoBehaviour
     {
         destroyedLanes.Add(slot);
         lanetextscript[slot].scrollSpeed = 0;
-        lanetextscript[slot].scrollSpeed2 = 0;
         cores[slot].SetActive(false);
         for (int i = 0; i <balls.Count; i++)
         {

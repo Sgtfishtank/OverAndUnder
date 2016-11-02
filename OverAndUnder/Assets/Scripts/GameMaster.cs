@@ -39,8 +39,8 @@ public class GameMaster : MonoBehaviour
     private float lastSpawn;
     private float speedUpTime;
     private float spawnRateTime;
-    private float scalefactor = (0.4102587f-0.007611176f)/300;
-    private float posfactor = (0.0831f-0.08201796f)/300;
+    private float scalefactor = (1.17854f - 0.01006653f) /300;
+    private float posfactor = (0.0819f - 0.08251023f) /300;
 
     void Start()
     {
@@ -197,10 +197,10 @@ public class GameMaster : MonoBehaviour
             if (healslot.GetComponent<MeshRenderer>().material.GetColor("_EmissionColor") == healemissive)
                 healslot.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", defaultcolor);
         }
-        scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.08201796f + (posfactor * blueScore), 0);
-        scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.007611176f + (scalefactor * blueScore), scoreMeterBlue.transform.localScale.z);
-        scoreMeterRed.transform.localPosition = new Vector3(scoreMeterRed.transform.localPosition.x, 0.08201796f + (posfactor * redScore), 0);
-        scoreMeterRed.transform.localScale = new Vector3(scoreMeterRed.transform.localScale.x, 0.007611176f + (scalefactor * redScore), scoreMeterBlue.transform.localScale.z);
+        scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.08251023f + (posfactor * blueScore), scoreMeterBlue.transform.localPosition.z);
+        scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01006653f + (scalefactor * blueScore), scoreMeterBlue.transform.localScale.z);
+        scoreMeterRed.transform.localPosition = new Vector3(scoreMeterRed.transform.localPosition.x, 0.08251023f + (posfactor * redScore), scoreMeterRed.transform.localPosition.z);
+        scoreMeterRed.transform.localScale = new Vector3(scoreMeterRed.transform.localScale.x, 0.01006653f + (scalefactor * redScore), scoreMeterBlue.transform.localScale.z);
 
     }
     void speedUp()

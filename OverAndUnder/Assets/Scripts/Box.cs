@@ -114,6 +114,9 @@ public class Box : MonoBehaviour
         {
             GM.destroyLane(Slot);
             hp--;
+            GM.unLockBoxes(Slot);
+            movable = false;
+            selected = false;
             transform.GetComponent<BoxCollider>().enabled = false;
             brokenBox.GetComponent<MeshRenderer>().material.SetColor("_Color", grey);
         }

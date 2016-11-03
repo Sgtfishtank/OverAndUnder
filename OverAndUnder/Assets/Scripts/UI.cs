@@ -25,9 +25,16 @@ public class UI : MonoBehaviour {
     public GameObject scoreMeterBlue;
     public GameObject scoreMeterRed;
     public GameObject[] GameOverStars;
+    private float blueScoreBegin;
+    private float redScoreBegin;
+    private float blueScoreEnd;
+    private float redScoreEnd;
 
     private float scalefactor = (1.17854f - 0.01006653f) / 300;
     private float posfactor = (0.0819f - 0.08251023f) / 300;
+    bool first;
+    float lastTick;
+    public float scale = 0.05f;
 
     // Use this for initialization
     void Start () {
@@ -48,8 +55,9 @@ public class UI : MonoBehaviour {
             GameOverStars[i].SetActive(false);
             GameOverStars[i].transform.parent.gameObject.SetActive(false);
         }
-        //if (textfields.Length == 0)
-            //textfields = transform.GetComponentsInChildren<Text>();
+        first = false;
+        redScoreEnd = 0;
+        blueScoreEnd = 0;
     }
     public void Reset()
     {
@@ -69,6 +77,9 @@ public class UI : MonoBehaviour {
             GameOverStars[i].SetActive(false);
             GameOverStars[i].transform.parent.gameObject.SetActive(false);
         }
+        first = false;
+        redScoreEnd = 0;
+        blueScoreEnd = 0;
     }
 	
 	// Update is called once per frame
@@ -116,32 +127,69 @@ public class UI : MonoBehaviour {
                 GameOverStars[i].transform.parent.gameObject.SetActive(true);
             }
             
-            textfields[10].text = GM.blueScore.ToString();
-            textfields[11].text = GM.redScore.ToString();
+            textfields[10].text = blueScoreEnd.ToString();
+            textfields[11].text = redScoreEnd.ToString();
             
-            textfields[12].text = totalScore.ToString();
-            if (GM.blueScore > 299 && GM.redScore > 299)
+            textfields[12].text = (blueScoreEnd + redScoreEnd).ToString();
+            if (blueScoreEnd > 299 && redScoreEnd > 299)
             {
                 GameOverStars[2].SetActive(true);
             }
-            if (GM.blueScore > 199 && GM.redScore > 199)
+            if (blueScoreEnd > 199 && redScoreEnd > 199)
             {
                 GameOverStars[1].SetActive(true);
             }
-            if (GM.blueScore > 99 && GM.redScore > 99)
+            if (blueScoreEnd > 99 && redScoreEnd > 99)
             {
                 GameOverStars[0].SetActive(true);
             }
+            if(!first)
+            {
+                blueScoreBegin = GM.blueScore;
+                redScoreBegin = GM.redScore;
+                first = true;
+            }
+            if(lastTick < Time.time)
+            {
+                scoreMover();
+                lastTick = Time.time + scale;
+            }
+
         }
-        if (GM.blueScore < 301)
+        
+
+    }
+    void scoreMover()
+    {
+        if (blueScoreBegin != 0)
         {
-            scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.08251023f + (posfactor * GM.blueScore), scoreMeterBlue.transform.localPosition.z);
-            scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01006653f + (scalefactor * GM.blueScore), scoreMeterBlue.transform.localScale.z);
+        blueScoreBegin--;
+        blueScoreEnd++;
         }
-        if (GM.redScore < 301)
+        if (redScoreBegin != 0)
         {
-            scoreMeterRed.transform.localPosition = new Vector3(scoreMeterRed.transform.localPosition.x, 0.08251023f + (posfactor * GM.redScore), scoreMeterRed.transform.localPosition.z);
-            scoreMeterRed.transform.localScale = new Vector3(scoreMeterRed.transform.localScale.x, 0.01006653f + (scalefactor * GM.redScore), scoreMeterBlue.transform.localScale.z);
+            redScoreBegin--;
+            redScoreEnd++;
+        }
+        if (blueScoreBegin < 301)
+        {
+            scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.08251023f + (posfactor * blueScoreBegin), scoreMeterBlue.transform.localPosition.z);
+            scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01006653f + (scalefactor * blueScoreBegin), scoreMeterBlue.transform.localScale.z);
+        }
+        else
+        {
+            scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.08251023f + (posfactor * 300), scoreMeterBlue.transform.localPosition.z);
+            scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01006653f + (scalefactor * 300), scoreMeterBlue.transform.localScale.z);
+        }
+        if (redScoreBegin < 301)
+        {
+            scoreMeterRed.transform.localPosition = new Vector3(scoreMeterRed.transform.localPosition.x, 0.08251023f + (posfactor * redScoreBegin), scoreMeterRed.transform.localPosition.z);
+            scoreMeterRed.transform.localScale = new Vector3(scoreMeterRed.transform.localScale.x, 0.01006653f + (scalefactor * redScoreBegin), scoreMeterBlue.transform.localScale.z);
+        }
+        else
+        {
+            scoreMeterRed.transform.localPosition = new Vector3(scoreMeterRed.transform.localPosition.x, 0.08251023f + (posfactor * redScoreBegin), scoreMeterRed.transform.localPosition.z);
+            scoreMeterRed.transform.localScale = new Vector3(scoreMeterRed.transform.localScale.x, 0.01006653f + (scalefactor * redScoreBegin), scoreMeterBlue.transform.localScale.z);
         }
         if (GM.blueScore > 99 && GM.redScore > 99)
             scoreMeterStars[0].SetActive(true);
@@ -149,7 +197,6 @@ public class UI : MonoBehaviour {
             scoreMeterStars[1].SetActive(true);
         if (GM.blueScore > 299 && GM.redScore > 299)
             scoreMeterStars[2].SetActive(true);
-
     }
     public void mainMenu()
     {

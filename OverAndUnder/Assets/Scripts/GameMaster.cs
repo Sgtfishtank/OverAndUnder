@@ -271,6 +271,17 @@ public class GameMaster : MonoBehaviour
     }
     public void destroyLane(int slot)
     {
+        
+        if(slot == 6)
+        {
+            for (int i = 0; i < boxes.Count; i++)
+            {
+                if (boxes[i].tag == "Untagged")
+                    slot = i;
+            }
+        }
+        if (destroyedLanes.Contains(slot))
+            return;
         destroyedLanes.Add(slot);
         lanetextscript[slot].scrollSpeed = 0;
         cores[slot].SetActive(false);

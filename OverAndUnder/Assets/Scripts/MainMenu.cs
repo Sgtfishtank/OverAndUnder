@@ -10,13 +10,17 @@ public class MainMenu : MonoBehaviour
     public GameObject TutorialButton;
     public GameObject NextTutButton;
     public GameObject MainMenuButton;
-    public GameObject StartGame;
+    public GameObject UpgradeButton;
     public GameObject Settings;
     public GameObject Tutorial1;
     public GameObject Tutorial2;
     public GameObject GM;
     public GameObject InGameUI;
+    public GameObject Upgrades;
+    public GameObject UpgradeSkillButtons;
     int Tut = 1;
+    public int bluescore;
+    public int redscore;
 
 
     // Use this for initialization
@@ -31,6 +35,8 @@ public class MainMenu : MonoBehaviour
     {
         InGameUI.SetActive(false);
         StartScreen.SetActive(true);
+        bluescore += GM.GetComponent<GameMaster>().blueScore;
+        redscore +=  GM.GetComponent<GameMaster>().redScore;
     }
 	
 	// Update is called once per frame
@@ -50,7 +56,7 @@ public class MainMenu : MonoBehaviour
     }
     public void SettingsFunc()
     {
-        StartGame.SetActive(false);
+        StartScreen.SetActive(false);
         StartGameButton.SetActive(false);
         SettingsButton.SetActive(false);
         Settings.SetActive(true);
@@ -65,6 +71,15 @@ public class MainMenu : MonoBehaviour
         Tutorial1.SetActive(true);
         NextTutButton.SetActive(true);
         Tut = 1;
+    }
+    public void UppgradeFunc()
+    {
+        StartGameButton.SetActive(false);
+        StartScreen.SetActive(false);
+        UpgradeButton.SetActive(false);
+        Upgrades.SetActive(true);
+        UpgradeSkillButtons.SetActive(true);
+        MainMenuButton.SetActive(true);
     }
     public void TutorialNextFunc()
     {
@@ -85,10 +100,48 @@ public class MainMenu : MonoBehaviour
     }
     public void MainMenuFunc()
     {
-        StartGame.SetActive(true);
+        StartScreen.SetActive(true);
         StartGameButton.SetActive(true);
         SettingsButton.SetActive(true);
         Settings.SetActive(false);
+        MainMenuButton.SetActive(false);
+        Upgrades.SetActive(false);
+        UpgradeSkillButtons.SetActive(false);
     }
-
+    public void UpgradeSlowBlue(int nr)
+    {
+        if(nr  == 1 && bluescore > 100)
+        {
+            print("blue 1");
+            bluescore -= 100;
+        }
+        else if(nr == 2 && bluescore > 200)
+        {
+            print("blue 2");
+            bluescore -= 200;
+        }
+        else if (nr == 3 && bluescore > 300)
+        {
+            print("blue 3");
+            bluescore -= 300;
+        }
+    }
+    public void UpgradeSlowRed(int nr)
+    {
+        if (nr == 1 && redscore > 100)
+        {
+            print("Red 1");
+            redscore -= 100;
+        }
+        else if (nr == 2 && redscore > 200)
+        {
+            print("red 2");
+            redscore -= 100;
+        }
+        else if (nr == 3 && redscore > 300)
+        {
+            print("red 3");
+            redscore -= 300;
+        }
+    }
 }

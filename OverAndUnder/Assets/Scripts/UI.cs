@@ -202,8 +202,8 @@ public class UI : MonoBehaviour {
         }
         else
         {
-            scoreMeterRed.transform.localPosition = new Vector3(scoreMeterRed.transform.localPosition.x, 0.08251023f + (posfactor * redScoreBegin), scoreMeterRed.transform.localPosition.z);
-            scoreMeterRed.transform.localScale = new Vector3(scoreMeterRed.transform.localScale.x, 0.01006653f + (scalefactor * redScoreBegin), scoreMeterBlue.transform.localScale.z);
+            scoreMeterRed.transform.localPosition = new Vector3(scoreMeterRed.transform.localPosition.x, 0.08251023f + (posfactor * 300), scoreMeterRed.transform.localPosition.z);
+            scoreMeterRed.transform.localScale = new Vector3(scoreMeterRed.transform.localScale.x, 0.01006653f + (scalefactor * 300), scoreMeterBlue.transform.localScale.z);
         }
         if (GM.blueScore > 99 && GM.redScore > 99)
             scoreMeterStars[0].SetActive(true);

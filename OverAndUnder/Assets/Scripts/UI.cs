@@ -8,6 +8,7 @@ public class UI : MonoBehaviour {
     public GameObject[] scoreMeterStars;
     public new Camera camera;
     public GameObject GameOver;
+    public GameObject gamoverMesh;
     public GameObject MainMenuButton;
     public GameObject startMenu;
 
@@ -45,6 +46,7 @@ public class UI : MonoBehaviour {
         AM = GameObject.Find("Game Master").GetComponent<Abilitys>();
         boxes = GM.boxes.ToArray();
         GameOver.SetActive(false);
+        gamoverMesh.SetActive(false);
         MainMenuButton.SetActive(false);
         Settings.SetActive(false);
         Tutorial1.SetActive(false);
@@ -64,6 +66,7 @@ public class UI : MonoBehaviour {
     public void Reset()
     {
         GameOver.SetActive(true);
+        gamoverMesh.SetActive(true);
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
         if(textfields.Length == 0)
             textfields = transform.GetComponentsInChildren<Text>();
@@ -73,6 +76,7 @@ public class UI : MonoBehaviour {
             textfields[i].gameObject.SetActive(true);
         }
         GameOver.SetActive(false);
+        gamoverMesh.SetActive(false);
         MainMenuButton.SetActive(false);
         for (int i = 0; i < GameOverStars.Length; i++)
         {
@@ -123,6 +127,7 @@ public class UI : MonoBehaviour {
                 textfields[i].gameObject.SetActive(false);
             }
             GameOver.SetActive(true);
+            gamoverMesh.SetActive(true);
             MainMenuButton.SetActive(true);
             for (int i = 0; i < GameOverStars.Length; i++)
             {
@@ -212,6 +217,7 @@ public class UI : MonoBehaviour {
         startMenu.SetActive(true);
         startMenu.GetComponent<MainMenu>().reset();
         gameObject.SetActive(false);
+        gamoverMesh.SetActive(false);
         GM.gameObject.SetActive(false);
         for(int i = 0; i < 6;i++)
         {

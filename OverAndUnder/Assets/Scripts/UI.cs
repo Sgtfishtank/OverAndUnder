@@ -25,6 +25,8 @@ public class UI : MonoBehaviour {
     public GameObject scoreMeterBlue;
     public GameObject scoreMeterRed;
     public GameObject[] GameOverStars;
+    public GameObject blueParitcle;
+    public GameObject redParitcle;
     private float blueScoreBegin;
     private float redScoreBegin;
     private float blueScoreEnd;
@@ -154,7 +156,14 @@ public class UI : MonoBehaviour {
                 scoreMover();
                 lastTick = Time.time + scale;
             }
-
+            if(blueScoreBegin == 0)
+            {
+                blueParitcle.SetActive(false);
+            }
+            if(redScoreBegin == 0)
+            {
+                redParitcle.SetActive(false);
+            }
         }
         
 

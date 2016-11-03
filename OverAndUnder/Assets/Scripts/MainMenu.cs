@@ -11,6 +11,8 @@ public class MainMenu : MonoBehaviour
     public GameObject NextTutButton;
     public GameObject MainMenuButton;
     public GameObject UpgradeButton;
+    public GameObject LevelButtons;
+    public GameObject LevelSelect;
     public GameObject Settings;
     public GameObject Tutorial1;
     public GameObject Tutorial2;
@@ -29,8 +31,13 @@ public class MainMenu : MonoBehaviour
         //GM = GameObject.Find("Game Master");
         GM.SetActive(false);
         InGameUI.SetActive(false);
+        Upgrades = GameObject.Find("mesh_upgradescreen");
+        LevelSelect = GameObject.Find("mesh_levelselect 1");
+        StartScreen = GameObject.Find("startscreen_new");
+        Upgrades.SetActive(false);
+        LevelSelect.SetActive(false);
         //Screen.SetResolution(Screen.width, Screen.height, false);
-	}
+    }
     public void reset()
     {
         InGameUI.SetActive(false);
@@ -44,6 +51,14 @@ public class MainMenu : MonoBehaviour
     {
 	
 	}
+    public void LevelSelectFunc()
+    {
+        StartScreen.SetActive(false);
+        StartGameButton.SetActive(false);
+        LevelButtons.SetActive(true);
+        LevelSelect.SetActive(true);
+        MainMenuButton.SetActive(true);
+    }
     public void StartGameFunc()
     {
         GM.SetActive(true);
@@ -53,6 +68,7 @@ public class MainMenu : MonoBehaviour
         InGameUI.GetComponent<UI>().Reset();
         StartScreen.SetActive(false);
         gameObject.SetActive(false);
+        LevelSelect.SetActive(false);
     }
     public void SettingsFunc()
     {
@@ -107,6 +123,8 @@ public class MainMenu : MonoBehaviour
         MainMenuButton.SetActive(false);
         Upgrades.SetActive(false);
         UpgradeSkillButtons.SetActive(false);
+        LevelSelect.SetActive(false);
+        LevelButtons.SetActive(false);
     }
     public void UpgradeSlowBlue(int nr)
     {

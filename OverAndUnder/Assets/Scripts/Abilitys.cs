@@ -57,12 +57,12 @@ public class Abilitys : MonoBehaviour
 
         SlowObj = Instantiate(SlowObj, Vector3.zero, Quaternion.identity) as GameObject;
         SlowObj.SetActive(false);
-        WallObj = Instantiate(WallObj, Vector3.zero, Quaternion.identity) as GameObject;
+        /*WallObj = Instantiate(WallObj, Vector3.zero, Quaternion.identity) as GameObject;
         WallObj.SetActive(false);
         MultiObj = Instantiate(MultiObj, Vector3.zero, Quaternion.identity) as GameObject;
         MultiObj.SetActive(false);
         SwitchObj = Instantiate(SwitchObj, Vector3.zero, Quaternion.identity) as GameObject;
-        SwitchObj.SetActive(false);
+        SwitchObj.SetActive(false);*/
 
         GM = transform.GetComponent<GameMaster>();
 

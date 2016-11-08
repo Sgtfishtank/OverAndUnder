@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public class Abilitys : MonoBehaviour
 {
@@ -80,7 +81,7 @@ public class Abilitys : MonoBehaviour
         {
             if (0 == 0)
             {
-                slowReset((int)abilitysInLane[0].z);
+                slowReset();
             }
         }
 
@@ -89,7 +90,7 @@ public class Abilitys : MonoBehaviour
             abb[0].isCD(false);
         }
     }
-    void slowReset(int lane)
+    void slowReset()
     {
         blink = false;
         for (int i = 0; i < GM.balls.Count; i++)
@@ -122,6 +123,7 @@ public void activateAbility(AbilitysEnum a, int lane)
                 abilitysInLane[0].x = Time.time + SlowDuration;
                 abilitysInLane[0].y = 1;
                 abilitysInLane[0].z = lane;
+                slowTime = Mathf.Infinity;
                 slowRemaning = Mathf.FloorToInt(abilitysInLane[0].x);
 
                 for (int i = 0; i < GM.balls.Count; i++)
@@ -135,14 +137,30 @@ public void activateAbility(AbilitysEnum a, int lane)
                 }
                 GM.spawnRate *= 2f;
                 SlowObj.SetActive(true);
-               
-
                 break;
             default:
                 break;
         }
-
     }
 
-
+    internal void disableSlow()
+    {
+        for (int i = 0; i < GM.balls.Count; i++)
+        {
+            GM.balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, GM.balls[i].GetComponent<Rigidbody>().velocity.y * 4, 0);
+        }
+        for (int i = 0; i < GM.lanetextscript.Length; i++)
+        {
+            GM.lanetextscript[i].scrollSpeed *= 4;
+            lanerenders[i].material.SetColor("_EmissionColor", defaultcolor);
+        }
+        GM.spawnRate /= 2f;
+        slowTime = Time.time + (slowCD*(1-((abilitysInLane[0].x -Time.time)/SlowDuration)));
+        slowRemaning = Mathf.FloorToInt(slowTime);
+        abb[0].isCD(true);
+        abb[0].active = false;
+        abb[0].setColor();
+        abilitysInLane[0].y = 0;
+        SlowObj.SetActive(false);
+    }
 }

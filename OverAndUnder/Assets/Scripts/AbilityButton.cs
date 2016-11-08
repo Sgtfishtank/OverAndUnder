@@ -67,7 +67,9 @@ public class AbilityButton : MonoBehaviour
     }
     public void isCD(bool CD)
     {
+        print("hej2");
         cd = CD;
+        active = false;
         if (!CD)
         {
             switch (buttontype)
@@ -97,10 +99,18 @@ public class AbilityButton : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            if (!cd)
+            if (!cd && !active)
             {
                 AM.activateAbility(buttontype, 0);
                 setColor();
+                active = true;
+                print("hej1");
+            }
+            else if(active)
+            {
+                print("hej");
+                AM.disableSlow();
+                active = false;
             }
             /*else
             {

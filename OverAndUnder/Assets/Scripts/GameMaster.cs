@@ -41,6 +41,8 @@ public class GameMaster : MonoBehaviour
     private float spawnRateTime;
     private float scalefactor = (1.175139f - 0.01587644f) /300;
     private float posfactor = (0.055496f- 0.05536f) /300;
+    private int scorestreak;
+    private int scorestreakLimit;
 
     void Start()
     {
@@ -67,6 +69,8 @@ public class GameMaster : MonoBehaviour
         destroyedLanes.Clear();
         GameOver = false;
         speedUpTime = Time.time + 10;
+        scorestreakLimit = 20;
+        scorestreak = 0;
         for (int i = 0; i < lanetextscript.Length; i++)
         {
             lanetextscript[i].scrollSpeed = -0.144f;
@@ -219,6 +223,14 @@ public class GameMaster : MonoBehaviour
                 scoreMeterStars[1].SetActive(true);
         if ((blueScore + redScore) > 299)
             scoreMeterStars[2].SetActive(true);
+        if(scorestreak > scorestreakLimit)
+        {
+            scorestreakLimit += 20;
+            for (int i = 0; i < boxes.Count; i++)
+            {
+                boxes[i].GetComponent<Box>().currentMultiplier++;
+            }
+        }
     }
     void speedUp()
     {
@@ -394,19 +406,15 @@ public class GameMaster : MonoBehaviour
         }
         return 0;
     }
-    public void addRedScore(int lane)
+    public void addRedScore(int score)
     {
-        if (AM.abilitysInLane[2].y == 1 && AM.abilitysInLane[2].z == lane)
-            redScore += 1 * multiplier;
-        else
-            redScore++;
+        scorestreak++;
+        redScore += score;
     }
-    public void addBlueScore(int lane)
+    public void addBlueScore(int score)
     {
-        if (AM.abilitysInLane[2].y == 1 && AM.abilitysInLane[2].z == lane)
-            blueScore += 1 * multiplier;
-        else
-            blueScore++;
+        scorestreak++;
+        blueScore += score;
     }
     public void swapBox(int CurrentPos, int newPos)
     {
@@ -414,5 +422,14 @@ public class GameMaster : MonoBehaviour
         boxes[newPos] = boxes[CurrentPos];
         boxes[CurrentPos] = temp;
         boxes[CurrentPos].transform.GetComponent<Box>().newPos(CurrentPos);
+    }
+    public void resetScoreStreak()
+    {
+        scorestreak = 0;
+        scorestreakLimit = 20;
+        for (int i = 0; i < boxes.Count; i++)
+        {
+            boxes[i].GetComponent<Box>().currentMultiplier = 1;
+        }
     }
 }

@@ -83,10 +83,8 @@ public class Abilitys : MonoBehaviour
         }
         if (abilitysInLane[0].y == 1 && abilitysInLane[0].x < Time.time)
         {
-            if (0 == 0)
-            {
-                slowReset();
-            }
+            slowReset();
+
         }
 
         if (slowTime < Time.time)

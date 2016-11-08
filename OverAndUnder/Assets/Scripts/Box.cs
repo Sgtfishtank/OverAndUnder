@@ -37,6 +37,7 @@ public class Box : MonoBehaviour
     public bool ghost = false;
     private bool movable = true;
     private bool selected = false;
+    internal int currentMultiplier = 1;
 
     // Use this for initialization
     void Start ()
@@ -157,14 +158,7 @@ public class Box : MonoBehaviour
     }
     void OnCollisionEnter(Collision col)
     {
-        if(1 == AM.abilitysInLane[2].y && AM.abilitysInLane[2].z == Slot)
-        {
-            CrystalText.GetComponentsInChildren<TextMesh>(true)[0].text = "+3";
-        }
-        else
-        {
-            CrystalText.GetComponentsInChildren<TextMesh>(true)[0].text = "+1";
-        }
+        CrystalText.GetComponentsInChildren<TextMesh>(true)[0].text = "+" +1 * currentMultiplier;
         if(col.transform.tag == "Red" &&  transform.tag == "Red Box")
         {
             if(Slot> 2)
@@ -173,7 +167,7 @@ public class Box : MonoBehaviour
                 CrystalText.transform.position = col.transform.position;
             crystalTextDur = Time.time + 1;
             CrystalText.SetActive(true);
-            GM.addRedScore(Slot);
+            GM.addRedScore(1 * currentMultiplier);
         }
         else if (col.transform.tag == "Blue" && transform.tag == "Blue Box")
         {
@@ -183,7 +177,7 @@ public class Box : MonoBehaviour
                 CrystalText.transform.position = col.transform.position;
             crystalTextDur = Time.time + 1;
             CrystalText.SetActive(true);
-            GM.addBlueScore(Slot);
+            GM.addBlueScore(1 * currentMultiplier);
         }
         else
         {
@@ -191,6 +185,7 @@ public class Box : MonoBehaviour
             psMaster.transform.position = col.transform.position;
             explotionDur = Time.time + 1f;
             shaketime = 0.3f + Time.time;
+            GM.resetScoreStreak();
             hp--;
         }
         col.gameObject.SetActive(false);

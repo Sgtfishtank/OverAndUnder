@@ -15,7 +15,6 @@ public class GameMaster : MonoBehaviour
     public List<int> destroyedLanes;
     public GameObject[] scoreMeterStars;
     public GameObject scoreMeterBlue;
-    public GameObject scoreMeterRed;
     public GameObject blueBox;
     public GameObject redBox;
     public GameObject ghostBox;
@@ -40,8 +39,8 @@ public class GameMaster : MonoBehaviour
     internal float lastSpawn;
     private float speedUpTime;
     private float spawnRateTime;
-    private float scalefactor = (1.17854f - 0.01006653f) /300;
-    private float posfactor = (0.0819f - 0.08251023f) /300;
+    private float scalefactor = (1.175139f - 0.01587644f) /300;
+    private float posfactor = (0.055496f- 0.05536f) /300;
 
     void Start()
     {
@@ -209,21 +208,16 @@ public class GameMaster : MonoBehaviour
             if (healslot.GetComponent<MeshRenderer>().material.GetColor("_EmissionColor") == healemissive)
                 healslot.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", defaultcolor);
         }
-        if (blueScore < 301)
+        if ((blueScore +redScore) < 301)
         {
-            scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.08251023f + (posfactor * blueScore), scoreMeterBlue.transform.localPosition.z);
-            scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01006653f + (scalefactor * blueScore), scoreMeterBlue.transform.localScale.z);
+            scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.055496f + (posfactor * (redScore + blueScore)), scoreMeterBlue.transform.localPosition.z);
+            scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01587644f + (scalefactor * (redScore + blueScore)), scoreMeterBlue.transform.localScale.z);
         }
-        if (redScore < 301)
-        {
-            scoreMeterRed.transform.localPosition = new Vector3(scoreMeterRed.transform.localPosition.x, 0.08251023f + (posfactor * redScore), scoreMeterRed.transform.localPosition.z);
-            scoreMeterRed.transform.localScale = new Vector3(scoreMeterRed.transform.localScale.x, 0.01006653f + (scalefactor * redScore), scoreMeterBlue.transform.localScale.z);
-        }
-        if (blueScore > 99 && redScore > 99)
+        if ((blueScore + redScore) > 99)
             scoreMeterStars[0].SetActive(true);
-        if (blueScore > 199 && redScore > 199)
+        if ((blueScore + redScore) > 199)
                 scoreMeterStars[1].SetActive(true);
-        if (blueScore > 299 && redScore > 299)
+        if ((blueScore + redScore) > 299)
             scoreMeterStars[2].SetActive(true);
     }
     void speedUp()

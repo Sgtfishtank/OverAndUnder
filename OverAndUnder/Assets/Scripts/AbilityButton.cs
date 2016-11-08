@@ -99,11 +99,8 @@ public class AbilityButton : MonoBehaviour
         {
             if (!cd)
             {
-                if (AM.highlightLanes(buttontype))
-                {
-                    AM.activateAbility(buttontype, 0);
-                    setColor();
-                }
+                AM.activateAbility(buttontype, 0);
+                setColor();
             }
             /*else
             {

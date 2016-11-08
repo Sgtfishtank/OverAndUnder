@@ -43,12 +43,10 @@ public class PhoneMove : MonoBehaviour
                         if (selectedAbility != hit.transform.GetComponent<AbilityButton>().buttontype)
                         {
                             selectedAbility = hit.transform.GetComponent<AbilityButton>().buttontype;
-                            AM.highlightLanes(selectedAbility);
                         }
                         else
                         {
                             selectedAbility = Abilitys.AbilitysEnum.NONE;
-                            AM.unlightLanes();
                         }
 
                     }

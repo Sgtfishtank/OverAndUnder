@@ -21,7 +21,7 @@ public class LaneClick : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            GM.setLane(lane);
+            //GM.setLane(lane);
         }
     }
 }

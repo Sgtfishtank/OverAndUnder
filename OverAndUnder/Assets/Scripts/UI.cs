@@ -28,10 +28,11 @@ public class UI : MonoBehaviour {
     public GameObject[] GameOverStars;
     public GameObject blueParitcle;
     public GameObject redParitcle;
-    private float blueScoreBegin;
-    private float redScoreBegin;
-    private float blueScoreEnd;
-    private float redScoreEnd;
+    private int blueScoreBegin;
+    private int redScoreBegin;
+    private int blueScoreEnd;
+    private int redScoreEnd;
+    public int stars;
 
     private float scalefactor = (1.17854f - 0.01006653f) / 300;
     private float posfactor = (0.0819f - 0.08251023f) / 300;
@@ -114,11 +115,9 @@ public class UI : MonoBehaviour {
 
         textfields[7].text = GM.blueScore.ToString();
         textfields[8].text = GM.redScore.ToString();
-        float temp = Mathf.Clamp((AM.slowRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity);
-        if (temp == 0)
-            textfields[9].text = "";
-        else
-            textfields[9].text = temp.ToString();
+        int temp = (int)Mathf.Clamp((AM.slowRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity);
+
+            textfields[9].text = checkZero(temp);
 
         if(GM.GameOver)
         {
@@ -136,24 +135,27 @@ public class UI : MonoBehaviour {
             
             textfields[10].text = blueScoreEnd.ToString();
             textfields[11].text = redScoreEnd.ToString();
-            
-            textfields[12].text = (blueScoreEnd + redScoreEnd).ToString();
-            if (blueScoreEnd > 299 && redScoreEnd > 299)
+            int totalScoreCount = blueScoreBegin + redScoreBegin;
+            textfields[12].text = totalScoreCount.ToString();
+            if (totalScoreCount > 299 && !GameOverStars[2].activeSelf)
             {
                 GameOverStars[2].SetActive(true);
+                stars++;
             }
-            if (blueScoreEnd > 199 && redScoreEnd > 199)
+            if (totalScoreCount > 199 && !GameOverStars[1].activeSelf)
             {
                 GameOverStars[1].SetActive(true);
+                stars++;
             }
-            if (blueScoreEnd > 99 && redScoreEnd > 99)
+            if (totalScoreCount > 99 && !GameOverStars[0].activeSelf)
             {
                 GameOverStars[0].SetActive(true);
+                stars++;
             }
             if(!first)
             {
-                blueScoreBegin = GM.blueScore;
-                redScoreBegin = GM.redScore;
+                blueScoreEnd = GM.blueScore;
+                redScoreEnd = GM.redScore;
                 first = true;
             }
             if(lastTick < Time.time)
@@ -161,11 +163,11 @@ public class UI : MonoBehaviour {
                 scoreMover();
                 lastTick = Time.time + scale;
             }
-            if(blueScoreBegin == 0)
+            if(blueScoreBegin == blueScoreEnd)
             {
                 blueParitcle.SetActive(false);
             }
-            if(redScoreBegin == 0)
+            if(redScoreBegin == redScoreEnd)
             {
                 redParitcle.SetActive(false);
             }
@@ -175,15 +177,14 @@ public class UI : MonoBehaviour {
     }
     void scoreMover()
     {
-        if (blueScoreBegin != 0)
+        if (blueScoreBegin != blueScoreEnd)
         {
-        blueScoreBegin--;
-        blueScoreEnd++;
+        blueScoreBegin++;
+        
         }
-        if (redScoreBegin != 0)
+        if (redScoreBegin != redScoreEnd)
         {
-            redScoreBegin--;
-            redScoreEnd++;
+            redScoreBegin++;
         }
         if (blueScoreBegin < 301)
         {

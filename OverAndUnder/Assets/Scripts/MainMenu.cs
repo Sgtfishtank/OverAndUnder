@@ -23,6 +23,7 @@ public class MainMenu : MonoBehaviour
     int Tut = 1;
     public int bluescore;
     public int redscore;
+    private int LevelPlayed;
 
 
     // Use this for initialization
@@ -42,8 +43,10 @@ public class MainMenu : MonoBehaviour
     {
         InGameUI.SetActive(false);
         StartScreen.SetActive(true);
+        StartGameButton.SetActive(true);
         bluescore += GM.GetComponent<GameMaster>().blueScore;
         redscore +=  GM.GetComponent<GameMaster>().redScore;
+        
     }
 	
 	// Update is called once per frame
@@ -58,6 +61,7 @@ public class MainMenu : MonoBehaviour
         LevelButtons.SetActive(true);
         LevelSelect.SetActive(true);
         MainMenuButton.SetActive(true);
+        //LevelPlayed = level;
     }
     public void StartGameFunc()
     {

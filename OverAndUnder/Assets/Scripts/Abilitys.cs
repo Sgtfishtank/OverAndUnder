@@ -22,6 +22,8 @@ public class Abilitys : MonoBehaviour
     public Color blue;
     public Color red;
     public Color purple;
+    public Material defaultMat;
+    public Material slowMat;
 
     internal int slowRemaning;
 
@@ -62,20 +64,22 @@ public class Abilitys : MonoBehaviour
         {
             if(blinkInterwall < Time.time)
             {
+                print(blinkInterwall);
                 for (int i = 0; i < GM.lanetextscript.Length; i++)
                 {
-                    if(lanerenders[i].material.GetColor("_EmissionColor") != defaultcolor)
-                        lanerenders[i].material.SetColor("_EmissionColor", defaultcolor);
+                    print(lanerenders[i].material);
+                    if(lanerenders[i].material.name != defaultMat.name + " (Instance)")
+                        lanerenders[i].sharedMaterial = defaultMat;
                     else
-                        lanerenders[i].material.SetColor("_EmissionColor", slowcolor);
+                        lanerenders[i].sharedMaterial = slowMat;
                 }
-                blinkInterwall = Time.time + 0.25f;
+                blinkInterwall = Time.time + 0.5f;
             }
         }
-        if(abilitysInLane[0].y == 1 && abilitysInLane[0].x - Time.time < 5)
+        if(abilitysInLane[0].y == 1 && abilitysInLane[0].x - Time.time < 3 && !blink)
         {
             blink = true;
-            blinkInterwall = Time.time + 0.25f;
+            blinkInterwall = Time.time + 0.5f;
         }
         if (abilitysInLane[0].y == 1 && abilitysInLane[0].x < Time.time)
         {
@@ -100,7 +104,7 @@ public class Abilitys : MonoBehaviour
         for (int i = 0; i < GM.lanetextscript.Length; i++)
         {
             GM.lanetextscript[i].scrollSpeed *= 4;
-            lanerenders[i].material.SetColor("_EmissionColor", defaultcolor);
+            lanerenders[i].sharedMaterial = defaultMat;
         }
         GM.spawnRate /= 2f;
         slowTime = Time.time + slowCD;
@@ -133,7 +137,7 @@ public void activateAbility(AbilitysEnum a, int lane)
                 for (int i = 0; i < GM.lanetextscript.Length; i++)
                 {
                     GM.lanetextscript[i].scrollSpeed /= 4;
-                    lanerenders[i].material.SetColor("_EmissionColor", slowcolor);
+                    lanerenders[i].sharedMaterial = slowMat;
                 }
                 GM.spawnRate *= 2f;
                 SlowObj.SetActive(true);
@@ -152,7 +156,7 @@ public void activateAbility(AbilitysEnum a, int lane)
         for (int i = 0; i < GM.lanetextscript.Length; i++)
         {
             GM.lanetextscript[i].scrollSpeed *= 4;
-            lanerenders[i].material.SetColor("_EmissionColor", defaultcolor);
+            lanerenders[i].sharedMaterial = defaultMat;
         }
         GM.spawnRate /= 2f;
         slowTime = Time.time + (slowCD*(1-((abilitysInLane[0].x -Time.time)/SlowDuration)));

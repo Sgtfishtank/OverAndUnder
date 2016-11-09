@@ -14,6 +14,8 @@ public class GameMaster : MonoBehaviour
     public ScrollingTexture[] lanetextscript;
     public List<int> destroyedLanes;
     public GameObject[] scoreMeterStars;
+    public GameObject[] healBox;
+    public GameObject[] SkillStuff;
     public GameObject scoreMeterBlue;
     public GameObject blueBox;
     public GameObject redBox;
@@ -62,7 +64,20 @@ public class GameMaster : MonoBehaviour
     public void Reset(int level)
     {
         currentLevel = level;
-        
+        if(currentLevel == 2)
+        {
+            for (int i = 0; i < healBox.Length; i++)
+            {
+                healBox[i].SetActive(true);
+            }
+        }
+        if(currentLevel == 3)
+        {
+            for (int i = 0; i < SkillStuff.Length; i++)
+            {
+                SkillStuff[i].SetActive(true);
+            }
+        }
         clear();
         initalize();
         blueScore = 0;
@@ -138,7 +153,8 @@ public class GameMaster : MonoBehaviour
             boxes[1].SetActive(false);
             boxes[3].SetActive(false);
             boxes[4].SetActive(false);
-            boxes.RemoveAt(6);
+            if(currentLevel == 1)
+                boxes.RemoveAt(6);
         }
         for (int i = 0; i < boxPoints.Count - 1; i++)
         {

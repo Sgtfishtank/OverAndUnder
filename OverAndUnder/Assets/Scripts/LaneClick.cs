@@ -8,7 +8,7 @@ public class LaneClick : MonoBehaviour
     
     void Start()
     {
-        GM = GameObject.Find("Game Master").GetComponent<Abilitys>();
+        GM = GameObject.Find("Game Master(Clone)").GetComponent<Abilitys>();
         
     }
 

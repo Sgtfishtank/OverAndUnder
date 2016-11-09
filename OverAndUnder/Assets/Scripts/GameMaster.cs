@@ -33,7 +33,7 @@ public class GameMaster : MonoBehaviour
     public Color healemissive;
     public bool GameOver = false;
 
-
+    internal int currentLevel;
     private Abilitys AM;
     private GameObject healslot;
     internal float lastSpawn;
@@ -55,11 +55,14 @@ public class GameMaster : MonoBehaviour
         speedUpTime = Time.time + 10;
 
         healslot = GameObject.Find("mesh_heal_slot_new");
+        
         clear();
         initalize();
     }
-    public void Reset()
+    public void Reset(int level)
     {
+        currentLevel = level;
+        
         clear();
         initalize();
         blueScore = 0;
@@ -78,6 +81,18 @@ public class GameMaster : MonoBehaviour
         for (int i = 0; i < scoreMeterStars.Length; i++)
         {
             scoreMeterStars[i].SetActive(false);
+        }
+        if (currentLevel < 4)
+        {
+            destroyedLanes.Add(0);
+            destroyedLanes.Add(1);
+            destroyedLanes.Add(3);
+            destroyedLanes.Add(4);
+        }
+        else if(currentLevel > 3 && currentLevel < 10)
+        {
+            destroyedLanes.Add(0);
+            destroyedLanes.Add(3);
         }
     }
     void clear()
@@ -108,14 +123,22 @@ public class GameMaster : MonoBehaviour
         {
             if (i < 3)
                 boxes.Add(Instantiate(blueBox, boxPoints[i].position, Quaternion.identity) as GameObject);
-            else if (i < 6 && i > 2)
+            else if (i > 2 && i < 6)
                 boxes.Add(Instantiate(redBox, boxPoints[i].position, Quaternion.identity) as GameObject);
             else
             {
                 boxes.Add(Instantiate(ghostBox, boxPoints[i].position, Quaternion.identity) as GameObject);
             }
             if (i != 6)
-                boxes[i].transform.GetComponent<Box>().StartPos(i);
+                boxes[i].transform.GetComponent<Box>().StartPos(i); 
+        }
+        if (currentLevel < 4)
+        {
+            boxes[0].SetActive(false);
+            boxes[1].SetActive(false);
+            boxes[3].SetActive(false);
+            boxes[4].SetActive(false);
+            boxes.RemoveAt(6);
         }
         for (int i = 0; i < boxPoints.Count - 1; i++)
         {
@@ -199,18 +222,20 @@ public class GameMaster : MonoBehaviour
             spawnrateUp();
             spawnRateTime = Time.time + 30f;
         }
-
-        if (boxes[6].tag == "Blue Box" || boxes[6].tag == "Red Box")
+        if (currentLevel > 1)
         {
-            healEffect.SetActive(true);
-            if(healslot.GetComponent<MeshRenderer>().material.GetColor("_EmissionColor") != healemissive)
-                healslot.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", healemissive);
-        }
-        else  if(healEffect.activeSelf)
-        {
-            healEffect.SetActive(false);
-            if (healslot.GetComponent<MeshRenderer>().material.GetColor("_EmissionColor") == healemissive)
-                healslot.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", defaultcolor);
+            if (boxes.Last().tag == "Blue Box" || boxes.Last().tag == "Red Box")
+            {
+                healEffect.SetActive(true);
+                if (healslot.GetComponent<MeshRenderer>().material.GetColor("_EmissionColor") != healemissive)
+                    healslot.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", healemissive);
+            }
+            else if (healEffect.activeSelf)
+            {
+                healEffect.SetActive(false);
+                if (healslot.GetComponent<MeshRenderer>().material.GetColor("_EmissionColor") == healemissive)
+                    healslot.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", defaultcolor);
+            }
         }
         if ((blueScore +redScore) < 301)
         {

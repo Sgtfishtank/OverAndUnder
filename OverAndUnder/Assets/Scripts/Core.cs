@@ -9,7 +9,7 @@ public class Core : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        GM =GameObject.Find("Game Master").GetComponent<GameMaster>();
+        GM =GameObject.Find("Game Master(Clone)").GetComponent<GameMaster>();
         GameObject[] boxes =GM.boxes.ToArray();
         for (int i = 0; i < boxes.Length-1; i++)
         {

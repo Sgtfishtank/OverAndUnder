@@ -17,8 +17,8 @@ public class Abilitys : MonoBehaviour
     
     public AbilitysEnum currentActive;
     public bool selectingAbility = false;
-    private Color defaultcolor;
-    public Color slowcolor;
+    /*private Color defaultcolor;
+    public Color slowcolor;*/
     public Color blue;
     public Color red;
     public Color purple;
@@ -28,7 +28,10 @@ public class Abilitys : MonoBehaviour
     internal int slowRemaning;
 
     private bool blink;
+
     private float blinkInterwall;
+
+    private int currentLevel;
 
     private GameMaster GM;
     private float slowTime;
@@ -39,7 +42,7 @@ public class Abilitys : MonoBehaviour
     };
     void Start()
     {
-        ColorUtility.TryParseHtmlString("#00000000", out defaultcolor);
+        //ColorUtility.TryParseHtmlString("#00000000", out defaultcolor);
 
         SlowObj = Instantiate(SlowObj, Vector3.zero, Quaternion.identity) as GameObject;
         SlowObj.SetActive(false);
@@ -49,8 +52,9 @@ public class Abilitys : MonoBehaviour
         lanerenders = transform.GetComponentsInChildren<Transform>().Where(x => x.tag == "Lane").Select(x => x.transform.GetComponent<MeshRenderer>()).ToArray();
         initalize();
     }
-    public void Reset()
+    public void Reset(int level)
     {
+        currentLevel = level;
         initalize();
         slowTime = 0;
     }
@@ -86,10 +90,12 @@ public class Abilitys : MonoBehaviour
             slowReset();
 
         }
-
-        if (slowTime < Time.time)
+        if (currentLevel > 2)
         {
-            abb[0].isCD(false);
+            if (slowTime < Time.time)
+            {
+                abb[0].isCD(false);
+            }
         }
     }
     void slowReset()

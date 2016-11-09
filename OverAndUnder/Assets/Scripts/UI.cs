@@ -6,9 +6,10 @@ public class UI : MonoBehaviour {
     public Text[] textfields;
     public GameObject[] boxes;
     public GameObject[] scoreMeterStars;
+    public GameObject[] tutorialText;
     public new Camera camera;
     public GameObject GameOver;
-    public GameObject gamoverMesh;
+    public GameObject gameoverMesh;
     public GameObject MainMenuButton;
     public GameObject startMenu;
 
@@ -32,6 +33,7 @@ public class UI : MonoBehaviour {
     private int blueScoreEnd;
     private int redScoreEnd;
     public int stars;
+    private int currentLevel;
 
     private float scalefactor = (1.175139f - 0.01587644f) / 300;
     private float posfactor = (0.055496f - 0.05536f) / 300;
@@ -42,11 +44,16 @@ public class UI : MonoBehaviour {
     // Use this for initialization
     void Start () {
         //textfields = transform.GetComponentsInChildren<Text>();
-        GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
-        AM = GameObject.Find("Game Master").GetComponent<Abilitys>();
+        GM = GameObject.Find("Game Master(Clone)").GetComponent<GameMaster>();
+        AM = GameObject.Find("Game Master(Clone)").GetComponent<Abilitys>();
         boxes = GM.boxes.ToArray();
+        gameoverMesh = Instantiate(gameoverMesh, Vector3.zero, Quaternion.identity) as GameObject;
+        gameoverMesh.SetActive(true);
+        scoreMeterBlue = GameObject.FindGameObjectWithTag("Finish");
+        redParitcle = GameObject.Find("particles_gameover_crystalsred");
+        blueParitcle = GameObject.Find("particles_gameover_crystalsblue");
         GameOver.SetActive(false);
-        gamoverMesh.SetActive(false);
+        gameoverMesh.SetActive(false);
         MainMenuButton.SetActive(false);
         Settings.SetActive(false);
         Tutorial1.SetActive(false);
@@ -67,11 +74,12 @@ public class UI : MonoBehaviour {
         blueScoreBegin = 0;
         blueScoreEnd = 0;
     }
-    public void Reset()
+    public void Reset(int level)
     {
+        currentLevel = level;
         GameOver.SetActive(true);
-        gamoverMesh.SetActive(true);
-        GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
+        gameoverMesh.SetActive(true);
+        GM = GameObject.Find("Game Master(Clone)").GetComponent<GameMaster>();
         if(textfields.Length == 0)
             textfields = transform.GetComponentsInChildren<Text>();
         boxes = GM.boxes.ToArray();
@@ -80,7 +88,7 @@ public class UI : MonoBehaviour {
             textfields[i].gameObject.SetActive(true);
         }
         GameOver.SetActive(false);
-        gamoverMesh.SetActive(false);
+        gameoverMesh.SetActive(false);
         MainMenuButton.SetActive(false);
         for (int i = 0; i < GameOverStars.Length; i++)
         {
@@ -92,7 +100,24 @@ public class UI : MonoBehaviour {
         blueScoreBegin = 0;
         redScoreEnd = 0;
         blueScoreEnd = 0;
-
+        if(currentLevel == 1)
+        {
+            tutorialText[0].SetActive(true);
+            tutorialText[1].SetActive(false);
+            tutorialText[2].SetActive(false);
+        }
+        else if (currentLevel == 2)
+        {
+            tutorialText[0].SetActive(false);
+            tutorialText[1].SetActive(true);
+            tutorialText[2].SetActive(false);
+        }
+        else if (currentLevel == 3)
+        {
+            tutorialText[0].SetActive(false);
+            tutorialText[1].SetActive(false);
+            tutorialText[2].SetActive(true);
+        }
     }
 	
 	// Update is called once per frame
@@ -103,19 +128,25 @@ public class UI : MonoBehaviour {
             boxes = GM.boxes.ToArray();
             return;
         }
-        textfields[0].text = checkZero(boxes[0].transform.GetComponent<Box>().hp);
-        textfields[0].rectTransform.position = camera.WorldToScreenPoint(boxes[0].transform.localPosition) + new Vector3(0, 7, 0);
-        textfields[1].text = checkZero(boxes[1].transform.GetComponent<Box>().hp);
-        textfields[1].rectTransform.position = camera.WorldToScreenPoint(boxes[1].transform.localPosition) + new Vector3(0, 7, 0);
+        
         textfields[2].text = checkZero(boxes[2].transform.GetComponent<Box>().hp);
         textfields[2].rectTransform.position = camera.WorldToScreenPoint(boxes[2].transform.localPosition) + new Vector3(0, 7, 0);
-        textfields[5].text = checkZero(boxes[3].transform.GetComponent<Box>().hp);
-        textfields[5].rectTransform.position = camera.WorldToScreenPoint(boxes[3].transform.localPosition) + new Vector3(0, 7, 0);
-        textfields[4].text = checkZero(boxes[4].transform.GetComponent<Box>().hp);
-        textfields[4].rectTransform.position = camera.WorldToScreenPoint(boxes[4].transform.localPosition) + new Vector3(0, 7, 0);
-        textfields[3].text = checkZero(boxes[5].transform.GetComponent<Box>().hp);
-        textfields[3].rectTransform.position = camera.WorldToScreenPoint(boxes[5].transform.localPosition) + new Vector3(0, 7, 0);
-
+        textfields[5].text = checkZero(boxes[5].transform.GetComponent<Box>().hp);
+        textfields[5].rectTransform.position = camera.WorldToScreenPoint(boxes[5].transform.localPosition) + new Vector3(0, 7, 0);
+        if (currentLevel > 3)
+        {
+            textfields[1].text = checkZero(boxes[1].transform.GetComponent<Box>().hp);
+            textfields[1].rectTransform.position = camera.WorldToScreenPoint(boxes[1].transform.localPosition) + new Vector3(0, 7, 0);
+            textfields[4].text = checkZero(boxes[4].transform.GetComponent<Box>().hp);
+            textfields[4].rectTransform.position = camera.WorldToScreenPoint(boxes[4].transform.localPosition) + new Vector3(0, 7, 0);
+        }
+        else if (currentLevel > 9)
+        {
+            textfields[0].text = checkZero(boxes[0].transform.GetComponent<Box>().hp);
+            textfields[0].rectTransform.position = camera.WorldToScreenPoint(boxes[0].transform.localPosition) + new Vector3(0, 7, 0);
+            textfields[3].text = checkZero(boxes[3].transform.GetComponent<Box>().hp);
+            textfields[3].rectTransform.position = camera.WorldToScreenPoint(boxes[3].transform.localPosition) + new Vector3(0, 7, 0);
+        }
         totalScore = (GM.redScore + GM.blueScore);
         textfields[6].text = totalScore.ToString();
 
@@ -127,12 +158,15 @@ public class UI : MonoBehaviour {
 
         if(GM.GameOver)
         {
+            tutorialText[0].SetActive(false);
+            tutorialText[1].SetActive(false);
+            tutorialText[2].SetActive(false);
             for (int i = 0; i < 7; i++)
             {
                 textfields[i].gameObject.SetActive(false);
             }
             GameOver.SetActive(true);
-            gamoverMesh.SetActive(true);
+            gameoverMesh.SetActive(true);
             MainMenuButton.SetActive(true);
             for (int i = 0; i < GameOverStars.Length; i++)
             {
@@ -212,7 +246,7 @@ public class UI : MonoBehaviour {
         startMenu.SetActive(true);
         startMenu.GetComponent<MainMenu>().reset();
         gameObject.SetActive(false);
-        gamoverMesh.SetActive(false);
+        gameoverMesh.SetActive(false);
         GM.gameObject.SetActive(false);
         for(int i = 0; i < 6;i++)
         {

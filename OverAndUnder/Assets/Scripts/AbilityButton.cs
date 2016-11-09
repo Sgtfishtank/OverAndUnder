@@ -21,7 +21,7 @@ public class AbilityButton : MonoBehaviour
 
     void Start ()
     {
-        AM = GameObject.Find("Game Master").GetComponent<Abilitys>();
+        AM = GameObject.Find("Game Master(Clone)").GetComponent<Abilitys>();
         active = false;
         ColorUtility.TryParseHtmlString("#00000000", out defaultcolorEmisson);
         ColorUtility.TryParseHtmlString("#32538A00", out slowcolorEmission);

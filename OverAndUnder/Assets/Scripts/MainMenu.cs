@@ -29,14 +29,15 @@ public class MainMenu : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        //GM = GameObject.Find("Game Master");
+        GM = Instantiate(GM, new Vector3(-2.15f,0,0), Quaternion.identity) as GameObject;
         GM.SetActive(false);
         InGameUI.SetActive(false);
-        Upgrades = GameObject.Find("mesh_upgradescreen");
-        LevelSelect = GameObject.Find("mesh_levelselect 1");
-        StartScreen = GameObject.Find("startscreen_new");
+        Upgrades = Instantiate(Upgrades, Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
+        LevelSelect = Instantiate(LevelSelect,Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
+        StartScreen = Instantiate(StartScreen, Vector3.zero, Quaternion.Euler(0,180,0)) as GameObject;
         Upgrades.SetActive(false);
         LevelSelect.SetActive(false);
+        StartScreen.SetActive(true);
         //Screen.SetResolution(Screen.width, Screen.height, false);
     }
     public void reset()
@@ -61,18 +62,19 @@ public class MainMenu : MonoBehaviour
         LevelButtons.SetActive(true);
         LevelSelect.SetActive(true);
         MainMenuButton.SetActive(true);
-        //LevelPlayed = level;
+        
     }
-    public void StartGameFunc()
+    public void StartGameFunc(int level)
     {
         GM.SetActive(true);
-        GM.GetComponent<GameMaster>().Reset();
-        GM.GetComponent<Abilitys>().Reset();
+        GM.GetComponent<GameMaster>().Reset(level);
+        GM.GetComponent<Abilitys>().Reset(level);
         InGameUI.SetActive(true);
-        InGameUI.GetComponent<UI>().Reset();
+        InGameUI.GetComponent<UI>().Reset(level);
         StartScreen.SetActive(false);
         gameObject.SetActive(false);
         LevelSelect.SetActive(false);
+        //LevelPlayed = level;
     }
     public void SettingsFunc()
     {

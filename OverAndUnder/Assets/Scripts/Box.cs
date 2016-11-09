@@ -7,7 +7,7 @@ using System;
 public class Box : MonoBehaviour
 {
     public new Camera camera;
-    public Transform[] BoxSlots;
+    public List<Transform> BoxSlots;
     public int Slot;
     public GameMaster GM;
 
@@ -38,19 +38,22 @@ public class Box : MonoBehaviour
     private bool movable = true;
     private bool selected = false;
     internal int currentMultiplier = 1;
+    private int currentLevel;
 
     // Use this for initialization
     void Start ()
     {
         ColorUtility.TryParseHtmlString("#909090FF", out grey);
         camera = GameObject.Find("camera_main").GetComponent<Camera>();
-        GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
-        AM = GameObject.Find("Game Master").GetComponent<Abilitys>();
-        BoxSlots = GM.boxPoints.ToArray();
+        GM = GameObject.Find("Game Master(Clone)").GetComponent<GameMaster>();
+        AM = GameObject.Find("Game Master(Clone)").GetComponent<Abilitys>();
+        BoxSlots = GM.boxPoints;
+        currentLevel = GM.currentLevel;
         psMaster.SetActive(false);
         brokenBox.transform.parent.gameObject.SetActive(false);
         temp = fullBox.transform.GetComponentsInChildren<Transform>();
-
+        if (currentLevel == 1 && BoxSlots.Count == 7)
+            BoxSlots.RemoveAt(6);
     }
     
 
@@ -59,7 +62,7 @@ public class Box : MonoBehaviour
     {
         if (moving == 2)
         {
-            for (int i = 0; i < BoxSlots.Length; i++)
+            for (int i = 0; i < BoxSlots.Count; i++)
             {
                 if (Mathf.Abs((transform.position.x - BoxSlots[i].position.x)) <= 0.75f && Mathf.Abs((transform.position.y - BoxSlots[i].position.y)) <= 0.75f)
                 {
@@ -147,12 +150,15 @@ public class Box : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, BoxSlots[Slot].position, speed * Time.deltaTime);
                 
         }
-        if(Slot == BoxSlots.Length-1)
+        if (currentLevel != 1)
         {
-            if(healTimer < Time.time && hp < 10)
+            if (Slot == BoxSlots.Count - 1)
             {
-                hp++;
-                healTimer = Time.time + healCD;
+                if (healTimer < Time.time && hp < 10)
+                {
+                    hp++;
+                    healTimer = Time.time + healCD;
+                }
             }
         }
     }
@@ -214,7 +220,7 @@ public class Box : MonoBehaviour
             move = false;
             selected = false;
             GM.unLockBoxes(Slot);
-            for (int i = 0; i < BoxSlots.Length; i++)
+            for (int i = 0; i < BoxSlots.Count; i++)
             {
                 if (Mathf.Abs((transform.position.x - BoxSlots[i].position.x)) <= 0.75f && Mathf.Abs((transform.position.y - BoxSlots[i].position.y)) <= 0.75f)
                 {

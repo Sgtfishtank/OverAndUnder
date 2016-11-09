@@ -131,6 +131,7 @@ public class GameMaster : MonoBehaviour
     }
     void initalize()
     {
+        print(ConfigReader.Instance.getValue("Att"));
         Transform parent = GameObject.Find("Ball Objects").transform;
         lanetextscript = transform.GetComponentsInChildren<Transform>().Where(x => x.tag == "Lane").Select(x => x.transform.GetComponent<ScrollingTexture>()).ToArray();
         

@@ -50,10 +50,11 @@ public class UI : MonoBehaviour {
         gameoverMesh = Instantiate(gameoverMesh, Vector3.zero, Quaternion.identity) as GameObject;
         gameoverMesh.SetActive(true);
         scoreMeterBlue = GameObject.FindGameObjectWithTag("Finish");
+        scoreMeterStars = GameObject.FindGameObjectsWithTag("Respawn");
         redParitcle = GameObject.Find("particles_gameover_crystalsred");
         blueParitcle = GameObject.Find("particles_gameover_crystalsblue");
         GameOver.SetActive(false);
-        gameoverMesh.SetActive(false);
+        
         MainMenuButton.SetActive(false);
         Settings.SetActive(false);
         Tutorial1.SetActive(false);
@@ -64,8 +65,10 @@ public class UI : MonoBehaviour {
         for (int i = 0; i < GameOverStars.Length; i++)
         {
             GameOverStars[i].SetActive(false);
+            //scoreMeterStars[i].SetActive(false);
             GameOverStars[i].transform.parent.gameObject.SetActive(false);
         }
+        gameoverMesh.SetActive(false);
         first = false;
         redParitcle.SetActive(true);
         blueParitcle.SetActive(true);
@@ -87,14 +90,16 @@ public class UI : MonoBehaviour {
         {
             textfields[i].gameObject.SetActive(true);
         }
-        GameOver.SetActive(false);
-        gameoverMesh.SetActive(false);
-        MainMenuButton.SetActive(false);
         for (int i = 0; i < GameOverStars.Length; i++)
         {
             GameOverStars[i].SetActive(false);
             GameOverStars[i].transform.parent.gameObject.SetActive(false);
+            //scoreMeterStars[i].SetActive(false);
         }
+        GameOver.SetActive(false);
+        gameoverMesh.SetActive(false);
+        MainMenuButton.SetActive(false);
+        
         first = false;
         redScoreBegin = 0;
         blueScoreBegin = 0;
@@ -179,16 +184,19 @@ public class UI : MonoBehaviour {
             textfields[10].text = totalScoreCount.ToString();
             if (totalScoreCount > 299 && !GameOverStars[2].activeSelf)
             {
+                scoreMeterStars[0].SetActive(true);
                 GameOverStars[2].SetActive(true);
                 stars++;
             }
             if (totalScoreCount > 199 && !GameOverStars[1].activeSelf)
             {
+                scoreMeterStars[1].SetActive(true);
                 GameOverStars[1].SetActive(true);
                 stars++;
             }
             if (totalScoreCount > 99 && !GameOverStars[0].activeSelf)
             {
+                scoreMeterStars[2].SetActive(true);
                 GameOverStars[0].SetActive(true);
                 stars++;
             }
@@ -229,17 +237,6 @@ public class UI : MonoBehaviour {
             scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.055496f + (posfactor * (redScoreBegin + blueScoreBegin)), scoreMeterBlue.transform.localPosition.z);
             scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01587644f + (scalefactor * (redScoreBegin + blueScoreBegin)), scoreMeterBlue.transform.localScale.z);
         }
-        else
-        {
-            scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.055496f + (posfactor * 300), scoreMeterBlue.transform.localPosition.z);
-            scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01587644f + (scalefactor * 300), scoreMeterBlue.transform.localScale.z);
-        }
-        if (GM.blueScore > 99 && GM.redScore > 99)
-            scoreMeterStars[0].SetActive(true);
-        if (GM.blueScore > 199 && GM.redScore > 199)
-            scoreMeterStars[1].SetActive(true);
-        if (GM.blueScore > 299 && GM.redScore > 299)
-            scoreMeterStars[2].SetActive(true);
     }
     public void mainMenu()
     {
@@ -257,6 +254,8 @@ public class UI : MonoBehaviour {
         {
             GameOverStars[i].transform.parent.gameObject.SetActive(false);
         }
+        ConfigReader.Instance.changeValue("Crystals", ConfigReader.Instance.getValue("Crystals") + totalScore);
+        ConfigReader.Instance.changeValue("StarsLevel" + currentLevel, stars);
     }
     public void SettingsFunc()
     {

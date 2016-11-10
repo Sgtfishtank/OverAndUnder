@@ -61,6 +61,7 @@ public class GameMaster : MonoBehaviour
         
         clear();
         initalize();
+        print(boxPoints.Count());
     }
     public void Reset(int level)
     {
@@ -119,6 +120,7 @@ public class GameMaster : MonoBehaviour
             covers[0].SetActive(false);
             covers[1].SetActive(false);
         }
+        print(boxPoints.Count());
     }
     void clear()
     {
@@ -137,7 +139,7 @@ public class GameMaster : MonoBehaviour
         boxes.Clear();
         balls.Clear();
         cores.Clear();
-
+        print(boxPoints.Count());
     }
     void initalize()
     {
@@ -184,10 +186,11 @@ public class GameMaster : MonoBehaviour
             balls[i].SetActive(false);
             balls[i].transform.parent = parent;
         }
+        print(boxPoints.Count());
     }
     void Update()
     {
-        if(GameOver)
+        if (GameOver)
         {
             return;
         }

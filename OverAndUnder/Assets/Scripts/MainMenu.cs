@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
@@ -38,16 +39,12 @@ public class MainMenu : MonoBehaviour
         Upgrades.SetActive(false);
         LevelSelect.SetActive(false);
         StartScreen.SetActive(true);
-        //Screen.SetResolution(Screen.width, Screen.height, false);
     }
     public void reset()
     {
         InGameUI.SetActive(false);
         StartScreen.SetActive(true);
         StartGameButton.SetActive(true);
-        bluescore += GM.GetComponent<GameMaster>().blueScore;
-        redscore +=  GM.GetComponent<GameMaster>().redScore;
-        
     }
 	
 	// Update is called once per frame
@@ -62,7 +59,12 @@ public class MainMenu : MonoBehaviour
         LevelButtons.SetActive(true);
         LevelSelect.SetActive(true);
         MainMenuButton.SetActive(true);
-        
+        Button[] buttons = LevelButtons.GetComponentsInChildren<Button>();
+        for (int i = 1; i < buttons.Length; i++)
+        {
+            buttons[i].gameObject.SetActive(false);
+        }
+        levelSelectButtons();
     }
     public void StartGameFunc(int level)
     {
@@ -74,7 +76,7 @@ public class MainMenu : MonoBehaviour
         StartScreen.SetActive(false);
         gameObject.SetActive(false);
         LevelSelect.SetActive(false);
-        //LevelPlayed = level;
+        LevelPlayed = level;
     }
     public void SettingsFunc()
     {
@@ -86,14 +88,6 @@ public class MainMenu : MonoBehaviour
         MainMenuButton.SetActive(true);
 
     }
-    public void TutorialFunc()
-    {
-        Settings.SetActive(false);
-        TutorialButton.SetActive(false);
-        Tutorial1.SetActive(true);
-        NextTutButton.SetActive(true);
-        Tut = 1;
-    }
     public void UppgradeFunc()
     {
         StartGameButton.SetActive(false);
@@ -102,23 +96,6 @@ public class MainMenu : MonoBehaviour
         Upgrades.SetActive(true);
         UpgradeSkillButtons.SetActive(true);
         MainMenuButton.SetActive(true);
-    }
-    public void TutorialNextFunc()
-    {
-        if(Tut == 1)
-        {
-            Tutorial1.SetActive(false);
-            Tutorial2.SetActive(true);
-            Tut++;
-        }
-        else
-        {
-            Tutorial2.SetActive(false);
-            NextTutButton.SetActive(false);
-            Settings.SetActive(true);
-            MainMenuButton.SetActive(true);
-        }
-
     }
     public void MainMenuFunc()
     {
@@ -166,6 +143,19 @@ public class MainMenu : MonoBehaviour
         {
             print("red 3");
             redscore -= 300;
+        }
+    }
+    public void UpgradeShiled(int nr)
+    {}
+    public void levelSelectButtons()
+    {
+        Button[] buttons = LevelButtons.GetComponentsInChildren<Button>();
+        for (int i = 1; i < buttons.Length; i++)
+        {
+            if(ConfigReader.Instance.getValue("StarsLevel"+(i+1)) >0)
+            {
+                buttons[i].gameObject.SetActive(true);
+            }
         }
     }
 }

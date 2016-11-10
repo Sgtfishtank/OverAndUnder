@@ -47,7 +47,7 @@ public class Box : MonoBehaviour
         camera = GameObject.Find("camera_main").GetComponent<Camera>();
         GM = GameObject.Find("Game Master(Clone)").GetComponent<GameMaster>();
         AM = GameObject.Find("Game Master(Clone)").GetComponent<Abilitys>();
-        BoxSlots = GM.boxPoints;
+        BoxSlots = GM.boxPoints.GetRange(0, GM.boxPoints.Count);
         currentLevel = GM.currentLevel;
         psMaster.SetActive(false);
         brokenBox.transform.parent.gameObject.SetActive(false);

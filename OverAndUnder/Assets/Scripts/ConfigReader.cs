@@ -7,11 +7,13 @@ using System;
 public class ConfigReader
 {
     public string[] lines;
+    static FileStream fs;
+    private static string path = "Config.txt";
 
     private static ConfigReader instance = null;
     private ConfigReader()
     {
-        lines = File.ReadAllLines("Config.txt");
+        lines = File.ReadAllLines(path);
     }
     public static ConfigReader Instance
     {
@@ -34,6 +36,19 @@ public class ConfigReader
         }
         return 0;
     }
-    /*void Start() { }
-    void Update() { }*/
+    public void changeValue(string name, int value)
+    {
+        int counter = 0;
+        foreach (string s in lines)
+        {
+            string[] sp = Regex.Split(s, @"-\s");
+            if (sp[0] == name)
+            {
+                lines[counter] = name + "- " + value;
+            }
+            counter++;
+        }
+        File.WriteAllLines(path, lines);
+        lines = File.ReadAllLines(path);
+    }
 }

@@ -1,5 +1,2 @@
-Hej- -1
-Jag- 4
-Vill- 5
-Att- 2
-Du- 10
+Hej- 10
+Att- 10

@@ -12,6 +12,7 @@ public class GameMaster : MonoBehaviour
     public List<Transform> boxPoints;
     public List<Transform> BallSpawnPoints;
     public ScrollingTexture[] lanetextscript;
+    public GameObject[] covers;
     public List<int> destroyedLanes;
     public GameObject[] scoreMeterStars;
     public GameObject[] healBox;
@@ -99,6 +100,8 @@ public class GameMaster : MonoBehaviour
         }
         if (currentLevel < 4)
         {
+            covers[0].SetActive(true);
+            covers[1].SetActive(false);
             destroyedLanes.Add(0);
             destroyedLanes.Add(1);
             destroyedLanes.Add(3);
@@ -106,8 +109,15 @@ public class GameMaster : MonoBehaviour
         }
         else if(currentLevel > 3 && currentLevel < 10)
         {
+            covers[0].SetActive(false);
+            covers[1].SetActive(true);
             destroyedLanes.Add(0);
             destroyedLanes.Add(3);
+        }
+        else
+        {
+            covers[0].SetActive(false);
+            covers[1].SetActive(false);
         }
     }
     void clear()

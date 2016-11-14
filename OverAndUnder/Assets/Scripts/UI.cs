@@ -43,7 +43,6 @@ public class UI : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        //textfields = transform.GetComponentsInChildren<Text>();
         GM = GameObject.Find("Game Master(Clone)").GetComponent<GameMaster>();
         AM = GameObject.Find("Game Master(Clone)").GetComponent<Abilitys>();
         boxes = GM.boxes.ToArray();
@@ -65,7 +64,7 @@ public class UI : MonoBehaviour {
         for (int i = 0; i < GameOverStars.Length; i++)
         {
             GameOverStars[i].SetActive(false);
-            //scoreMeterStars[i].SetActive(false);
+            scoreMeterStars[i].SetActive(false);
             GameOverStars[i].transform.parent.gameObject.SetActive(false);
         }
         gameoverMesh.SetActive(false);
@@ -94,7 +93,8 @@ public class UI : MonoBehaviour {
         {
             GameOverStars[i].SetActive(false);
             GameOverStars[i].transform.parent.gameObject.SetActive(false);
-            //scoreMeterStars[i].SetActive(false);
+            if(scoreMeterStars[0] != null)
+                scoreMeterStars[i].SetActive(false);
         }
         GameOver.SetActive(false);
         gameoverMesh.SetActive(false);
@@ -133,7 +133,6 @@ public class UI : MonoBehaviour {
             boxes = GM.boxes.ToArray();
             return;
         }
-        
         textfields[2].text = checkZero(boxes[2].transform.GetComponent<Box>().hp);
         textfields[2].rectTransform.position = camera.WorldToScreenPoint(boxes[2].transform.localPosition) + new Vector3(0, 7, 0);
         textfields[5].text = checkZero(boxes[5].transform.GetComponent<Box>().hp);
@@ -154,7 +153,6 @@ public class UI : MonoBehaviour {
         }
         totalScore = (GM.redScore + GM.blueScore);
         textfields[6].text = totalScore.ToString();
-
         /*textfields[7].text = GM.blueScore.ToString();
         textfields[8].text = GM.redScore.ToString();*/
         int temp = (int)Mathf.Clamp((AM.slowRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity);
@@ -163,6 +161,7 @@ public class UI : MonoBehaviour {
 
         if(GM.GameOver)
         {
+            
             tutorialText[0].SetActive(false);
             tutorialText[1].SetActive(false);
             tutorialText[2].SetActive(false);
@@ -245,10 +244,7 @@ public class UI : MonoBehaviour {
         gameObject.SetActive(false);
         gameoverMesh.SetActive(false);
         GM.gameObject.SetActive(false);
-        for(int i = 0; i < 6;i++)
-        {
-            GM.boxes[i].SetActive(false);
-        }
+        GM.clear();
 
         for (int i = 0; i < GameOverStars.Length; i++)
         {

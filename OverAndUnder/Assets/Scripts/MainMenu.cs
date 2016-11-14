@@ -43,6 +43,8 @@ public class MainMenu : MonoBehaviour
     public void reset()
     {
         InGameUI.SetActive(false);
+        LevelSelect.SetActive(false);
+        LevelButtons.SetActive(false);
         StartScreen.SetActive(true);
         StartGameButton.SetActive(true);
     }

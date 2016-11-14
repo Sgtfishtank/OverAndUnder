@@ -1,5 +1,5 @@
-Crystals- 174
-StarsLevel1- 1
+Crystals- 523
+StarsLevel1- 0
 StarsLevel2- 0
 StarsLevel3- 0
 StarsLevel4- 0

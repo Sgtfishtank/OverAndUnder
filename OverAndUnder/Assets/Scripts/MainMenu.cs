@@ -2,6 +2,7 @@
 using UnityEngine.Events;
 using System.Collections;
 using UnityEngine.UI;
+using System.Linq;
 
 public class MainMenu : MonoBehaviour
 {
@@ -21,6 +22,14 @@ public class MainMenu : MonoBehaviour
     public GameObject InGameUI;
     public GameObject Upgrades;
     public GameObject UpgradeSkillButtons;
+    public GameObject[] levelStars;
+    public GameObject[] forwardArrows;
+    public GameObject[] levelRomb;
+    public Material matArrows1;
+    public Material matArrows2;
+    public Material matBackground1;
+    public Material matBackground2;
+    public GameObject[] locks;
     int Tut = 1;
     public int bluescore;
     public int redscore;
@@ -36,6 +45,10 @@ public class MainMenu : MonoBehaviour
         Upgrades = Instantiate(Upgrades, Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         LevelSelect = Instantiate(LevelSelect,Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         StartScreen = Instantiate(StartScreen, Vector3.zero, Quaternion.Euler(0,180,0)) as GameObject;
+        levelStars = GameObject.FindGameObjectsWithTag("LevelStars");
+        forwardArrows = GameObject.FindGameObjectsWithTag("ForwardArrows");
+        locks = GameObject.FindGameObjectsWithTag("Locks");
+        levelRomb = GameObject.FindGameObjectsWithTag("MenuBackButton");
         Upgrades.SetActive(false);
         LevelSelect.SetActive(false);
         StartScreen.SetActive(true);
@@ -151,7 +164,8 @@ public class MainMenu : MonoBehaviour
     {}
     public void levelSelectButtons()
     {
-        Button[] buttons = LevelButtons.GetComponentsInChildren<Button>();
+        Button[] buttons = LevelButtons.GetComponentsInChildren<Button>(true);
+
         for (int i = 1; i < buttons.Length; i++)
         {
             if(ConfigReader.Instance.getValue("StarsLevel"+(i+1)) >0)
@@ -159,5 +173,71 @@ public class MainMenu : MonoBehaviour
                 buttons[i].gameObject.SetActive(true);
             }
         }
+        for (int i = 0; i < levelStars.Length; i++)
+        {
+            int stars = ConfigReader.Instance.getValue("StarsLevel" + (i + 1));
+            if (stars > 0)
+            {
+                GameObject[] temp = levelStars[i].GetComponentsInChildren<Transform>(true).Where(x=>x.name == "mesh_levelselect_starcore").Select(x => x.transform.gameObject).ToArray();
+                if(stars == 1)
+                {
+                    temp[0].SetActive(true);
+                }
+                if (stars == 2)
+                {
+                    temp[1].SetActive(true);
+                }
+                if (stars == 3)
+                {
+                    temp[2].SetActive(true);
+                }
+
+            }
+        }
+        int increes = 1;
+        for(int i = 0; i < 12; i++)
+        {
+            if(i == 2)
+                increes++;
+            int stars = ConfigReader.Instance.getValue("StarsLevel" + (i + increes));
+            if(stars > 0)
+            {
+                forwardArrows[i].GetComponent<MeshRenderer>().sharedMaterial = matArrows1;
+            }
+            else
+            {
+                forwardArrows[i].GetComponent<MeshRenderer>().sharedMaterial = matArrows2;
+            }
+
+        }
+        for(int i = 0; i < 15; i++)
+        {
+            int stars = ConfigReader.Instance.getValue("StarsLevel" + (i + 1));
+            if (stars > 0)
+            {
+                levelRomb[i].GetComponent<MeshRenderer>().sharedMaterial = matArrows1;
+            }
+            else
+            {
+                levelRomb[i].GetComponent<MeshRenderer>().sharedMaterial = matBackground2;
+            }
+        }
+        int totalstars =0;
+        for(int i = 1; i< 16; i++)
+        {
+            totalstars += ConfigReader.Instance.getValue("StarsLevel" + (i));
+        }
+        if(totalstars >6)
+        {
+            locks[0].GetComponent<MeshRenderer>().sharedMaterial = matBackground1;
+            locks[2].SetActive(false);
+        }
+        if (totalstars > 18)
+        {
+            locks[1].GetComponent<MeshRenderer>().sharedMaterial = matBackground1;
+            locks[3].SetActive(false);
+        }
+
+
     }
 }

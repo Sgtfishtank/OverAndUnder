@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using System.Collections;
 using UnityEngine.UI;
 using System.Linq;
+using System;
 
 public class MainMenu : MonoBehaviour
 {
@@ -45,10 +46,10 @@ public class MainMenu : MonoBehaviour
         Upgrades = Instantiate(Upgrades, Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         LevelSelect = Instantiate(LevelSelect,Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         StartScreen = Instantiate(StartScreen, Vector3.zero, Quaternion.Euler(0,180,0)) as GameObject;
-        levelStars = GameObject.FindGameObjectsWithTag("LevelStars");
-        forwardArrows = GameObject.FindGameObjectsWithTag("ForwardArrows");
-        locks = GameObject.FindGameObjectsWithTag("Locks");
-        levelRomb = GameObject.FindGameObjectsWithTag("MenuBackButton");
+        levelStars = GameObject.FindGameObjectsWithTag("LevelStars").OrderBy(go => go.name).ToArray();
+        forwardArrows = GameObject.FindGameObjectsWithTag("ForwardArrows").OrderBy(go => go.name).ToArray();
+        locks = GameObject.FindGameObjectsWithTag("Locks").OrderBy(go => go.name).ToArray();
+        levelRomb = GameObject.FindGameObjectsWithTag("MenuBackButton").OrderBy(go => go.name).ToArray();
         Upgrades.SetActive(false);
         LevelSelect.SetActive(false);
         StartScreen.SetActive(true);
@@ -169,12 +170,12 @@ public class MainMenu : MonoBehaviour
         {
             totalstars += ConfigReader.Instance.getValue("StarsLevel" + (i));
         }
-        if (totalstars > 6)
+        if (totalstars > 5)
         {
             locks[0].GetComponent<MeshRenderer>().sharedMaterial = matBackground1;
             locks[2].SetActive(false);
         }
-        if (totalstars > 18)
+        if (totalstars > 17)
         {
             locks[1].GetComponent<MeshRenderer>().sharedMaterial = matBackground1;
             locks[3].SetActive(false);

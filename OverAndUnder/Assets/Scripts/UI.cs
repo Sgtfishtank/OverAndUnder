@@ -11,6 +11,7 @@ public class UI : MonoBehaviour {
     public GameObject GameOver;
     public GameObject gameoverMesh;
     public GameObject MainMenuButton;
+    public GameObject RestartButton;
     public GameObject startMenu;
 
     GameMaster GM;
@@ -44,7 +45,7 @@ public class UI : MonoBehaviour {
     // Use this for initialization
     void Start () {
         GM = GameObject.Find("Game Master(Clone)").GetComponent<GameMaster>();
-        AM = GameObject.Find("Game Master(Clone)").GetComponent<Abilitys>();
+        AM = GM.transform.GetComponent<Abilitys>();
         boxes = GM.boxes.ToArray();
         gameoverMesh = Instantiate(gameoverMesh, Vector3.zero, Quaternion.identity) as GameObject;
         gameoverMesh.SetActive(true);
@@ -55,6 +56,7 @@ public class UI : MonoBehaviour {
         GameOver.SetActive(false);
         
         MainMenuButton.SetActive(false);
+        RestartButton.SetActive(false);
         Settings.SetActive(false);
         Tutorial1.SetActive(false);
         Tutorial2.SetActive(false);
@@ -99,7 +101,8 @@ public class UI : MonoBehaviour {
         GameOver.SetActive(false);
         gameoverMesh.SetActive(false);
         MainMenuButton.SetActive(false);
-        
+        RestartButton.SetActive(false);
+
         first = false;
         redScoreBegin = 0;
         blueScoreBegin = 0;
@@ -153,8 +156,6 @@ public class UI : MonoBehaviour {
         }
         totalScore = (GM.redScore + GM.blueScore);
         textfields[6].text = totalScore.ToString();
-        /*textfields[7].text = GM.blueScore.ToString();
-        textfields[8].text = GM.redScore.ToString();*/
         int temp = (int)Mathf.Clamp((AM.slowRemaning - Mathf.FloorToInt(Time.time)), 0, Mathf.Infinity);
 
             textfields[7].text = checkZero(temp);
@@ -172,6 +173,7 @@ public class UI : MonoBehaviour {
             GameOver.SetActive(true);
             gameoverMesh.SetActive(true);
             MainMenuButton.SetActive(true);
+            RestartButton.SetActive(true);
             for (int i = 0; i < GameOverStars.Length; i++)
             {
                 GameOverStars[i].transform.parent.gameObject.SetActive(true);
@@ -251,7 +253,28 @@ public class UI : MonoBehaviour {
             GameOverStars[i].transform.parent.gameObject.SetActive(false);
         }
         ConfigReader.Instance.changeValue("Crystals", ConfigReader.Instance.getValue("Crystals") + totalScore);
-        ConfigReader.Instance.changeValue("StarsLevel" + currentLevel, stars);
+        if(stars >ConfigReader.Instance.getValue("StarsLevel" + currentLevel))
+            ConfigReader.Instance.changeValue("StarsLevel" + currentLevel, stars);
+    }
+    public void Restart()
+    {
+        GameOver.SetActive(false);
+        gameoverMesh.SetActive(false);
+        GM.clear();
+
+        for (int i = 0; i < GameOverStars.Length; i++)
+        {
+            GameOverStars[i].transform.parent.gameObject.SetActive(false);
+        }
+        ConfigReader.Instance.changeValue("Crystals", ConfigReader.Instance.getValue("Crystals") + totalScore);
+        if (stars > ConfigReader.Instance.getValue("StarsLevel" + currentLevel))
+            ConfigReader.Instance.changeValue("StarsLevel" + currentLevel, stars);
+        for (int i = 0; i < 7; i++)
+        {
+            textfields[i].gameObject.SetActive(true);
+        }
+        GM.Reset(currentLevel);
+        Reset(currentLevel);
     }
     public void SettingsFunc()
     {

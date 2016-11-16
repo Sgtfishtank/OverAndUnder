@@ -65,14 +65,18 @@ public class GameMaster : MonoBehaviour
     public void Reset(int level)
     {
         currentLevel = level;
-        if(currentLevel == 2)
+        if(currentLevel < 2)
         {
             for (int i = 0; i < healBox.Length; i++)
             {
                 healBox[i].SetActive(true);
             }
+            for (int i = 0; i < SkillStuff.Length; i++)
+            {
+                SkillStuff[i].SetActive(true);
+            }
         }
-        if(currentLevel == 3)
+        if(currentLevel < 3)
         {
             for (int i = 0; i < SkillStuff.Length; i++)
             {

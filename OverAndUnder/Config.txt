@@ -1,8 +1,8 @@
 Crystals- 523
 StarsLevel1- 2
 StarsLevel2- 2
-StarsLevel3- 2
-StarsLevel4- 1
+StarsLevel3- 1
+StarsLevel4- 0
 StarsLevel5- 0
 StarsLevel6- 0
 StarsLevel7- 0

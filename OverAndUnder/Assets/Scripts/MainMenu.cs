@@ -164,13 +164,38 @@ public class MainMenu : MonoBehaviour
     {}
     public void levelSelectButtons()
     {
+        int totalstars = 0;
+        for (int i = 1; i < 16; i++)
+        {
+            totalstars += ConfigReader.Instance.getValue("StarsLevel" + (i));
+        }
+        if (totalstars > 6)
+        {
+            locks[0].GetComponent<MeshRenderer>().sharedMaterial = matBackground1;
+            locks[2].SetActive(false);
+        }
+        if (totalstars > 18)
+        {
+            locks[1].GetComponent<MeshRenderer>().sharedMaterial = matBackground1;
+            locks[3].SetActive(false);
+        }
+        Text[] text = LevelButtons.GetComponentsInChildren<Text>(true);
+        text[0].text = Mathf.Min(totalstars, 6).ToString();
+        text[3].text = Mathf.Min(totalstars, 18).ToString();
+
+
         Button[] buttons = LevelButtons.GetComponentsInChildren<Button>(true);
 
         for (int i = 1; i < buttons.Length; i++)
         {
-            if(ConfigReader.Instance.getValue("StarsLevel"+(i+1)) >0)
+            if(ConfigReader.Instance.getValue("StarsLevel"+(i)) >0)
             {
-                buttons[i].gameObject.SetActive(true);
+                if (i == 3 && totalstars < 6)
+                {}
+                else if (i == 9 && totalstars < 18)
+                {}
+                else
+                    buttons[i].gameObject.SetActive(true);
             }
         }
         for (int i = 0; i < levelStars.Length; i++)
@@ -179,11 +204,11 @@ public class MainMenu : MonoBehaviour
             if (stars > 0)
             {
                 GameObject[] temp = levelStars[i].GetComponentsInChildren<Transform>(true).Where(x=>x.name == "mesh_levelselect_starcore").Select(x => x.transform.gameObject).ToArray();
-                if(stars == 1)
+                if(stars >= 1)
                 {
                     temp[0].SetActive(true);
                 }
-                if (stars == 2)
+                if (stars >= 2)
                 {
                     temp[1].SetActive(true);
                 }
@@ -210,9 +235,9 @@ public class MainMenu : MonoBehaviour
             }
 
         }
-        for(int i = 0; i < 15; i++)
+        for(int i = 1; i < 15; i++)
         {
-            int stars = ConfigReader.Instance.getValue("StarsLevel" + (i + 1));
+            int stars = ConfigReader.Instance.getValue("StarsLevel" + (i));
             if (stars > 0)
             {
                 levelRomb[i].GetComponent<MeshRenderer>().sharedMaterial = matArrows1;
@@ -221,23 +246,12 @@ public class MainMenu : MonoBehaviour
             {
                 levelRomb[i].GetComponent<MeshRenderer>().sharedMaterial = matBackground2;
             }
+            if ((i == 3 && totalstars < 6) || (i == 9 && totalstars < 18))
+            {
+                levelRomb[i].GetComponent<MeshRenderer>().sharedMaterial = matBackground2;
+            }
         }
-        int totalstars =0;
-        for(int i = 1; i< 16; i++)
-        {
-            totalstars += ConfigReader.Instance.getValue("StarsLevel" + (i));
-        }
-        if(totalstars >6)
-        {
-            locks[0].GetComponent<MeshRenderer>().sharedMaterial = matBackground1;
-            locks[2].SetActive(false);
-        }
-        if (totalstars > 18)
-        {
-            locks[1].GetComponent<MeshRenderer>().sharedMaterial = matBackground1;
-            locks[3].SetActive(false);
-        }
-
+        
 
     }
 }

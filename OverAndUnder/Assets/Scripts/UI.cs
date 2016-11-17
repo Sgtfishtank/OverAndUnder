@@ -162,7 +162,8 @@ public class UI : MonoBehaviour {
 
         if(GM.GameOver)
         {
-            
+            startMenu.GetComponent<MainMenu>().lights.SetActive(true);
+            startMenu.GetComponent<MainMenu>().lightsIngame.SetActive(false);
             tutorialText[0].SetActive(false);
             tutorialText[1].SetActive(false);
             tutorialText[2].SetActive(false);
@@ -321,6 +322,8 @@ public class UI : MonoBehaviour {
         TutorialButton.SetActive(false);
         NextTutButton.SetActive(false);
         ContinueGameButton.SetActive(false);
+        startMenu.GetComponent<MainMenu>().lightsIngame.SetActive(true);
+        startMenu.GetComponent<MainMenu>().lights.SetActive(false);
         for (int i = 0; i < textfields.Length; i++)
         {
             textfields[i].gameObject.SetActive(true);

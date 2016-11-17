@@ -1,4 +1,4 @@
-Crystals- 540
+Crystals- 551
 StarsLevel1- 2
 StarsLevel2- 2
 StarsLevel3- 1

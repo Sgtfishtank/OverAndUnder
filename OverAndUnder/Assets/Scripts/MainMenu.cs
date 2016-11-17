@@ -32,7 +32,9 @@ public class MainMenu : MonoBehaviour
     public Material matBackground1;
     public Material matBackground2;
     public GameObject[] locks;
-    private GameObject credits;
+    public GameObject credits;
+    public GameObject lights;
+    public GameObject lightsIngame;
     int Tut = 1;
     public int bluescore;
     public int redscore;
@@ -54,9 +56,13 @@ public class MainMenu : MonoBehaviour
         locks = GameObject.FindGameObjectsWithTag("Locks").OrderBy(go => go.name).ToArray();
         levelRomb = GameObject.FindGameObjectsWithTag("MenuBackButton").OrderBy(go => go.name).ToArray();
         credits = GameObject.FindGameObjectWithTag("Credits");
+        lights = GameObject.Find("Point light_menus");
+        lightsIngame = GameObject.Find("Point light");
+        lightsIngame.SetActive(false);
         Upgrades.SetActive(false);
         LevelSelect.SetActive(false);
         StartScreen.SetActive(true);
+        credits.SetActive(false);
         Settings.SetActive(false);
         SettingsButton1.SetActive(false);
     }
@@ -99,6 +105,8 @@ public class MainMenu : MonoBehaviour
         gameObject.SetActive(false);
         LevelSelect.SetActive(false);
         LevelPlayed = level;
+        lights.SetActive(false);
+        lightsIngame.SetActive(true);
     }
     public void SettingsFunc()
     {

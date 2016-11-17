@@ -1,4 +1,4 @@
-﻿Shader "Beautify/Beautify" {
+Shader "Beautify/Beautify" {
 	Properties {
 		_MainTex ("Base (RGB)", 2D) = "white" {}
 		_OverlayTex ("Overlay (RGB)", 2D) = "black" {}
@@ -32,14 +32,16 @@ Subshader {
       #pragma vertex vert
       #pragma fragment fragCompare
       #pragma target 3.0
-#pragma multi_compile __ BEAUTIFY_DALTONIZE BEAUTIFY_SEPIA BEAUTIFY_TINT BEAUTIFY_NIGHT_VISION BEAUTIFY_THERMAL_VISION
-#pragma multi_compile __ BEAUTIFY_DEPTH_OF_FIELD BEAUTIFY_DEPTH_OF_FIELD_TRANSPARENT
-#pragma multi_compile __ BEAUTIFY_OUTLINE
-#pragma multi_compile __ BEAUTIFY_DIRT
+// Edited by Shader Control: #pragma multi_compile __ BEAUTIFY_DALTONIZE BEAUTIFY_SEPIA BEAUTIFY_TINT BEAUTIFY_NIGHT_VISION BEAUTIFY_THERMAL_VISION
+#pragma multi_compile __ BEAUTIFY_DALTONIZE BEAUTIFY_TINT 
+// Edited by Shader Control: #pragma multi_compile __ BEAUTIFY_DEPTH_OF_FIELD BEAUTIFY_DEPTH_OF_FIELD_TRANSPARENT
+#pragma multi_compile __ BEAUTIFY_DEPTH_OF_FIELD_TRANSPARENT
+// Disabled by Shader Control: #pragma multi_compile __ BEAUTIFY_OUTLINE
+// Disabled by Shader Control: #pragma multi_compile __ BEAUTIFY_DIRT
 #pragma multi_compile __ BEAUTIFY_BLOOM
-#pragma multi_compile __ BEAUTIFY_EYE_ADAPTATION
+// Disabled by Shader Control: #pragma multi_compile __ BEAUTIFY_EYE_ADAPTATION
 #pragma multi_compile __ BEAUTIFY_TONEMAP_ACES
-#pragma multi_compile __ BEAUTIFY_PURKINJE
+// Disabled by Shader Control: #pragma multi_compile __ BEAUTIFY_PURKINJE
 #pragma multi_compile __ UNITY_COLORSPACE_GAMMA
       #include "Beautify.cginc"
       ENDCG
@@ -53,14 +55,16 @@ Subshader {
       #pragma vertex vert
       #pragma fragment fragBeautify
       #pragma target 3.0
-#pragma multi_compile __ BEAUTIFY_DALTONIZE BEAUTIFY_SEPIA BEAUTIFY_TINT BEAUTIFY_NIGHT_VISION BEAUTIFY_THERMAL_VISION
-#pragma multi_compile __ BEAUTIFY_DEPTH_OF_FIELD BEAUTIFY_DEPTH_OF_FIELD_TRANSPARENT
-#pragma multi_compile __ BEAUTIFY_OUTLINE
-#pragma multi_compile __ BEAUTIFY_DIRT
+// Edited by Shader Control: #pragma multi_compile __ BEAUTIFY_DALTONIZE BEAUTIFY_SEPIA BEAUTIFY_TINT BEAUTIFY_NIGHT_VISION BEAUTIFY_THERMAL_VISION
+#pragma multi_compile __ BEAUTIFY_DALTONIZE BEAUTIFY_TINT 
+// Edited by Shader Control: #pragma multi_compile __ BEAUTIFY_DEPTH_OF_FIELD BEAUTIFY_DEPTH_OF_FIELD_TRANSPARENT
+#pragma multi_compile __ BEAUTIFY_DEPTH_OF_FIELD_TRANSPARENT
+// Disabled by Shader Control: #pragma multi_compile __ BEAUTIFY_OUTLINE
+// Disabled by Shader Control: #pragma multi_compile __ BEAUTIFY_DIRT
 #pragma multi_compile __ BEAUTIFY_BLOOM
-#pragma multi_compile __ BEAUTIFY_EYE_ADAPTATION
+// Disabled by Shader Control: #pragma multi_compile __ BEAUTIFY_EYE_ADAPTATION
 #pragma multi_compile __ BEAUTIFY_TONEMAP_ACES
-#pragma multi_compile __ BEAUTIFY_PURKINJE
+// Disabled by Shader Control: #pragma multi_compile __ BEAUTIFY_PURKINJE
 #pragma multi_compile __ UNITY_COLORSPACE_GAMMA
       #include "Beautify.cginc"
       ENDCG
@@ -74,7 +78,7 @@ Subshader {
       #pragma vertex vert
       #pragma fragment fragLum
       #pragma fragmentoption ARB_precision_hint_fastest
-	  #pragma multi_compile __ UNITY_COLORSPACE_GAMMA	  
+#pragma multi_compile __ UNITY_COLORSPACE_GAMMA
       #include "BeautifyLum.cginc"
       ENDCG
   }  
@@ -164,7 +168,7 @@ Subshader {
       #pragma vertex vertCross
       #pragma fragment fragLumAntiflicker
       #pragma fragmentoption ARB_precision_hint_fastest
-	  #pragma multi_compile __ UNITY_COLORSPACE_GAMMA	  
+#pragma multi_compile __ UNITY_COLORSPACE_GAMMA
       #include "BeautifyLum.cginc"
       ENDCG
   }  
@@ -203,8 +207,8 @@ Subshader {
       #pragma vertex vert
       #pragma fragment fragCoC
       #pragma fragmentoption ARB_precision_hint_fastest
-	  #pragma multi_compile __ UNITY_COLORSPACE_GAMMA
-	  #pragma multi_compile __ BEAUTIFY_DEPTH_OF_FIELD_TRANSPARENT
+#pragma multi_compile __ UNITY_COLORSPACE_GAMMA
+#pragma multi_compile __ BEAUTIFY_DEPTH_OF_FIELD_TRANSPARENT
       #include "BeautifyDoF.cginc"
       ENDCG
   } 
@@ -216,7 +220,7 @@ Subshader {
       CGPROGRAM
       #pragma vertex vert
       #pragma fragment fragCoCDebug
-	  #pragma multi_compile __ BEAUTIFY_DEPTH_OF_FIELD_TRANSPARENT
+#pragma multi_compile __ BEAUTIFY_DEPTH_OF_FIELD_TRANSPARENT
       #pragma fragmentoption ARB_precision_hint_fastest
       #include "BeautifyDoF.cginc"
       ENDCG
@@ -243,7 +247,7 @@ Subshader {
       #pragma vertex vert
       #pragma fragment fragScreenLum
       #pragma fragmentoption ARB_precision_hint_fastest
-	  #pragma multi_compile __ UNITY_COLORSPACE_GAMMA	  
+#pragma multi_compile __ UNITY_COLORSPACE_GAMMA
       #include "BeautifyEA.cginc"
       ENDCG
   }      

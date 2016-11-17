@@ -46,6 +46,7 @@ public class MainMenu : MonoBehaviour
         Upgrades = Instantiate(Upgrades, Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         LevelSelect = Instantiate(LevelSelect,Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         StartScreen = Instantiate(StartScreen, Vector3.zero, Quaternion.Euler(0,180,0)) as GameObject;
+        Settings = Instantiate(Settings, Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         levelStars = GameObject.FindGameObjectsWithTag("LevelStars").OrderBy(go => go.name).ToArray();
         forwardArrows = GameObject.FindGameObjectsWithTag("ForwardArrows").OrderBy(go => go.name).ToArray();
         locks = GameObject.FindGameObjectsWithTag("Locks").OrderBy(go => go.name).ToArray();
@@ -53,6 +54,7 @@ public class MainMenu : MonoBehaviour
         Upgrades.SetActive(false);
         LevelSelect.SetActive(false);
         StartScreen.SetActive(true);
+        Settings.SetActive(false);
     }
     public void reset()
     {

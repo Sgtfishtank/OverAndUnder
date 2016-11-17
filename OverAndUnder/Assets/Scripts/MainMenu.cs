@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
     public GameObject StartGameButton;
     public GameObject StartScreen;
     public GameObject SettingsButton;
+    public GameObject SettingsButton1;
     public GameObject TutorialButton;
     public GameObject NextTutButton;
     public GameObject MainMenuButton;
@@ -31,6 +32,7 @@ public class MainMenu : MonoBehaviour
     public Material matBackground1;
     public Material matBackground2;
     public GameObject[] locks;
+    private GameObject credits;
     int Tut = 1;
     public int bluescore;
     public int redscore;
@@ -45,16 +47,18 @@ public class MainMenu : MonoBehaviour
         InGameUI.SetActive(false);
         Upgrades = Instantiate(Upgrades, Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         LevelSelect = Instantiate(LevelSelect,Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
-        StartScreen = Instantiate(StartScreen, Vector3.zero, Quaternion.Euler(0,180,0)) as GameObject;
+        StartScreen = Instantiate(StartScreen, new Vector3(0.1134949f,0,0), Quaternion.Euler(0,180,0)) as GameObject;
         Settings = Instantiate(Settings, Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         levelStars = GameObject.FindGameObjectsWithTag("LevelStars").OrderBy(go => go.name).ToArray();
         forwardArrows = GameObject.FindGameObjectsWithTag("ForwardArrows").OrderBy(go => go.name).ToArray();
         locks = GameObject.FindGameObjectsWithTag("Locks").OrderBy(go => go.name).ToArray();
         levelRomb = GameObject.FindGameObjectsWithTag("MenuBackButton").OrderBy(go => go.name).ToArray();
+        credits = GameObject.FindGameObjectWithTag("Credits");
         Upgrades.SetActive(false);
         LevelSelect.SetActive(false);
         StartScreen.SetActive(true);
         Settings.SetActive(false);
+        SettingsButton1.SetActive(false);
     }
     public void reset()
     {
@@ -104,6 +108,8 @@ public class MainMenu : MonoBehaviour
         Settings.SetActive(true);
         TutorialButton.SetActive(true);
         MainMenuButton.SetActive(true);
+        UpgradeButton.SetActive(false);
+        SettingsButton1.SetActive(true);
 
     }
     public void UppgradeFunc()
@@ -126,6 +132,7 @@ public class MainMenu : MonoBehaviour
         UpgradeSkillButtons.SetActive(false);
         LevelSelect.SetActive(false);
         LevelButtons.SetActive(false);
+        SettingsButton1.SetActive(false);
     }
     public void UpgradeSlowBlue(int nr)
     {
@@ -254,7 +261,5 @@ public class MainMenu : MonoBehaviour
                 levelRomb[i].GetComponent<MeshRenderer>().sharedMaterial = matBackground2;
             }
         }
-        
-
     }
 }

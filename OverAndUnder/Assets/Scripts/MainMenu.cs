@@ -10,16 +10,10 @@ public class MainMenu : MonoBehaviour
     public GameObject StartGameButton;
     public GameObject StartScreen;
     public GameObject SettingsButton;
-    public GameObject SettingsButton1;
-    public GameObject TutorialButton;
-    public GameObject NextTutButton;
     public GameObject MainMenuButton;
     public GameObject UpgradeButton;
     public GameObject LevelButtons;
     public GameObject LevelSelect;
-    public GameObject Settings;
-    public GameObject Tutorial1;
-    public GameObject Tutorial2;
     public GameObject GM;
     public GameObject InGameUI;
     public GameObject Upgrades;
@@ -32,9 +26,9 @@ public class MainMenu : MonoBehaviour
     public Material matBackground1;
     public Material matBackground2;
     public GameObject[] locks;
-    public GameObject credits;
     public GameObject lights;
     public GameObject lightsIngame;
+    
     int Tut = 1;
     public int bluescore;
     public int redscore;
@@ -50,21 +44,16 @@ public class MainMenu : MonoBehaviour
         Upgrades = Instantiate(Upgrades, Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         LevelSelect = Instantiate(LevelSelect,Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         StartScreen = Instantiate(StartScreen, new Vector3(0.1134949f,0,0), Quaternion.Euler(0,180,0)) as GameObject;
-        Settings = Instantiate(Settings, Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         levelStars = GameObject.FindGameObjectsWithTag("LevelStars").OrderBy(go => go.name).ToArray();
         forwardArrows = GameObject.FindGameObjectsWithTag("ForwardArrows").OrderBy(go => go.name).ToArray();
         locks = GameObject.FindGameObjectsWithTag("Locks").OrderBy(go => go.name).ToArray();
         levelRomb = GameObject.FindGameObjectsWithTag("MenuBackButton").OrderBy(go => go.name).ToArray();
-        credits = GameObject.FindGameObjectWithTag("Credits");
         lights = GameObject.Find("Point light_menus");
         lightsIngame = GameObject.Find("Point light");
         lightsIngame.SetActive(false);
         Upgrades.SetActive(false);
         LevelSelect.SetActive(false);
         StartScreen.SetActive(true);
-        credits.SetActive(false);
-        Settings.SetActive(false);
-        SettingsButton1.SetActive(false);
     }
     public void reset()
     {
@@ -108,18 +97,6 @@ public class MainMenu : MonoBehaviour
         lights.SetActive(false);
         lightsIngame.SetActive(true);
     }
-    public void SettingsFunc()
-    {
-        StartScreen.SetActive(false);
-        StartGameButton.SetActive(false);
-        SettingsButton.SetActive(false);
-        Settings.SetActive(true);
-        TutorialButton.SetActive(true);
-        MainMenuButton.SetActive(true);
-        UpgradeButton.SetActive(false);
-        SettingsButton1.SetActive(true);
-
-    }
     public void UppgradeFunc()
     {
         StartGameButton.SetActive(false);
@@ -134,13 +111,11 @@ public class MainMenu : MonoBehaviour
         StartScreen.SetActive(true);
         StartGameButton.SetActive(true);
         SettingsButton.SetActive(true);
-        Settings.SetActive(false);
         MainMenuButton.SetActive(false);
         Upgrades.SetActive(false);
         UpgradeSkillButtons.SetActive(false);
         LevelSelect.SetActive(false);
         LevelButtons.SetActive(false);
-        SettingsButton1.SetActive(false);
     }
     public void UpgradeSlowBlue(int nr)
     {

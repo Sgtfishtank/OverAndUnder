@@ -24,7 +24,9 @@ public class GameMaster : MonoBehaviour
     public GameObject blueBall;
     public GameObject redBall;
     public GameObject healEffect;
+    public GameObject scoreStreakEffect;
     public GameObject coreObj;
+    private GameObject cameraGO;
     
     public int blueScore;
     public int redScore;
@@ -36,7 +38,7 @@ public class GameMaster : MonoBehaviour
     public Color healemissive;
     public bool GameOver = false;
 
-    internal int currentLevel;
+    public int currentLevel;
     private Abilitys AM;
     private GameObject healslot;
     internal float lastSpawn;
@@ -49,9 +51,11 @@ public class GameMaster : MonoBehaviour
 
     void Start()
     {
+        cameraGO = GameObject.Find("camera_main");
         ColorUtility.TryParseHtmlString("#00000000", out defaultcolor);
         ColorUtility.TryParseHtmlString("#002D0000", out healemissive);
         healEffect.SetActive(false);
+        scoreStreakEffect.SetActive(false);
 
         AM = transform.GetComponent<Abilitys>();
 
@@ -65,22 +69,30 @@ public class GameMaster : MonoBehaviour
     public void Reset(int level)
     {
         currentLevel = level;
-        if(currentLevel < 2)
+        for (int i = 0; i < healBox.Length; i++)
+        {
+            healBox[i].SetActive(true);
+        }
+        for (int i = 0; i < SkillStuff.Length; i++)
+        {
+            SkillStuff[i].SetActive(true);
+        }
+        if (currentLevel < 2)
         {
             for (int i = 0; i < healBox.Length; i++)
             {
-                healBox[i].SetActive(true);
+                healBox[i].SetActive(false);
             }
             for (int i = 0; i < SkillStuff.Length; i++)
             {
-                SkillStuff[i].SetActive(true);
+                SkillStuff[i].SetActive(false);
             }
         }
         if(currentLevel < 3)
         {
             for (int i = 0; i < SkillStuff.Length; i++)
             {
-                SkillStuff[i].SetActive(true);
+                SkillStuff[i].SetActive(false);
             }
         }
         clear();
@@ -280,10 +292,13 @@ public class GameMaster : MonoBehaviour
         if(scorestreak > scorestreakLimit)
         {
             scorestreakLimit += 20;
+            scoreStreakEffect.SetActive(true);
+            
             for (int i = 0; i < boxes.Count; i++)
             {
                 boxes[i].GetComponent<Box>().currentMultiplier++;
             }
+            cameraGO.GetComponentInChildren<UI>().activateScorstreak(boxes[0].GetComponent<Box>().currentMultiplier);
         }
     }
     void speedUp()
@@ -481,6 +496,7 @@ public class GameMaster : MonoBehaviour
     {
         scorestreak = 0;
         scorestreakLimit = 20;
+        scoreStreakEffect.SetActive(false);
         for (int i = 0; i < boxes.Count; i++)
         {
             boxes[i].GetComponent<Box>().currentMultiplier = 1;

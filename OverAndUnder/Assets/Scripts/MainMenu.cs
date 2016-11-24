@@ -215,7 +215,7 @@ public class MainMenu : MonoBehaviour
         int increes = 1;
         for(int i = 0; i < 12; i++)
         {
-            if(i == 2)
+            if(i == 2 || i == 7)
                 increes++;
             int stars = ConfigReader.Instance.getValue("StarsLevel" + (i + increes));
             if(stars > 0)

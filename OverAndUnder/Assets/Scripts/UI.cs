@@ -29,12 +29,17 @@ public class UI : MonoBehaviour {
     public GameObject[] GameOverStars;
     public GameObject blueParitcle;
     public GameObject redParitcle;
+    public GameObject scoreStreak;
+    private float scoreStreakActiveTime;
+    bool scoreStreakActive=false;
     private int blueScoreBegin;
     private int redScoreBegin;
     private int blueScoreEnd;
     private int redScoreEnd;
+    int redScoreStart = 0;
+    int blueScoreStart;
     public int stars;
-    private int currentLevel;
+    public int currentLevel;
 
     private float scalefactor = (1.175139f - 0.01587644f) / 300;
     private float posfactor = (0.055496f - 0.05536f) / 300;
@@ -75,8 +80,10 @@ public class UI : MonoBehaviour {
         blueParitcle.SetActive(true);
         redScoreEnd = 0;
         redScoreBegin = 0;
+        redScoreStart = 0;
         blueScoreBegin = 0;
         blueScoreEnd = 0;
+        blueScoreStart = 0;
     }
     public void Reset(int level)
     {
@@ -136,6 +143,11 @@ public class UI : MonoBehaviour {
             boxes = GM.boxes.ToArray();
             return;
         }
+        if(scoreStreakActiveTime < Time.time && scoreStreakActive)
+        {
+            scoreStreakActive = false;
+            scoreStreak.SetActive(false);
+        }
         textfields[2].text = checkZero(boxes[2].transform.GetComponent<Box>().hp);
         textfields[2].rectTransform.position = camera.WorldToScreenPoint(boxes[2].transform.localPosition) + new Vector3(0, 7, 0);
         textfields[5].text = checkZero(boxes[5].transform.GetComponent<Box>().hp);
@@ -147,7 +159,7 @@ public class UI : MonoBehaviour {
             textfields[4].text = checkZero(boxes[4].transform.GetComponent<Box>().hp);
             textfields[4].rectTransform.position = camera.WorldToScreenPoint(boxes[4].transform.localPosition) + new Vector3(0, 7, 0);
         }
-        else if (currentLevel > 9)
+        if (currentLevel > 9)
         {
             textfields[0].text = checkZero(boxes[0].transform.GetComponent<Box>().hp);
             textfields[0].rectTransform.position = camera.WorldToScreenPoint(boxes[0].transform.localPosition) + new Vector3(0, 7, 0);
@@ -205,7 +217,9 @@ public class UI : MonoBehaviour {
             if(!first)
             {
                 blueScoreEnd = GM.blueScore;
+                blueScoreStart = blueScoreEnd;
                 redScoreEnd = GM.redScore;
+                redScoreStart = redScoreEnd;
                 first = true;
             }
             if(lastTick < Time.time)
@@ -213,11 +227,11 @@ public class UI : MonoBehaviour {
                 scoreMover();
                 lastTick = Time.time + scale;
             }
-            if(blueScoreBegin == blueScoreEnd)
+            if(blueScoreEnd == 0)
             {
                 blueParitcle.SetActive(false);
             }
-            if(redScoreBegin == redScoreEnd)
+            if(redScoreEnd == 0)
             {
                 redParitcle.SetActive(false);
             }
@@ -225,13 +239,14 @@ public class UI : MonoBehaviour {
     }
     void scoreMover()
     {
-        if (blueScoreBegin != blueScoreEnd)
+        if (blueScoreEnd != 0)
         {
-        blueScoreBegin++;
-        
+            blueScoreEnd--;
+            blueScoreBegin++;
         }
-        if (redScoreBegin != redScoreEnd)
+        if (redScoreEnd != 0)
         {
+            redScoreEnd--;
             redScoreBegin++;
         }
         if (blueScoreBegin < 301)
@@ -337,5 +352,12 @@ public class UI : MonoBehaviour {
         else
             return value.ToString();
     }
+    public void activateScorstreak(int value)
+    {
+        scoreStreakActiveTime = Time.time + 1;
 
+        scoreStreak.SetActive(true);
+        scoreStreak.GetComponentsInChildren<Text>()[1].text = "x" + value;
+        scoreStreakActive = true;
+    }
 }

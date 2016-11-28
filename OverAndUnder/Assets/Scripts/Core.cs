@@ -6,15 +6,28 @@ public class Core : MonoBehaviour {
     public Box[] boxesscripts;
     public GameObject psMaster;
     private float explotionDur;
+    private int currentLevel;
     // Use this for initialization
     void Start ()
     {
         GM =GameObject.Find("Game Master(Clone)").GetComponent<GameMaster>();
         GameObject[] boxes =GM.boxes.ToArray();
-        for (int i = 0; i < boxes.Length-1; i++)
+
+        if (boxes.Length == 7)
         {
-            boxesscripts[i] = boxes[i].GetComponent<Box>();
+            for (int i = 0; i < boxes.Length-1; i++)
+            {
+                boxesscripts[i] = boxes[i].GetComponent<Box>();
+            }
         }
+        else
+        {
+            for (int i = 0; i < boxes.Length; i++)
+            {
+                boxesscripts[i] = boxes[i].GetComponent<Box>();
+            }
+        }
+        print(boxesscripts[5]);
         psMaster.SetActive(false);
     }
 	
@@ -28,13 +41,28 @@ public class Core : MonoBehaviour {
     }
     void OnTriggerEnter(Collider col)
     {
-        for (int i = 0; i < boxesscripts.Length; i++)
+        if(currentLevel < 4)
         {
-            boxesscripts[i].takeDamage();
+            boxesscripts[2].takeDamage();
+            boxesscripts[5].takeDamage();
+        }
+        if(currentLevel < 10)
+        {
+            boxesscripts[1].takeDamage();
+            boxesscripts[4].takeDamage();
+        }
+        if(currentLevel > 9)
+        {
+            boxesscripts[0].takeDamage();
+            boxesscripts[3].takeDamage();
         }
         col.gameObject.SetActive(false);
         psMaster.SetActive(true);
         psMaster.transform.position = col.transform.position;
         explotionDur = Time.time + 1f;
+    }
+    public void setLevel(int value)
+    {
+        currentLevel = value;
     }
 }   

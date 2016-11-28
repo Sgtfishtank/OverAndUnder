@@ -30,6 +30,7 @@ public class UI : MonoBehaviour {
     public GameObject blueParitcle;
     public GameObject redParitcle;
     public GameObject scoreStreak;
+    public Text countdown;
     private float scoreStreakActiveTime;
     bool scoreStreakActive=false;
     private int blueScoreBegin;
@@ -40,6 +41,7 @@ public class UI : MonoBehaviour {
     int blueScoreStart;
     public int stars;
     public int currentLevel;
+    private float countdownTimer;
 
     private float scalefactor = (1.175139f - 0.01587644f) / 300;
     private float posfactor = (0.055496f - 0.05536f) / 300;
@@ -58,6 +60,7 @@ public class UI : MonoBehaviour {
         scoreMeterStars = GameObject.FindGameObjectsWithTag("Respawn");
         redParitcle = GameObject.Find("particles_gameover_crystalsred");
         blueParitcle = GameObject.Find("particles_gameover_crystalsblue");
+        countdown = GameObject.FindGameObjectWithTag("CountDown").GetComponentInChildren<Text>();
         GameOver.SetActive(false);
         
         MainMenuButton.SetActive(false);
@@ -87,6 +90,8 @@ public class UI : MonoBehaviour {
     }
     public void Reset(int level)
     {
+        if(countdown != null)
+            countdown.transform.parent.gameObject.SetActive(true);
         currentLevel = level;
         GameOver.SetActive(true);
         gameoverMesh.SetActive(true);
@@ -137,6 +142,16 @@ public class UI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(countdownTimer < Time.time)
+        {
+            GM.Countdown = false;
+            countdown.transform.parent.gameObject.SetActive(false);
+        }
+        countdown.text = Mathf.FloorToInt((countdownTimer - Time.time)+1).ToString();
+
+
+
+
         if(boxes.Length == 0)
         {
             
@@ -359,5 +374,9 @@ public class UI : MonoBehaviour {
         scoreStreak.SetActive(true);
         scoreStreak.GetComponentsInChildren<Text>()[1].text = "x" + value;
         scoreStreakActive = true;
+    }
+    public void CountDown()
+    {
+        countdownTimer = Time.time + 3;
     }
 }

@@ -48,6 +48,7 @@ public class GameMaster : MonoBehaviour
     private float posfactor = (0.055496f- 0.05536f) /300;
     private int scorestreak;
     private int scorestreakLimit;
+    internal bool Countdown = true;
 
     void Start()
     {
@@ -185,6 +186,10 @@ public class GameMaster : MonoBehaviour
         {
             cores.Add(Instantiate(coreObj, boxPoints[i].position + new Vector3(0, 0, 0.1f), Quaternion.identity) as GameObject);
         }
+        for (int i = 0; i < cores.Count; i++)
+        {
+            cores[i].GetComponent<Core>().setLevel(currentLevel);
+        }
         for (int i = 0; i < 20; i++)
         {
             if (i < 10)
@@ -202,6 +207,8 @@ public class GameMaster : MonoBehaviour
     }
     void Update()
     {
+        if (Countdown)
+            return;
         if (GameOver)
         {
             return;

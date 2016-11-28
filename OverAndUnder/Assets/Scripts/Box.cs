@@ -50,7 +50,7 @@ public class Box : MonoBehaviour
         BoxSlots = GM.boxPoints.GetRange(0, GM.boxPoints.Count);
         currentLevel = GM.currentLevel;
         psMaster.SetActive(false);
-        brokenBox.transform.parent.gameObject.SetActive(false);
+        brokenBox.transform.gameObject.SetActive(false);
         temp = fullBox.transform.GetComponentsInChildren<Transform>();
         if (currentLevel == 1 && BoxSlots.Count == 7)
             BoxSlots.RemoveAt(6);
@@ -72,16 +72,16 @@ public class Box : MonoBehaviour
                     moving = 0;
                     if (ghost)
                     {
-                        if (i == 6)
+                        /*if (i == 6)
                         {
-                            fullBox.transform.parent.transform.localScale = new Vector3(21, 21, 21);
-                            brokenBox.transform.parent.transform.localScale = new Vector3(21, 21, 21);
+                            fullBox.transform.transform.localScale = new Vector3(21, 21, 21);
+                            brokenBox.transform.transform.localScale = new Vector3(21, 21, 21);
                         }
                         else
                         {
-                            fullBox.transform.parent.transform.localScale = new Vector3(24, 24, 24);
-                            brokenBox.transform.parent.transform.localScale = new Vector3(24, 24, 24);
-                        }
+                            fullBox.transform.transform.localScale = new Vector3(24, 24, 24);
+                            brokenBox.transform.transform.localScale = new Vector3(24, 24, 24);
+                        }*/
                     }
                 }
             }
@@ -127,14 +127,14 @@ public class Box : MonoBehaviour
         if(!isBroken && hp < 6)
         {
             isBroken = true;
-            brokenBox.transform.parent.gameObject.SetActive(true);
-            fullBox.transform.parent.gameObject.SetActive(false);
+            brokenBox.transform.gameObject.SetActive(true);
+            fullBox.transform.gameObject.SetActive(false);
         }
         else if(isBroken &&hp > 5)
         {
             isBroken = false;
-            brokenBox.transform.parent.gameObject.SetActive(false);
-            fullBox.transform.parent.gameObject.SetActive(true);
+            brokenBox.transform.gameObject.SetActive(false);
+            fullBox.transform.gameObject.SetActive(true);
         }
         if(crystalTextDur < Time.time)
         {
@@ -218,29 +218,54 @@ public class Box : MonoBehaviour
         if(!Input.GetMouseButton(0))
         {
             move = false;
-            selected = false;
+            
             GM.unLockBoxes(Slot);
             for (int i = 0; i < BoxSlots.Count; i++)
             {
-                if (Mathf.Abs((transform.position.x - BoxSlots[i].position.x)) <= 0.75f && Mathf.Abs((transform.position.y - BoxSlots[i].position.y)) <= 0.75f)
+                if (!selected)
+                    return;
+                if (i < 3)
                 {
-                    if (!GM.destroyedLanes.Contains(i))
+                    if (Mathf.Abs((transform.position.x - BoxSlots[i].position.x)) <= 0.75f && Mathf.Abs((transform.position.y - BoxSlots[i].position.y-5)) <= 5.75f)
                     {
-                        move = true;
-                        GM.swapBox(Slot, i);
-                        Slot = i;
-                        if(Slot == 6)
+                        if (!GM.destroyedLanes.Contains(i))
                         {
-                            fullBox.transform.parent.transform.localScale = new Vector3(21, 21, 21);
+                            move = true;
+                            GM.swapBox(Slot, i);
+                            Slot = i;
+                            /*if (Slot == 6)
+                            {
+                                fullBox.transform.transform.localScale = new Vector3(21, 21, 21);
+                            }
+                            else
+                            {
+                                fullBox.transform.transform.localScale = new Vector3(24, 24, 24);
+                            }*/
                         }
-                        else
+                    }
+                }
+                else
+                {
+                    if (Mathf.Abs((transform.position.x - BoxSlots[i].position.x)) <= 0.75f && Mathf.Abs((transform.position.y - BoxSlots[i].position.y+5)) <= 5.75f)
+                    {
+                        if (!GM.destroyedLanes.Contains(i))
                         {
-                            fullBox.transform.parent.transform.localScale = new Vector3(24, 24, 24);
+                            move = true;
+                            GM.swapBox(Slot, i);
+                            Slot = i;
+                            /*if (Slot == 6)
+                            {
+                                fullBox.transform.transform.localScale = new Vector3(21, 21, 21);
+                            }
+                            else
+                            {
+                                fullBox.transform.transform.localScale = new Vector3(24, 24, 24);
+                            }*/
                         }
                     }
                 }
             }
-            
+            selected = false;
         }
     }
     public void newPos(int pos)

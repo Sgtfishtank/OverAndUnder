@@ -90,6 +90,7 @@ public class MainMenu : MonoBehaviour
         GM.GetComponent<Abilitys>().Reset(level);
         InGameUI.SetActive(true);
         InGameUI.GetComponent<UI>().Reset(level);
+        InGameUI.GetComponent<UI>().CountDown();
         StartScreen.SetActive(false);
         gameObject.SetActive(false);
         LevelSelect.SetActive(false);

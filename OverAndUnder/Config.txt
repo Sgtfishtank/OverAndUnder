@@ -1,4 +1,14 @@
-Crystals- 556
+CrystalsTop- 1
+CrystalsTotal- 556
+CrystalsBanked- 556
+GamesPlayed- 12
+Healed- 2
+SlowUsed- 8
+ShieldLost- 4
+HeartHits- 6
+UpgradeHpLevel- 7
+UpgradeDurationLevel- 0
+UpgradeCDLevel- 0
 StarsLevel1- 2
 StarsLevel2- 2
 StarsLevel3- 2
@@ -14,3 +24,4 @@ StarsLevel12- 0
 StarsLevel13- 0
 StarsLevel14- 0
 StarsLevel15- 0
+

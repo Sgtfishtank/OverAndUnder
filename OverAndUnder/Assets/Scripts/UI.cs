@@ -189,23 +189,8 @@ public class UI : MonoBehaviour {
 
         if(GM.GameOver)
         {
-            startMenu.GetComponent<MainMenu>().lights.SetActive(true);
-            startMenu.GetComponent<MainMenu>().lightsIngame.SetActive(false);
-            tutorialText[0].SetActive(false);
-            tutorialText[1].SetActive(false);
-            tutorialText[2].SetActive(false);
-            for (int i = 0; i < 7; i++)
-            {
-                textfields[i].gameObject.SetActive(false);
-            }
-            GameOver.SetActive(true);
-            gameoverMesh.SetActive(true);
-            MainMenuButton.SetActive(true);
-            RestartButton.SetActive(true);
-            for (int i = 0; i < GameOverStars.Length; i++)
-            {
-                GameOverStars[i].transform.parent.gameObject.SetActive(true);
-            }
+            
+            
             
             textfields[8].text = blueScoreEnd.ToString();
             textfields[9].text = redScoreEnd.ToString();
@@ -231,10 +216,28 @@ public class UI : MonoBehaviour {
             }
             if(!first)
             {
+                tutorialText[0].SetActive(false);
+                tutorialText[1].SetActive(false);
+                tutorialText[2].SetActive(false);
+                for (int i = 0; i < 7; i++)
+                {
+                    textfields[i].gameObject.SetActive(false);
+                }
+                GameOver.SetActive(true);
+                gameoverMesh.SetActive(true);
+                MainMenuButton.SetActive(true);
+                RestartButton.SetActive(true);
+                for (int i = 0; i < GameOverStars.Length; i++)
+                {
+                    GameOverStars[i].transform.parent.gameObject.SetActive(true);
+                }
                 blueScoreEnd = GM.blueScore;
                 blueScoreStart = blueScoreEnd;
                 redScoreEnd = GM.redScore;
                 redScoreStart = redScoreEnd;
+                transform.parent.GetComponentInChildren<UniversalCanvas>().changeState();
+                startMenu.GetComponent<MainMenu>().lights.SetActive(true);
+                startMenu.GetComponent<MainMenu>().lightsIngame.SetActive(false);
                 first = true;
             }
             if(lastTick < Time.time)

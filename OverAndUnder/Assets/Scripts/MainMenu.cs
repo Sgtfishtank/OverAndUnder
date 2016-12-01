@@ -62,6 +62,7 @@ public class MainMenu : MonoBehaviour
         LevelButtons.SetActive(false);
         StartScreen.SetActive(true);
         StartGameButton.SetActive(true);
+        GM.SetActive(false);
     }
 	
 	// Update is called once per frame
@@ -91,6 +92,7 @@ public class MainMenu : MonoBehaviour
         InGameUI.SetActive(true);
         InGameUI.GetComponent<UI>().Reset(level);
         InGameUI.GetComponent<UI>().CountDown();
+        transform.parent.GetComponentInChildren<UniversalCanvas>().changeState();
         StartScreen.SetActive(false);
         gameObject.SetActive(false);
         LevelSelect.SetActive(false);

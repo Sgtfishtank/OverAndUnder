@@ -54,6 +54,7 @@ public class UniversalCanvas : MonoBehaviour
         BackButton.SetActive(true);
         MainMenuButton.SetActive(false);
         SettingsButton1.SetActive(false);
+        BackButton2.SetActive(false);
         statisticWriter();
     }
     public void Back()
@@ -62,16 +63,28 @@ public class UniversalCanvas : MonoBehaviour
         SettingObj.SetActive(true);
         StatisticsCanvas.SetActive(false);
         StatisticsObj.SetActive(false);
-        if(!inGame)
+        BackButton2.SetActive(true);
+        if (!inGame)
+        {
             BackButton.SetActive(false);
+            BackButton2.SetActive(false);
+        }
         MainMenuButton.SetActive(true);
         SettingsButton1.SetActive(true);
+    }
+    public void Back2()
+    {
+        Time.timeScale = 1;
+        SettingObj.SetActive(false);
+        SettingsButton1.SetActive(false);
+        InGameCanvas.SetActive(true);
     }
     public void Credits()
     {
         CreditsObj.SetActive(true);
         SettingsButton1.SetActive(false);
         BackButton.SetActive(true);
+        BackButton2.SetActive(false);
         MainMenuButton.SetActive(false);
     }
     public void SoundOff(bool b)
@@ -98,10 +111,12 @@ public class UniversalCanvas : MonoBehaviour
         MainMenuButton.SetActive(true);
         SettingsButton1.SetActive(true);
         InGameCanvas.SetActive(false);
+        BackButton2.SetActive(false);
         if (inGame)
         {
             Time.timeScale = 0;
             BackButton2.SetActive(true);
+            BackButton.SetActive(false);
             MainMenuButton.SetActive(false);
         }
         else
@@ -179,5 +194,9 @@ public class UniversalCanvas : MonoBehaviour
         temp[27].text = ConfigReader.Instance.getValue("SlowUsed").ToString();
         temp[29].text = ConfigReader.Instance.getValue("ShieldLost").ToString();
         temp[31].text = ConfigReader.Instance.getValue("HeartHits").ToString();
+    }
+    internal void toggle(bool b)
+    {
+        ToggleSettingsButton.SetActive(b);
     }
 }

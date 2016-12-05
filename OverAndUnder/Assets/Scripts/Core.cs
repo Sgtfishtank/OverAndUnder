@@ -27,7 +27,6 @@ public class Core : MonoBehaviour {
                 boxesscripts[i] = boxes[i].GetComponent<Box>();
             }
         }
-        print(boxesscripts[5]);
         psMaster.SetActive(false);
     }
 	

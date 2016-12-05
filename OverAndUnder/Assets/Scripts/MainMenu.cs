@@ -21,6 +21,7 @@ public class MainMenu : MonoBehaviour
     public GameObject[] levelStars;
     public GameObject[] forwardArrows;
     public GameObject[] levelRomb;
+    public GameObject[] helpScreen;
     public Material matArrows1;
     public Material matArrows2;
     public Material matBackground1;
@@ -41,9 +42,11 @@ public class MainMenu : MonoBehaviour
         GM = Instantiate(GM, new Vector3(-2.15f,0,0), Quaternion.identity) as GameObject;
         GM.SetActive(false);
         InGameUI.SetActive(false);
+        print(helpScreen[0]);
         Upgrades = Instantiate(Upgrades, Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         LevelSelect = Instantiate(LevelSelect,Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         StartScreen = Instantiate(StartScreen, new Vector3(0.1134949f,0,0), Quaternion.Euler(0,180,0)) as GameObject;
+        helpScreen[0] = Instantiate(helpScreen[0], new Vector3(0, 0, -1), Quaternion.Euler(0, 180, 0)) as GameObject;
         levelStars = GameObject.FindGameObjectsWithTag("LevelStars").OrderBy(go => go.name).ToArray();
         forwardArrows = GameObject.FindGameObjectsWithTag("ForwardArrows").OrderBy(go => go.name).ToArray();
         locks = GameObject.FindGameObjectsWithTag("Locks").OrderBy(go => go.name).ToArray();
@@ -54,6 +57,7 @@ public class MainMenu : MonoBehaviour
         Upgrades.SetActive(false);
         LevelSelect.SetActive(false);
         StartScreen.SetActive(true);
+        helpScreen[0].SetActive(false);
     }
     public void reset()
     {
@@ -78,10 +82,12 @@ public class MainMenu : MonoBehaviour
         LevelSelect.SetActive(true);
         MainMenuButton.SetActive(true);
         Button[] buttons = LevelButtons.GetComponentsInChildren<Button>();
+        transform.parent.GetComponentInChildren<UniversalCanvas>().toggle(false);
         for (int i = 1; i < buttons.Length; i++)
         {
             buttons[i].gameObject.SetActive(false);
         }
+        helpScreen[1].SetActive(true);
         levelSelectButtons();
     }
     public void StartGameFunc(int level)
@@ -93,6 +99,7 @@ public class MainMenu : MonoBehaviour
         InGameUI.GetComponent<UI>().Reset(level);
         InGameUI.GetComponent<UI>().CountDown();
         transform.parent.GetComponentInChildren<UniversalCanvas>().changeState();
+        transform.parent.GetComponentInChildren<UniversalCanvas>().toggle(true);
         StartScreen.SetActive(false);
         gameObject.SetActive(false);
         LevelSelect.SetActive(false);
@@ -108,6 +115,8 @@ public class MainMenu : MonoBehaviour
         Upgrades.SetActive(true);
         UpgradeSkillButtons.SetActive(true);
         MainMenuButton.SetActive(true);
+        transform.parent.GetComponentInChildren<UniversalCanvas>().toggle(false);
+        helpScreen[3].SetActive(true);
     }
     public void MainMenuFunc()
     {
@@ -117,8 +126,11 @@ public class MainMenu : MonoBehaviour
         MainMenuButton.SetActive(false);
         Upgrades.SetActive(false);
         UpgradeSkillButtons.SetActive(false);
+        transform.parent.GetComponentInChildren<UniversalCanvas>().toggle(true);
         LevelSelect.SetActive(false);
         LevelButtons.SetActive(false);
+        helpScreen[1].SetActive(false);
+        helpScreen[3].SetActive(false);
     }
     public void UpgradeSlowBlue(int nr)
     {
@@ -247,5 +259,24 @@ public class MainMenu : MonoBehaviour
                 levelRomb[i].GetComponent<MeshRenderer>().sharedMaterial = matBackground2;
             }
         }
+    }
+    public void helpLevelSelct()
+    {
+        helpScreen[0].SetActive(true);
+        helpScreen[2].SetActive(true);
+        helpScreen[5].SetActive(true);
+    }
+    public void helpUpgrade()
+    {
+        helpScreen[0].SetActive(true);
+        helpScreen[4].SetActive(true);
+        helpScreen[5].SetActive(true);
+    }
+    public void back()
+    {
+        helpScreen[0].SetActive(false);
+        helpScreen[2].SetActive(false);
+        helpScreen[4].SetActive(false);
+        helpScreen[5].SetActive(false);
     }
 }

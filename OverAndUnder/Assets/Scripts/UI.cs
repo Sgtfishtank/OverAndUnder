@@ -286,8 +286,11 @@ public class UI : MonoBehaviour {
         {
             GameOverStars[i].transform.parent.gameObject.SetActive(false);
         }
-        ConfigReader.Instance.changeValue("Crystals", ConfigReader.Instance.getValue("Crystals") + totalScore);
-        if(stars >ConfigReader.Instance.getValue("StarsLevel" + currentLevel))
+        ConfigReader.Instance.changeValue("CrystalsBanked", ConfigReader.Instance.getValue("CrystalsBanked") + totalScore);
+        ConfigReader.Instance.changeValue("CrystalsTotal", ConfigReader.Instance.getValue("CrystalsTotal") + totalScore);
+        if (totalScore > ConfigReader.Instance.getValue("CrystalsTop"))
+            ConfigReader.Instance.changeValue("CrystalsTop", stars);
+        if (stars >ConfigReader.Instance.getValue("StarsLevel" + currentLevel))
             ConfigReader.Instance.changeValue("StarsLevel" + currentLevel, stars);
     }
     public void Restart()

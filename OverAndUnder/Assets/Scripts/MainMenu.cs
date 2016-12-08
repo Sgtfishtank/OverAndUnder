@@ -18,6 +18,7 @@ public class MainMenu : MonoBehaviour
     public GameObject InGameUI;
     public GameObject Upgrades;
     public GameObject UpgradeSkillButtons;
+    public GameObject UpgradeCanvas;
     public GameObject[] levelStars;
     public GameObject[] forwardArrows;
     public GameObject[] levelRomb;
@@ -31,8 +32,7 @@ public class MainMenu : MonoBehaviour
     public GameObject lightsIngame;
     
     int Tut = 1;
-    public int bluescore;
-    public int redscore;
+    public int score;
     private int LevelPlayed;
 
 
@@ -42,7 +42,6 @@ public class MainMenu : MonoBehaviour
         GM = Instantiate(GM, new Vector3(-2.15f,0,0), Quaternion.identity) as GameObject;
         GM.SetActive(false);
         InGameUI.SetActive(false);
-        print(helpScreen[0]);
         Upgrades = Instantiate(Upgrades, Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         LevelSelect = Instantiate(LevelSelect,Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         StartScreen = Instantiate(StartScreen, new Vector3(0.1134949f,0,0), Quaternion.Euler(0,180,0)) as GameObject;
@@ -54,10 +53,12 @@ public class MainMenu : MonoBehaviour
         lights = GameObject.Find("Point light_menus");
         lightsIngame = GameObject.Find("Point light");
         lightsIngame.SetActive(false);
+        UpgradeCanvas.SetActive(false);
         Upgrades.SetActive(false);
         LevelSelect.SetActive(false);
         StartScreen.SetActive(true);
         helpScreen[0].SetActive(false);
+        
     }
     public void reset()
     {
@@ -67,6 +68,7 @@ public class MainMenu : MonoBehaviour
         StartScreen.SetActive(true);
         StartGameButton.SetActive(true);
         GM.SetActive(false);
+        score = ConfigReader.Instance.getValue("CrystalsBanked");
     }
 	
 	// Update is called once per frame
@@ -115,7 +117,9 @@ public class MainMenu : MonoBehaviour
         Upgrades.SetActive(true);
         UpgradeSkillButtons.SetActive(true);
         MainMenuButton.SetActive(true);
+        UpgradeCanvas.SetActive(true);
         transform.parent.GetComponentInChildren<UniversalCanvas>().toggle(false);
+        UpgradeCanvas.GetComponent<UpgradeScript>().selectButtons();
         helpScreen[3].SetActive(true);
     }
     public void MainMenuFunc()
@@ -126,50 +130,13 @@ public class MainMenu : MonoBehaviour
         MainMenuButton.SetActive(false);
         Upgrades.SetActive(false);
         UpgradeSkillButtons.SetActive(false);
+        UpgradeCanvas.SetActive(false);
         transform.parent.GetComponentInChildren<UniversalCanvas>().toggle(true);
         LevelSelect.SetActive(false);
         LevelButtons.SetActive(false);
         helpScreen[1].SetActive(false);
         helpScreen[3].SetActive(false);
     }
-    public void UpgradeSlowBlue(int nr)
-    {
-        if(nr  == 1 && bluescore > 100)
-        {
-            print("blue 1");
-            bluescore -= 100;
-        }
-        else if(nr == 2 && bluescore > 200)
-        {
-            print("blue 2");
-            bluescore -= 200;
-        }
-        else if (nr == 3 && bluescore > 300)
-        {
-            print("blue 3");
-            bluescore -= 300;
-        }
-    }
-    public void UpgradeSlowRed(int nr)
-    {
-        if (nr == 1 && redscore > 100)
-        {
-            print("Red 1");
-            redscore -= 100;
-        }
-        else if (nr == 2 && redscore > 200)
-        {
-            print("red 2");
-            redscore -= 100;
-        }
-        else if (nr == 3 && redscore > 300)
-        {
-            print("red 3");
-            redscore -= 300;
-        }
-    }
-    public void UpgradeShiled(int nr)
-    {}
     public void levelSelectButtons()
     {
         int totalstars = 0;

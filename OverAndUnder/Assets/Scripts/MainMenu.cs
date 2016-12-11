@@ -19,6 +19,8 @@ public class MainMenu : MonoBehaviour
     public GameObject Upgrades;
     public GameObject UpgradeSkillButtons;
     public GameObject UpgradeCanvas;
+    public GameObject PopUp;
+    public GameObject PopUpCanvas;
     public GameObject[] levelStars;
     public GameObject[] forwardArrows;
     public GameObject[] levelRomb;
@@ -43,6 +45,7 @@ public class MainMenu : MonoBehaviour
         GM.SetActive(false);
         InGameUI.SetActive(false);
         Upgrades = Instantiate(Upgrades, Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
+        PopUp = Instantiate(PopUp, new Vector3(0,0,-1), Quaternion.Euler(0, 180, 0)) as GameObject;
         LevelSelect = Instantiate(LevelSelect,Vector3.zero, Quaternion.Euler(0, 180, 0)) as GameObject;
         StartScreen = Instantiate(StartScreen, new Vector3(0.1134949f,0,0), Quaternion.Euler(0,180,0)) as GameObject;
         helpScreen[0] = Instantiate(helpScreen[0], new Vector3(0, 0, -1), Quaternion.Euler(0, 180, 0)) as GameObject;
@@ -58,6 +61,7 @@ public class MainMenu : MonoBehaviour
         LevelSelect.SetActive(false);
         StartScreen.SetActive(true);
         helpScreen[0].SetActive(false);
+        PopUp.SetActive(false);
         
     }
     public void reset()
@@ -92,20 +96,27 @@ public class MainMenu : MonoBehaviour
         helpScreen[1].SetActive(true);
         levelSelectButtons();
     }
-    public void StartGameFunc(int level)
+    public void PopUpFunc(int level)
+    {
+        PopUp.SetActive(true);
+        PopUpCanvas.SetActive(true);
+        LevelButtons.SetActive(false);
+        PopUpCanvas.transform.GetComponent<PopLevelselct>().ChangeText(level);
+        LevelPlayed = level;
+    }
+    public void StartGameFunc()
     {
         GM.SetActive(true);
-        GM.GetComponent<GameMaster>().Reset(level);
-        GM.GetComponent<Abilitys>().Reset(level);
+        PopUp.SetActive(false);
+        GM.GetComponent<GameMaster>().Reset(LevelPlayed);
+        GM.GetComponent<Abilitys>().Reset(LevelPlayed);
         InGameUI.SetActive(true);
-        InGameUI.GetComponent<UI>().Reset(level);
+        InGameUI.GetComponent<UI>().Reset(LevelPlayed);
         InGameUI.GetComponent<UI>().CountDown();
         transform.parent.GetComponentInChildren<UniversalCanvas>().changeState();
         transform.parent.GetComponentInChildren<UniversalCanvas>().toggle(true);
         StartScreen.SetActive(false);
         gameObject.SetActive(false);
-        LevelSelect.SetActive(false);
-        LevelPlayed = level;
         lights.SetActive(false);
         lightsIngame.SetActive(true);
     }
@@ -202,11 +213,11 @@ public class MainMenu : MonoBehaviour
             int stars = ConfigReader.Instance.getValue("StarsLevel" + (i + increes));
             if(stars > 0)
             {
-                forwardArrows[i].GetComponent<MeshRenderer>().sharedMaterial = matArrows1;
+                forwardArrows[i].gameObject.SetActive(true);
             }
             else
             {
-                forwardArrows[i].GetComponent<MeshRenderer>().sharedMaterial = matArrows2;
+                forwardArrows[i].gameObject.SetActive(false);
             }
 
         }
@@ -245,5 +256,11 @@ public class MainMenu : MonoBehaviour
         helpScreen[2].SetActive(false);
         helpScreen[4].SetActive(false);
         helpScreen[5].SetActive(false);
+    }
+    public void BackPopUp()
+    {
+        PopUp.SetActive(false);
+        PopUpCanvas.SetActive(false);
+        LevelButtons.SetActive(true);
     }
 }

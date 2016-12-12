@@ -154,9 +154,10 @@ public class Box : MonoBehaviour
         {
             if (Slot == BoxSlots.Count - 1)
             {
-                if (healTimer < Time.time && hp < 10)
+                if (healTimer < Time.time && hp < ConfigReader.Instance.getValue("UpgradeHPLevel") +3)
                 {
                     hp++;
+                    ConfigReader.Instance.changeValue("Healed", ConfigReader.Instance.getValue("Healed")+1);
                     healTimer = Time.time + healCD;
                 }
             }
@@ -192,6 +193,7 @@ public class Box : MonoBehaviour
             explotionDur = Time.time + 1f;
             shaketime = 0.3f + Time.time;
             GM.resetScoreStreak();
+            ConfigReader.Instance.changeValue("ShieldLost", ConfigReader.Instance.getValue("ShieldLost")+1);
             hp--;
         }
         col.gameObject.SetActive(false);

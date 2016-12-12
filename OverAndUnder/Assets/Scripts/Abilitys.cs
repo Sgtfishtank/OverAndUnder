@@ -145,6 +145,7 @@ public void activateAbility(AbilitysEnum a, int lane)
                 }
                 GM.spawnRate *= 2f;
                 SlowObj.SetActive(true);
+                ConfigReader.Instance.changeValue("SlowUsed", ConfigReader.Instance.getValue("SlowUsed") + 1);
                 break;
             default:
                 break;

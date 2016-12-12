@@ -119,6 +119,8 @@ public class MainMenu : MonoBehaviour
         gameObject.SetActive(false);
         lights.SetActive(false);
         lightsIngame.SetActive(true);
+        LevelSelect.SetActive(false);
+        ConfigReader.Instance.changeValue("GamesPlayed", ConfigReader.Instance.getValue("GamesPlayed")+1);
     }
     public void UppgradeFunc()
     {

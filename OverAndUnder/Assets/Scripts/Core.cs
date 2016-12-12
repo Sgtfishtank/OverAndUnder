@@ -59,6 +59,7 @@ public class Core : MonoBehaviour {
         psMaster.SetActive(true);
         psMaster.transform.position = col.transform.position;
         explotionDur = Time.time + 1f;
+        ConfigReader.Instance.changeValue("HeartHits", ConfigReader.Instance.getValue("HeartHits"));
     }
     public void setLevel(int value)
     {

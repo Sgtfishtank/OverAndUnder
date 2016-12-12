@@ -1,10 +1,10 @@
 CrystalsTop- 1
 CrystalsTotal- 556
 CrystalsBanked- 394
-GamesPlayed- 12
+GamesPlayed- 18
 Healed- 2
 SlowUsed- 8
-ShieldLost- 4
+ShieldLost- 10
 HeartHits- 6
 UpgradeHPLevel- 2
 UpgradeDurationLevel- 3

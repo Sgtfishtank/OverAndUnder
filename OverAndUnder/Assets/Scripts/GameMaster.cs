@@ -290,11 +290,11 @@ public class GameMaster : MonoBehaviour
             scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.055496f + (posfactor * (redScore + blueScore)), scoreMeterBlue.transform.localPosition.z);
             scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01587644f + (scalefactor * (redScore + blueScore)), scoreMeterBlue.transform.localScale.z);
         }
-        if ((blueScore + redScore) > 99)
+        if ((blueScore + redScore) > ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel)-1)
             scoreMeterStars[0].SetActive(true);
-        if ((blueScore + redScore) > 199)
+        if ((blueScore + redScore) > (ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel)*2)-1)
                 scoreMeterStars[1].SetActive(true);
-        if ((blueScore + redScore) > 299)
+        if ((blueScore + redScore) > (ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel)*3)-1)
             scoreMeterStars[2].SetActive(true);
         if(scorestreak > scorestreakLimit)
         {

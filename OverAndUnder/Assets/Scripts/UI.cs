@@ -196,19 +196,19 @@ public class UI : MonoBehaviour {
             textfields[9].text = redScoreEnd.ToString();
             int totalScoreCount = blueScoreBegin + redScoreBegin;
             textfields[10].text = totalScoreCount.ToString();
-            if (totalScoreCount > 299 && !GameOverStars[2].activeSelf)
+            if (totalScoreCount > (ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel) * 3) - 1 && !GameOverStars[2].activeSelf)
             {
                 scoreMeterStars[0].SetActive(true);
                 GameOverStars[2].SetActive(true);
                 stars++;
             }
-            if (totalScoreCount > 199 && !GameOverStars[1].activeSelf)
+            if (totalScoreCount > (ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel) * 2) - 1 && !GameOverStars[1].activeSelf)
             {
                 scoreMeterStars[1].SetActive(true);
                 GameOverStars[1].SetActive(true);
                 stars++;
             }
-            if (totalScoreCount > 99 && !GameOverStars[0].activeSelf)
+            if (totalScoreCount > (ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel)) - 1 && !GameOverStars[0].activeSelf)
             {
                 scoreMeterStars[2].SetActive(true);
                 GameOverStars[0].SetActive(true);
@@ -267,7 +267,7 @@ public class UI : MonoBehaviour {
             redScoreEnd--;
             redScoreBegin++;
         }
-        if (blueScoreBegin < 301)
+        if (blueScoreBegin < (ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel) * 3) +1 )
         {
             scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.055496f + (posfactor * (redScoreBegin + blueScoreBegin)), scoreMeterBlue.transform.localPosition.z);
             scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01587644f + (scalefactor * (redScoreBegin + blueScoreBegin)), scoreMeterBlue.transform.localScale.z);
@@ -303,7 +303,10 @@ public class UI : MonoBehaviour {
         {
             GameOverStars[i].transform.parent.gameObject.SetActive(false);
         }
-        ConfigReader.Instance.changeValue("Crystals", ConfigReader.Instance.getValue("Crystals") + totalScore);
+        ConfigReader.Instance.changeValue("CrystalsBanked", ConfigReader.Instance.getValue("CrystalsBanked") + totalScore);
+        ConfigReader.Instance.changeValue("CrystalsTotal", ConfigReader.Instance.getValue("CrystalsTotal") + totalScore);
+        if (totalScore > ConfigReader.Instance.getValue("CrystalsTop"))
+            ConfigReader.Instance.changeValue("CrystalsTop", stars);
         if (stars > ConfigReader.Instance.getValue("StarsLevel" + currentLevel))
             ConfigReader.Instance.changeValue("StarsLevel" + currentLevel, stars);
         for (int i = 0; i < 7; i++)

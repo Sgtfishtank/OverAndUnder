@@ -1,7 +1,7 @@
 CrystalsTop- 6
 CrystalsTotal- 866
 CrystalsBanked- 704
-GamesPlayed- 20
+GamesPlayed- 24
 Healed- 2
 SlowUsed- 9
 ShieldLost- 67

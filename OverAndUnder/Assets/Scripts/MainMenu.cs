@@ -25,17 +25,18 @@ public class MainMenu : MonoBehaviour
     public GameObject[] forwardArrows;
     public GameObject[] levelRomb;
     public GameObject[] helpScreen;
-    public Material matArrows1;
-    public Material matArrows2;
     public Material matBackground1;
     public Material matBackground2;
+    public Material matRomb;
     public GameObject[] locks;
     public GameObject lights;
     public GameObject lightsIngame;
+    public string[] temp;
     
     int Tut = 1;
     public int score;
     private int LevelPlayed;
+    
 
 
     // Use this for initialization
@@ -62,6 +63,7 @@ public class MainMenu : MonoBehaviour
         StartScreen.SetActive(true);
         helpScreen[0].SetActive(false);
         PopUp.SetActive(false);
+        temp = ConfigReader.Instance.lines;
         
     }
     public void reset()
@@ -228,7 +230,7 @@ public class MainMenu : MonoBehaviour
             int stars = ConfigReader.Instance.getValue("StarsLevel" + (i));
             if (stars > 0)
             {
-                levelRomb[i].GetComponent<MeshRenderer>().sharedMaterial = matArrows1;
+                levelRomb[i].GetComponent<MeshRenderer>().sharedMaterial = matRomb;
             }
             else
             {

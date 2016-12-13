@@ -180,7 +180,7 @@ public class UniversalCanvas : MonoBehaviour
         {
             levels = 4;
         }
-        int upgrades = ConfigReader.Instance.getValue("UpgradeHpLevel") + ConfigReader.Instance.getValue("UpgradeDurationLevel") + ConfigReader.Instance.getValue("UpgradeCDLevel");
+        int upgrades = ConfigReader.Instance.getValue("UpgradeHPLevel") + ConfigReader.Instance.getValue("UpgradeDurationLevel") + ConfigReader.Instance.getValue("UpgradeCDLevel");
 
         temp[1].text = totalStars.ToString();
         temp[5].text = levels.ToString();

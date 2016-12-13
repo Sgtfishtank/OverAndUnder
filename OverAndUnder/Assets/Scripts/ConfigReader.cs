@@ -8,12 +8,21 @@ public class ConfigReader
 {
     public string[] lines;
     static FileStream fs;
-    private static string path = "Config.txt";
+    private static string path = /*Application.persistentDataPath + */"Config.txt";
 
     private static ConfigReader instance = null;
     private ConfigReader()
     {
-        lines = File.ReadAllLines(path);
+        try
+        {
+            lines = File.ReadAllLines(path);
+        }
+        catch (Exception)
+        {
+
+            lines = File.ReadAllLines("Config.txt");
+        }
+        
     }
     public static ConfigReader Instance
     {
@@ -49,6 +58,14 @@ public class ConfigReader
             counter++;
         }
         File.WriteAllLines(path, lines);
-        lines = File.ReadAllLines(path);
+        try
+        {
+            lines = File.ReadAllLines(path);
+        }
+        catch (Exception)
+        {
+
+            lines = File.ReadAllLines("Config.txt");
+        }
     }
 }

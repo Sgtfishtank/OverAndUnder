@@ -43,6 +43,7 @@ public class Box : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        hp = ConfigReader.Instance.getValue("UpgradeHPLevel")+3;
         ColorUtility.TryParseHtmlString("#909090FF", out grey);
         camera = GameObject.Find("camera_main").GetComponent<Camera>();
         GM = GameObject.Find("Game Master(Clone)").GetComponent<GameMaster>();
@@ -74,13 +75,13 @@ public class Box : MonoBehaviour
                     {
                         /*if (i == 6)
                         {
-                            fullBox.transform.transform.localScale = new Vector3(21, 21, 21);
-                            brokenBox.transform.transform.localScale = new Vector3(21, 21, 21);
+                            fullBox.transform.transform.localScale = new Vector3(0.7743875f, 0.7743875f, 0.7743875f);
+                            brokenBox.transform.transform.localScale = new Vector3(0.7743875f, 0.7743875f, 0.7743875f);
                         }
                         else
                         {
-                            fullBox.transform.transform.localScale = new Vector3(24, 24, 24);
-                            brokenBox.transform.transform.localScale = new Vector3(24, 24, 24);
+                            fullBox.transform.transform.localScale = new Vector3(1, 1, 1);
+                            brokenBox.transform.transform.localScale = new Vector3(1,1, 1);
                         }*/
                     }
                 }
@@ -235,14 +236,14 @@ public class Box : MonoBehaviour
                             move = true;
                             GM.swapBox(Slot, i);
                             Slot = i;
-                            /*if (Slot == 6)
+                            if (Slot == 6)
                             {
-                                fullBox.transform.transform.localScale = new Vector3(21, 21, 21);
+                                transform.transform.localScale = new Vector3(0.7743875f, 0.7743875f, 0.7743875f);
                             }
                             else
                             {
-                                fullBox.transform.transform.localScale = new Vector3(24, 24, 24);
-                            }*/
+                                transform.transform.localScale = new Vector3(1, 1, 1);
+                            }
                         }
                     }
                 }
@@ -255,14 +256,14 @@ public class Box : MonoBehaviour
                             move = true;
                             GM.swapBox(Slot, i);
                             Slot = i;
-                            /*if (Slot == 6)
+                            if (Slot == 6)
                             {
-                                fullBox.transform.transform.localScale = new Vector3(21, 21, 21);
+                                transform.transform.localScale = new Vector3(0.7743875f, 0.7743875f, 0.7743875f);
                             }
                             else
                             {
-                                fullBox.transform.transform.localScale = new Vector3(24, 24, 24);
-                            }*/
+                                transform.transform.localScale = new Vector3(1, 1, 1);
+                            }
                         }
                     }
                 }

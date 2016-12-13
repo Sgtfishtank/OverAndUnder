@@ -44,14 +44,20 @@ public class GameMaster : MonoBehaviour
     internal float lastSpawn;
     private float speedUpTime;
     private float spawnRateTime;
-    private float scalefactor = (1.175139f - 0.01587644f) /300;
+    private float scalefactor = (1.175139f - 0.01587644f)/300;
     private float posfactor = (0.055496f- 0.05536f) /300;
     private int scorestreak;
     private int scorestreakLimit;
     internal bool Countdown = true;
+    public Material healMatDef;
+    public Material healMat;
+    public Material laneDefMat;
+    public Material laneDeathMat;
 
     void Start()
     {
+        //scalefactor = (1.175139f - 0.01587644f) / ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel);
+        //posfactor = (0.055496f - 0.05536f) / ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel);
         cameraGO = GameObject.Find("camera_main");
         ColorUtility.TryParseHtmlString("#00000000", out defaultcolor);
         ColorUtility.TryParseHtmlString("#002D0000", out healemissive);
@@ -62,7 +68,7 @@ public class GameMaster : MonoBehaviour
 
         speedUpTime = Time.time + 10;
 
-        healslot = GameObject.Find("mesh_heal_slot_new");
+        healslot = GameObject.Find("mesh_heal_frame");
         
         clear();
         initalize();
@@ -110,10 +116,19 @@ public class GameMaster : MonoBehaviour
         for (int i = 0; i < lanetextscript.Length; i++)
         {
             lanetextscript[i].scrollSpeed = -0.144f;
+            lanetextscript[i].transform.GetComponent<MeshRenderer>().sharedMaterial = laneDefMat;
         }
         for (int i = 0; i < scoreMeterStars.Length; i++)
         {
-            scoreMeterStars[i].SetActive(false);
+            scoreMeterStars[i].SetActive(true);
+        }
+        for (int i = 0; i < scoreMeterStars.Length; i++)
+        {
+            if (i > ConfigReader.Instance.getValue("StarsLevel" + currentLevel) - 1)
+            {
+                scoreMeterStars[i].SetActive(false);
+
+            }
         }
         if (currentLevel < 4)
         {
@@ -136,6 +151,8 @@ public class GameMaster : MonoBehaviour
             covers[0].SetActive(false);
             covers[1].SetActive(false);
         }
+        scalefactor = (1.175139f - 0.01587644f) / (ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel)*3);
+        posfactor = (0.055496f - 0.05536f) / (ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel)*3);
     }
     public void clear()
     {
@@ -277,12 +294,14 @@ public class GameMaster : MonoBehaviour
                 healEffect.SetActive(true);
                 if (healslot.GetComponent<MeshRenderer>().material.GetColor("_EmissionColor") != healemissive)
                     healslot.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", healemissive);
+                if (healslot.GetComponent<MeshRenderer>().sharedMaterial != healMat)
+                    healslot.GetComponent<MeshRenderer>().sharedMaterial = healMat;
             }
             else if (healEffect.activeSelf)
             {
                 healEffect.SetActive(false);
-                if (healslot.GetComponent<MeshRenderer>().material.GetColor("_EmissionColor") == healemissive)
-                    healslot.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", defaultcolor);
+                if (healslot.GetComponent<MeshRenderer>().sharedMaterial == healMat)
+                    healslot.GetComponent<MeshRenderer>().sharedMaterial = healMatDef;
             }
         }
         if ((blueScore +redScore) < 301)
@@ -368,6 +387,7 @@ public class GameMaster : MonoBehaviour
             return;
         destroyedLanes.Add(slot);
         lanetextscript[slot].scrollSpeed = 0;
+        lanetextscript[slot].transform.GetComponent<MeshRenderer>().sharedMaterial = laneDeathMat;
         cores[slot].SetActive(false);
         for (int i = 0; i <balls.Count; i++)
         {

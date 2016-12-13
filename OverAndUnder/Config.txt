@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-CrystalsTop- 1
-CrystalsTotal- 556
-CrystalsBanked- 394
-GamesPlayed- 33
-Healed- 9
-SlowUsed- 8
-ShieldLost- 34
-=======
 CrystalsTop- 6
 CrystalsTotal- 866
 CrystalsBanked- 704
@@ -14,15 +5,14 @@ GamesPlayed- 24
 Healed- 2
 SlowUsed- 9
 ShieldLost- 67
->>>>>>> origin/master
 HeartHits- 6
 UpgradeHPLevel- 2
 UpgradeDurationLevel- 3
 UpgradeCDLevel- 2
-StarsLevel1- 6
+StarsLevel1- 2
 StarsLevel2- 2
 StarsLevel3- 2
-StarsLevel4- 2
+StarsLevel4- 1
 StarsLevel5- 2
 StarsLevel6- 2
 StarsLevel7- 2

@@ -32,6 +32,7 @@ public class MainMenu : MonoBehaviour
     public GameObject lights;
     public GameObject lightsIngame;
     public string[] temp;
+    public GameObject[] upgradeLock;
     
     int Tut = 1;
     public int score;
@@ -64,7 +65,17 @@ public class MainMenu : MonoBehaviour
         helpScreen[0].SetActive(false);
         PopUp.SetActive(false);
         temp = ConfigReader.Instance.lines;
-        
+        upgradeLock[0] = GameObject.FindGameObjectWithTag("UpgradeTextSC");
+        upgradeLock[1] = GameObject.FindGameObjectWithTag("UpgradeBottonMatChange");
+        upgradeLock[2] = GameObject.FindGameObjectWithTag("UpgradeLock");
+        score = ConfigReader.Instance.getValue("CrystalsBanked");
+        upgradeLock[0].transform.GetComponent<Text>().text = (ConfigReader.Instance.getValue("StarsLevel1") + ConfigReader.Instance.getValue("StarsLevel2") + ConfigReader.Instance.getValue("StarsLevel3")).ToString();
+        if (ConfigReader.Instance.getValue("StarsLevel1") + ConfigReader.Instance.getValue("StarsLevel2") + ConfigReader.Instance.getValue("StarsLevel3") > 5)
+        {
+            upgradeLock[1].transform.GetComponent<MeshRenderer>().sharedMaterial = matBackground1;
+            upgradeLock[2].SetActive(false);
+            upgradeLock[3].SetActive(true);
+        }
     }
     public void reset()
     {
@@ -75,6 +86,13 @@ public class MainMenu : MonoBehaviour
         StartGameButton.SetActive(true);
         GM.SetActive(false);
         score = ConfigReader.Instance.getValue("CrystalsBanked");
+        upgradeLock[0].transform.GetComponent<Text>().text = (ConfigReader.Instance.getValue("StarsLevel1") + ConfigReader.Instance.getValue("StarsLevel2") + ConfigReader.Instance.getValue("StarsLevel3")).ToString();
+        if (ConfigReader.Instance.getValue("StarsLevel1")+ ConfigReader.Instance.getValue("StarsLevel2")+ ConfigReader.Instance.getValue("StarsLevel3") > 5)
+        {
+            upgradeLock[1].transform.GetComponent<MeshRenderer>().sharedMaterial = matBackground1;
+            upgradeLock[2].SetActive(false);
+            upgradeLock[3].SetActive(true);
+        }
     }
 	
 	// Update is called once per frame
@@ -97,6 +115,7 @@ public class MainMenu : MonoBehaviour
         }
         helpScreen[1].SetActive(true);
         levelSelectButtons();
+        upgradeLock[4].SetActive(false);
     }
     public void PopUpFunc(int level)
     {
@@ -136,6 +155,7 @@ public class MainMenu : MonoBehaviour
         transform.parent.GetComponentInChildren<UniversalCanvas>().toggle(false);
         UpgradeCanvas.GetComponent<UpgradeScript>().selectButtons();
         helpScreen[3].SetActive(true);
+        upgradeLock[4].SetActive(false);
     }
     public void MainMenuFunc()
     {
@@ -151,6 +171,7 @@ public class MainMenu : MonoBehaviour
         LevelButtons.SetActive(false);
         helpScreen[1].SetActive(false);
         helpScreen[3].SetActive(false);
+        upgradeLock[4].SetActive(true);
     }
     public void levelSelectButtons()
     {

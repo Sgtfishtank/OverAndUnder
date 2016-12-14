@@ -129,6 +129,7 @@ public class MainMenu : MonoBehaviour
     {
         GM.SetActive(true);
         PopUp.SetActive(false);
+        PopUpCanvas.SetActive(false);
         GM.GetComponent<GameMaster>().Reset(LevelPlayed);
         GM.GetComponent<Abilitys>().Reset(LevelPlayed);
         InGameUI.SetActive(true);
@@ -141,6 +142,7 @@ public class MainMenu : MonoBehaviour
         lights.SetActive(false);
         lightsIngame.SetActive(true);
         LevelSelect.SetActive(false);
+        helpScreen[1].SetActive(false);
         ConfigReader.Instance.changeValue("GamesPlayed", ConfigReader.Instance.getValue("GamesPlayed")+1);
     }
     public void UppgradeFunc()

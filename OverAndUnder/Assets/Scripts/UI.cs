@@ -42,6 +42,7 @@ public class UI : MonoBehaviour {
     public int stars;
     public int currentLevel;
     private float countdownTimer;
+    public GameObject[] nextLevel;
 
     private float scalefactor = (1.175139f - 0.01587644f) / 300;
     private float posfactor = (0.055496f - 0.05536f) / 300;
@@ -61,8 +62,8 @@ public class UI : MonoBehaviour {
         redParitcle = GameObject.Find("particles_gameover_crystalsred");
         blueParitcle = GameObject.Find("particles_gameover_crystalsblue");
         countdown = GameObject.FindGameObjectWithTag("CountDown").GetComponentInChildren<Text>();
+        nextLevel[1] = GameObject.FindGameObjectWithTag("NextLevelButton");
         GameOver.SetActive(false);
-        
         MainMenuButton.SetActive(false);
         RestartButton.SetActive(false);
         Settings.SetActive(false);
@@ -239,6 +240,16 @@ public class UI : MonoBehaviour {
                 startMenu.GetComponent<MainMenu>().lights.SetActive(true);
                 startMenu.GetComponent<MainMenu>().lightsIngame.SetActive(false);
                 first = true;
+                if (stars < 1)
+                {
+                    nextLevel[0].SetActive(false);
+                    nextLevel[1].SetActive(false);
+                }
+                else
+                {
+                    nextLevel[0].SetActive(true);
+                    nextLevel[1].SetActive(true);
+                }
             }
             if(lastTick < Time.time)
             {
@@ -315,6 +326,31 @@ public class UI : MonoBehaviour {
         }
         GM.Reset(currentLevel);
         Reset(currentLevel);
+        ConfigReader.Instance.changeValue("GamesPlayed", ConfigReader.Instance.getValue("GamesPlayed") + 1);
+    }
+    public void NextLevel()
+    {
+        GameOver.SetActive(false);
+        gameoverMesh.SetActive(false);
+        GM.clear();
+
+        for (int i = 0; i < GameOverStars.Length; i++)
+        {
+            GameOverStars[i].transform.parent.gameObject.SetActive(false);
+        }
+        ConfigReader.Instance.changeValue("CrystalsBanked", ConfigReader.Instance.getValue("CrystalsBanked") + totalScore);
+        ConfigReader.Instance.changeValue("CrystalsTotal", ConfigReader.Instance.getValue("CrystalsTotal") + totalScore);
+        if (totalScore > ConfigReader.Instance.getValue("CrystalsTop"))
+            ConfigReader.Instance.changeValue("CrystalsTop", stars);
+        if (stars > ConfigReader.Instance.getValue("StarsLevel" + currentLevel))
+            ConfigReader.Instance.changeValue("StarsLevel" + currentLevel, stars);
+        for (int i = 0; i < 7; i++)
+        {
+            textfields[i].gameObject.SetActive(true);
+        }
+        GM.Reset(currentLevel+1);
+        Reset(currentLevel+1);
+        ConfigReader.Instance.changeValue("GamesPlayed", ConfigReader.Instance.getValue("GamesPlayed") + 1);
     }
     public void SettingsFunc()
     {

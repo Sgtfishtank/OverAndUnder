@@ -17,8 +17,8 @@ public class PopLevelselct : MonoBehaviour {
     public void ChangeText(int level)
     {
         currentLevel = level;
-        texts[0].text = ConfigReader.Instance.getValue("HighScoreLevel" + currentLevel).ToString();
-        int starReq = ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel);
+        texts[0].text = ConfigReader.Instance.getValueInt("HighScoreLevel" + currentLevel).ToString();
+        int starReq = ConfigReader.Instance.getValueInt("StarRequirementLevel" + currentLevel);
         texts[1].text = starReq.ToString();
         texts[2].text = (starReq*2).ToString();
         texts[3].text = (starReq*3).ToString();

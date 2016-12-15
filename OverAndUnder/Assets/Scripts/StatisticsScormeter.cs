@@ -13,9 +13,9 @@ public class StatisticsScormeter : MonoBehaviour {
         int levels = 0;
         for (int i = 1; i < 16; i++)
         {
-            if (ConfigReader.Instance.getValue("StarsLevel" + i) > 0)
+            if (ConfigReader.Instance.getValueInt("StarsLevel" + i) > 0)
                 levels++;
-            totalStars += ConfigReader.Instance.getValue("StarsLevel" + i);
+            totalStars += ConfigReader.Instance.getValueInt("StarsLevel" + i);
 
         }
         if (levels == 9 && totalStars > 17)
@@ -26,7 +26,7 @@ public class StatisticsScormeter : MonoBehaviour {
         {
             levels = 4;
         }
-        int upgrades = ConfigReader.Instance.getValue("UpgradeHpLevel") + ConfigReader.Instance.getValue("UpgradeDurationLevel") + ConfigReader.Instance.getValue("UpgradeCDLevel");
+        int upgrades = ConfigReader.Instance.getValueInt("UpgradeHpLevel") + ConfigReader.Instance.getValueInt("UpgradeDurationLevel") + ConfigReader.Instance.getValueInt("UpgradeCDLevel");
         transform.localScale = new Vector3(0.02155756f, 0.02155756f + (scaleFactor * (upgrades + totalStars + levels)), 0.01f);
     }
     // Update is called once per frame

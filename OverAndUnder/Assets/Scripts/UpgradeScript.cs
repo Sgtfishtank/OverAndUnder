@@ -36,7 +36,7 @@ public class UpgradeScript : MonoBehaviour {
     public void selectButtons()
     {
         
-        score = ConfigReader.Instance.getValue("CrystalsBanked");
+        score = ConfigReader.Instance.getValueInt("CrystalsBanked");
         score2.text = score.ToString();
         for (int i = 0; i < slowCDButtons.Length; i++)
         {
@@ -48,9 +48,9 @@ public class UpgradeScript : MonoBehaviour {
             hpButtons[i].SetActive(false);
         }
         int slowcd, slowtime, hp;
-        slowcd = ConfigReader.Instance.getValue("UpgradeCDLevel") -1;
-        slowtime = ConfigReader.Instance.getValue("UpgradeDurationLevel") -1;
-        hp = ConfigReader.Instance.getValue("UpgradeHPLevel") -1;
+        slowcd = ConfigReader.Instance.getValueInt("UpgradeCDLevel") -1;
+        slowtime = ConfigReader.Instance.getValueInt("UpgradeDurationLevel") -1;
+        hp = ConfigReader.Instance.getValueInt("UpgradeHPLevel") -1;
         slowTimeButtons[Mathf.Max(0, slowtime)].SetActive(true);
         slowCDButtons[Mathf.Max(0,slowcd)].SetActive(true);
         hpButtons[Mathf.Max(0, hp)].SetActive(true);
@@ -90,32 +90,32 @@ public class UpgradeScript : MonoBehaviour {
     {
         if (current[0] == 0)
         {
-            int cost = ConfigReader.Instance.getValue("SlowTimeCostLevel" + (int)current[1]);
+            int cost = ConfigReader.Instance.getValueInt("SlowTimeCostLevel" + (int)current[1]);
             if (cost < score)
             {
                 ConfigReader.Instance.changeValue("UpgradeDurationLevel", (int)current[1]+1);
-                ConfigReader.Instance.changeValue("CrystalsBanked", ConfigReader.Instance.getValue("CrystalsBanked") - cost);
-                score2.text = ConfigReader.Instance.getValue("CrystalBanked").ToString();
+                ConfigReader.Instance.changeValue("CrystalsBanked", ConfigReader.Instance.getValueInt("CrystalsBanked") - cost);
+                score2.text = ConfigReader.Instance.getValueInt("CrystalBanked").ToString();
             }
         }
         else if (current[0] == 1)
         {
-            int cost = ConfigReader.Instance.getValue("SlowCDCostLevel" + (int)current[1]);
+            int cost = ConfigReader.Instance.getValueInt("SlowCDCostLevel" + (int)current[1]);
             if (cost < score)
             {
                 ConfigReader.Instance.changeValue("UpgradeCDLevel", (int)current[1]+1);
-                ConfigReader.Instance.changeValue("CrystalsBanked", ConfigReader.Instance.getValue("CrystalsBanked") - cost);
-                score2.text = ConfigReader.Instance.getValue("CrystalBanked").ToString();
+                ConfigReader.Instance.changeValue("CrystalsBanked", ConfigReader.Instance.getValueInt("CrystalsBanked") - cost);
+                score2.text = ConfigReader.Instance.getValueInt("CrystalBanked").ToString();
             }
         }
         else if (current[0] == 2)
         {
-            int cost = ConfigReader.Instance.getValue("HPCostLevel" + (int)current[1]);
+            int cost = ConfigReader.Instance.getValueInt("HPCostLevel" + (int)current[1]);
             if (cost < score)
             {
                 ConfigReader.Instance.changeValue("UpgradeHPLevel", (int)current[1]+1);
-                ConfigReader.Instance.changeValue("CrystalsBanked", ConfigReader.Instance.getValue("CrystalsBanked") - cost);
-                score2.text = ConfigReader.Instance.getValue("CrystalBanked").ToString();
+                ConfigReader.Instance.changeValue("CrystalsBanked", ConfigReader.Instance.getValueInt("CrystalsBanked") - cost);
+                score2.text = ConfigReader.Instance.getValueInt("CrystalBanked").ToString();
             }
         }
         selectButtons();
@@ -127,9 +127,9 @@ public class UpgradeScript : MonoBehaviour {
         UpgradeButton.SetActive(true);
         UpgradeButtonButton.SetActive(true);
         Text[] a = SlowDurText.transform.GetComponentsInChildren<Text>();
-        a[1].text = ConfigReader.Instance.getValue("SlowTimeLevel" + (nr-1)) + " sec";
-        a[2].text = ConfigReader.Instance.getValue("SlowTimeLevel" + nr) + " sec";
-        a[3].text = ConfigReader.Instance.getValue("SlowTimeCostLevel" + nr).ToString();
+        a[1].text = ConfigReader.Instance.getValueInt("SlowTimeLevel" + (nr-1)) + " sec";
+        a[2].text = ConfigReader.Instance.getValueInt("SlowTimeLevel" + nr) + " sec";
+        a[3].text = ConfigReader.Instance.getValueInt("SlowTimeCostLevel" + nr).ToString();
         current = new Vector2(0, nr);
     }
     public void UpgradeSlowRed(int nr)
@@ -139,9 +139,9 @@ public class UpgradeScript : MonoBehaviour {
         UpgradeButton.SetActive(true);
         UpgradeButtonButton.SetActive(true);
         Text[] a = SlowCDText.transform.GetComponentsInChildren<Text>();
-        a[1].text = ConfigReader.Instance.getValue("SlowCDLevel" + (nr - 1)) + " sec";
-        a[2].text = ConfigReader.Instance.getValue("SlowCDLevel" + nr) + " sec";
-        a[3].text = ConfigReader.Instance.getValue("SlowCDCostLevel" + nr).ToString();
+        a[1].text = ConfigReader.Instance.getValueInt("SlowCDLevel" + (nr - 1)) + " sec";
+        a[2].text = ConfigReader.Instance.getValueInt("SlowCDLevel" + nr) + " sec";
+        a[3].text = ConfigReader.Instance.getValueInt("SlowCDCostLevel" + nr).ToString();
         current = new Vector2(1, nr);
     }
     public void UpgradeShiled(int nr)
@@ -151,9 +151,9 @@ public class UpgradeScript : MonoBehaviour {
         UpgradeButton.SetActive(true);
         UpgradeButtonButton.SetActive(true);
         Text[] a = HPText.transform.GetComponentsInChildren<Text>();
-        a[1].text = ConfigReader.Instance.getValue("HPLevel" + (nr - 1)) + " sec";
-        a[2].text = ConfigReader.Instance.getValue("HPLevel" + nr) + " sec";
-        a[3].text = ConfigReader.Instance.getValue("HPCostLevel" + nr).ToString();
+        a[1].text = ConfigReader.Instance.getValueInt("HPLevel" + (nr - 1)) + " sec";
+        a[2].text = ConfigReader.Instance.getValueInt("HPLevel" + nr) + " sec";
+        a[3].text = ConfigReader.Instance.getValueInt("HPCostLevel" + nr).ToString();
         current = new Vector2(2, nr);
     }
     private void resetButtons()

@@ -43,7 +43,7 @@ public class Box : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        hp = ConfigReader.Instance.getValue("UpgradeHPLevel")+3;
+        hp = ConfigReader.Instance.getValueInt("UpgradeHPLevel")+3;
         ColorUtility.TryParseHtmlString("#909090FF", out grey);
         camera = GameObject.Find("camera_main").GetComponent<Camera>();
         GM = GameObject.Find("Game Master(Clone)").GetComponent<GameMaster>();
@@ -155,10 +155,10 @@ public class Box : MonoBehaviour
         {
             if (Slot == BoxSlots.Count - 1)
             {
-                if (healTimer < Time.time && hp < ConfigReader.Instance.getValue("UpgradeHPLevel") +3)
+                if (healTimer < Time.time && hp < ConfigReader.Instance.getValueInt("UpgradeHPLevel") +3)
                 {
                     hp++;
-                    ConfigReader.Instance.changeValue("Healed", ConfigReader.Instance.getValue("Healed")+1);
+                    ConfigReader.Instance.changeValue("Healed", ConfigReader.Instance.getValueInt("Healed")+1);
                     healTimer = Time.time + healCD;
                 }
             }
@@ -194,7 +194,7 @@ public class Box : MonoBehaviour
             explotionDur = Time.time + 1f;
             shaketime = 0.3f + Time.time;
             GM.resetScoreStreak();
-            ConfigReader.Instance.changeValue("ShieldLost", ConfigReader.Instance.getValue("ShieldLost")+1);
+            ConfigReader.Instance.changeValue("ShieldLost", ConfigReader.Instance.getValueInt("ShieldLost")+1);
             hp--;
         }
         col.gameObject.SetActive(false);

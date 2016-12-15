@@ -35,13 +35,23 @@ public class ConfigReader
             return instance;
         }
     }
-    public int getValue(string name)
+    public int getValueInt(string name)
     {
         for (int i = 0; i < lines.Length; i++)
         {
             string[] s = Regex.Split(lines[i], @"-\s");
             if (s[0] == name)
                 return int.Parse(s[1]);
+        }
+        return 0;
+    }
+    public float getValueFloat(string name)
+    {
+        for (int i = 0; i < lines.Length; i++)
+        {
+            string[] s = Regex.Split(lines[i], @"-\s");
+            if (s[0] == name)
+                return float.Parse(s[1]);
         }
         return 0;
     }

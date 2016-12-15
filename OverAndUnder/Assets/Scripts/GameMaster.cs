@@ -106,9 +106,8 @@ public class GameMaster : MonoBehaviour
         initalize();
         blueScore = 0;
         redScore = 0;
-        normalspeed = 0.75f;
-        spawnRate = 1.5f;
-        destroyedLanes.Clear();
+        normalspeed = ConfigReader.Instance.getValueFloat("CrystalSpeedLevel1"+level);
+         spawnRate = ConfigReader.Instance.getValueFloat("SpawnRateLevel"+level);
         GameOver = false;
         speedUpTime = Time.time + 10;
         scorestreakLimit = 20;
@@ -124,7 +123,7 @@ public class GameMaster : MonoBehaviour
         }
         for (int i = 0; i < scoreMeterStars.Length; i++)
         {
-            if (i > ConfigReader.Instance.getValue("StarsLevel" + currentLevel) - 1)
+            if (i > ConfigReader.Instance.getValueInt("StarsLevel" + currentLevel) - 1)
             {
                 scoreMeterStars[i].SetActive(false);
 
@@ -151,8 +150,8 @@ public class GameMaster : MonoBehaviour
             covers[0].SetActive(false);
             covers[1].SetActive(false);
         }
-        scalefactor = (1.175139f - 0.01587644f) / (ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel)*3);
-        posfactor = (0.055496f - 0.05536f) / (ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel)*3);
+        scalefactor = (1.175139f - 0.01587644f) / (ConfigReader.Instance.getValueInt("StarRequirementLevel" + currentLevel)*3);
+        posfactor = (0.055496f - 0.05536f) / (ConfigReader.Instance.getValueInt("StarRequirementLevel" + currentLevel)*3);
     }
     public void clear()
     {
@@ -309,11 +308,11 @@ public class GameMaster : MonoBehaviour
             scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.055496f + (posfactor * (redScore + blueScore)), scoreMeterBlue.transform.localPosition.z);
             scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01587644f + (scalefactor * (redScore + blueScore)), scoreMeterBlue.transform.localScale.z);
         }
-        if ((blueScore + redScore) > ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel)-1)
+        if ((blueScore + redScore) > ConfigReader.Instance.getValueInt("StarRequirementLevel" + currentLevel)-1)
             scoreMeterStars[0].SetActive(true);
-        if ((blueScore + redScore) > (ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel)*2)-1)
+        if ((blueScore + redScore) > (ConfigReader.Instance.getValueInt("StarRequirementLevel" + currentLevel)*2)-1)
                 scoreMeterStars[1].SetActive(true);
-        if ((blueScore + redScore) > (ConfigReader.Instance.getValue("StarRequirementLevel" + currentLevel)*3)-1)
+        if ((blueScore + redScore) > (ConfigReader.Instance.getValueInt("StarRequirementLevel" + currentLevel)*3)-1)
             scoreMeterStars[2].SetActive(true);
         if(scorestreak > scorestreakLimit)
         {

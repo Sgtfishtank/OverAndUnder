@@ -167,9 +167,9 @@ public class UniversalCanvas : MonoBehaviour
         int levels = 0;
         for (int i = 1; i < 16; i++)
         {
-            if (ConfigReader.Instance.getValue("StarsLevel" + i) > 0)
+            if (ConfigReader.Instance.getValueInt("StarsLevel" + i) > 0)
                 levels++;
-            totalStars += ConfigReader.Instance.getValue("StarsLevel" + i);
+            totalStars += ConfigReader.Instance.getValueInt("StarsLevel" + i);
 
         }
         if(levels == 9 && totalStars > 17)
@@ -180,20 +180,20 @@ public class UniversalCanvas : MonoBehaviour
         {
             levels = 4;
         }
-        int upgrades = ConfigReader.Instance.getValue("UpgradeHPLevel") + ConfigReader.Instance.getValue("UpgradeDurationLevel") + ConfigReader.Instance.getValue("UpgradeCDLevel");
+        int upgrades = ConfigReader.Instance.getValueInt("UpgradeHPLevel") + ConfigReader.Instance.getValueInt("UpgradeDurationLevel") + ConfigReader.Instance.getValueInt("UpgradeCDLevel");
 
         temp[1].text = totalStars.ToString();
         temp[5].text = levels.ToString();
         temp[9].text = upgrades.ToString();//uppgrades
         temp[13].text = (totalStars + levels + upgrades).ToString();
-        temp[17].text = ConfigReader.Instance.getValue("CrystalsTop").ToString();
-        temp[19].text = ConfigReader.Instance.getValue("CrystalsBanked").ToString();
-        temp[21].text = ConfigReader.Instance.getValue("CrystalsTotal").ToString();
-        temp[23].text = ConfigReader.Instance.getValue("GamesPlayed").ToString();
-        temp[25].text = ConfigReader.Instance.getValue("Healed").ToString();
-        temp[27].text = ConfigReader.Instance.getValue("SlowUsed").ToString();
-        temp[29].text = ConfigReader.Instance.getValue("ShieldLost").ToString();
-        temp[31].text = ConfigReader.Instance.getValue("HeartHits").ToString();
+        temp[17].text = ConfigReader.Instance.getValueInt("CrystalsTop").ToString();
+        temp[19].text = ConfigReader.Instance.getValueInt("CrystalsBanked").ToString();
+        temp[21].text = ConfigReader.Instance.getValueInt("CrystalsTotal").ToString();
+        temp[23].text = ConfigReader.Instance.getValueInt("GamesPlayed").ToString();
+        temp[25].text = ConfigReader.Instance.getValueInt("Healed").ToString();
+        temp[27].text = ConfigReader.Instance.getValueInt("SlowUsed").ToString();
+        temp[29].text = ConfigReader.Instance.getValueInt("ShieldLost").ToString();
+        temp[31].text = ConfigReader.Instance.getValueInt("HeartHits").ToString();
     }
     internal void toggle(bool b)
     {

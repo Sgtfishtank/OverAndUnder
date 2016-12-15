@@ -68,9 +68,9 @@ public class MainMenu : MonoBehaviour
         upgradeLock[0] = GameObject.FindGameObjectWithTag("UpgradeTextSC");
         upgradeLock[1] = GameObject.FindGameObjectWithTag("UpgradeBottonMatChange");
         upgradeLock[2] = GameObject.FindGameObjectWithTag("UpgradeLock");
-        score = ConfigReader.Instance.getValue("CrystalsBanked");
-        upgradeLock[0].transform.GetComponent<Text>().text = (ConfigReader.Instance.getValue("StarsLevel1") + ConfigReader.Instance.getValue("StarsLevel2") + ConfigReader.Instance.getValue("StarsLevel3")).ToString();
-        if (ConfigReader.Instance.getValue("StarsLevel1") + ConfigReader.Instance.getValue("StarsLevel2") + ConfigReader.Instance.getValue("StarsLevel3") > 5)
+        score = ConfigReader.Instance.getValueInt("CrystalsBanked");
+        upgradeLock[0].transform.GetComponent<Text>().text = (ConfigReader.Instance.getValueInt("StarsLevel1") + ConfigReader.Instance.getValueInt("StarsLevel2") + ConfigReader.Instance.getValueInt("StarsLevel3")).ToString();
+        if (ConfigReader.Instance.getValueInt("StarsLevel1") + ConfigReader.Instance.getValueInt("StarsLevel2") + ConfigReader.Instance.getValueInt("StarsLevel3") > 5)
         {
             upgradeLock[1].transform.GetComponent<MeshRenderer>().sharedMaterial = matBackground1;
             upgradeLock[2].SetActive(false);
@@ -85,9 +85,9 @@ public class MainMenu : MonoBehaviour
         StartScreen.SetActive(true);
         StartGameButton.SetActive(true);
         GM.SetActive(false);
-        score = ConfigReader.Instance.getValue("CrystalsBanked");
-        upgradeLock[0].transform.GetComponent<Text>().text = (ConfigReader.Instance.getValue("StarsLevel1") + ConfigReader.Instance.getValue("StarsLevel2") + ConfigReader.Instance.getValue("StarsLevel3")).ToString();
-        if (ConfigReader.Instance.getValue("StarsLevel1")+ ConfigReader.Instance.getValue("StarsLevel2")+ ConfigReader.Instance.getValue("StarsLevel3") > 5)
+        score = ConfigReader.Instance.getValueInt("CrystalsBanked");
+        upgradeLock[0].transform.GetComponent<Text>().text = (ConfigReader.Instance.getValueInt("StarsLevel1") + ConfigReader.Instance.getValueInt("StarsLevel2") + ConfigReader.Instance.getValueInt("StarsLevel3")).ToString();
+        if (ConfigReader.Instance.getValueInt("StarsLevel1")+ ConfigReader.Instance.getValueInt("StarsLevel2")+ ConfigReader.Instance.getValueInt("StarsLevel3") > 5)
         {
             upgradeLock[1].transform.GetComponent<MeshRenderer>().sharedMaterial = matBackground1;
             upgradeLock[2].SetActive(false);
@@ -143,7 +143,7 @@ public class MainMenu : MonoBehaviour
         lightsIngame.SetActive(true);
         LevelSelect.SetActive(false);
         helpScreen[1].SetActive(false);
-        ConfigReader.Instance.changeValue("GamesPlayed", ConfigReader.Instance.getValue("GamesPlayed")+1);
+        ConfigReader.Instance.changeValue("GamesPlayed", ConfigReader.Instance.getValueInt("GamesPlayed")+1);
     }
     public void UppgradeFunc()
     {
@@ -181,7 +181,7 @@ public class MainMenu : MonoBehaviour
         int totalstars = 0;
         for (int i = 1; i < 16; i++)
         {
-            totalstars += ConfigReader.Instance.getValue("StarsLevel" + (i));
+            totalstars += ConfigReader.Instance.getValueInt("StarsLevel" + (i));
         }
         if (totalstars > 5)
         {
@@ -202,7 +202,7 @@ public class MainMenu : MonoBehaviour
 
         for (int i = 1; i < buttons.Length; i++)
         {
-            if(ConfigReader.Instance.getValue("StarsLevel"+(i)) >0)
+            if(ConfigReader.Instance.getValueInt("StarsLevel"+(i)) >0)
             {
                 if (i == 3 && totalstars < 6)
                 {}
@@ -214,7 +214,7 @@ public class MainMenu : MonoBehaviour
         }
         for (int i = 0; i < levelStars.Length; i++)
         {
-            int stars = ConfigReader.Instance.getValue("StarsLevel" + (i + 1));
+            int stars = ConfigReader.Instance.getValueInt("StarsLevel" + (i + 1));
             if (stars > 0)
             {
                 GameObject[] temp = levelStars[i].GetComponentsInChildren<Transform>(true).Where(x=>x.name == "mesh_levelselect_starcore").Select(x => x.transform.gameObject).ToArray();
@@ -238,7 +238,7 @@ public class MainMenu : MonoBehaviour
         {
             if(i == 2 || i == 7)
                 increes++;
-            int stars = ConfigReader.Instance.getValue("StarsLevel" + (i + increes));
+            int stars = ConfigReader.Instance.getValueInt("StarsLevel" + (i + increes));
             if(stars > 0)
             {
                 forwardArrows[i].gameObject.SetActive(true);
@@ -251,7 +251,7 @@ public class MainMenu : MonoBehaviour
         }
         for(int i = 1; i < 15; i++)
         {
-            int stars = ConfigReader.Instance.getValue("StarsLevel" + (i));
+            int stars = ConfigReader.Instance.getValueInt("StarsLevel" + (i));
             if (stars > 0)
             {
                 levelRomb[i].GetComponent<MeshRenderer>().sharedMaterial = matRomb;

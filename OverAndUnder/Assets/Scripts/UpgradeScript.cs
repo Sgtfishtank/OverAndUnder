@@ -25,7 +25,7 @@ public class UpgradeScript : MonoBehaviour {
         UpgradeButton = GameObject.FindGameObjectWithTag("BuyButton");
         UpgradeButton.SetActive(false);
         locks = GameObject.FindGameObjectsWithTag("LocksUpgrades").OrderBy(go => go.name).ToArray();
-        buttonIcons = GameObject.FindGameObjectsWithTag("UpgradeButtons").OrderBy(go => go.name).ToArray();
+        buttonIcons = GameObject.FindGameObjectsWithTag("UpgradeBottonMatChange").OrderBy(go => go.name).ToArray();
         selectButtons();
 	}
     // Update is called once per frame
@@ -71,6 +71,7 @@ public class UpgradeScript : MonoBehaviour {
         }
         if (buttonIcons.Length != 0 && buttonIcons[0] != null)
         {
+            print("DD");
             for (int i = 0; i <= Mathf.Max(0, slowtime); i++)
             {
                 buttonIcons[i].transform.GetComponent<MeshRenderer>().sharedMaterial = mat;

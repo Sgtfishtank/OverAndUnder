@@ -166,6 +166,7 @@ public class MainMenu : MonoBehaviour
         SettingsButton.SetActive(true);
         MainMenuButton.SetActive(false);
         Upgrades.SetActive(false);
+        UpgradeButton.SetActive(true);
         UpgradeSkillButtons.SetActive(false);
         UpgradeCanvas.SetActive(false);
         transform.parent.GetComponentInChildren<UniversalCanvas>().toggle(true);

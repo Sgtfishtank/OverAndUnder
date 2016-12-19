@@ -106,8 +106,8 @@ public class GameMaster : MonoBehaviour
         initalize();
         blueScore = 0;
         redScore = 0;
-        normalspeed = ConfigReader.Instance.getValueFloat("CrystalSpeedLevel1"+level);
-         spawnRate = ConfigReader.Instance.getValueFloat("SpawnRateLevel"+level);
+        normalspeed = 0.75f;
+        spawnRate = 1.5f;
         GameOver = false;
         speedUpTime = Time.time + 10;
         scorestreakLimit = 20;

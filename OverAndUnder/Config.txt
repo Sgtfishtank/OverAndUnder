@@ -102,9 +102,9 @@ SpawnRateLevel12- 1.2
 SpawnRateLevel13- 1.1
 SpawnRateLevel14- 1.1
 SpawnRateLevel15- 1.1
-CrystalSpeedLevel1- 0.75
-CrystalSpeedLevel2- 0.75
-CrystalSpeedLevel3- 0.75
+CrystalSpeedLevel1- 24
+CrystalSpeedLevel2- 24
+CrystalSpeedLevel3- 24
 CrystalSpeedLevel4- 0.8
 CrystalSpeedLevel5- 0.8
 CrystalSpeedLevel6- 0.8

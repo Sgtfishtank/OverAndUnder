@@ -71,16 +71,15 @@ public class UpgradeScript : MonoBehaviour {
         }
         if (buttonIcons.Length != 0 && buttonIcons[0] != null)
         {
-            print("DD");
-            for (int i = 0; i <= Mathf.Max(0, slowtime); i++)
+            for (int i = 0; i < Mathf.Max(0, slowtime); i++)
             {
                 buttonIcons[i].transform.GetComponent<MeshRenderer>().sharedMaterial = mat;
             }
-            for (int i = 0; i <= Mathf.Max(0, slowcd); i++)
+            for (int i = 0; i < Mathf.Max(0, slowcd); i++)
             {
                 buttonIcons[i + 4].transform.GetComponent<MeshRenderer>().sharedMaterial = mat;
             }
-            for (int i = 0; i <= Mathf.Max(0, hp); i++)
+            for (int i = 0; i < Mathf.Max(0, hp); i++)
             {
                 buttonIcons[i + 8].transform.GetComponent<MeshRenderer>().sharedMaterial = mat;
             }

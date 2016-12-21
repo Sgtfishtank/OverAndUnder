@@ -75,6 +75,8 @@ public class GameMaster : MonoBehaviour
     }
     public void Reset(int level)
     {
+        destroyedLanes.Clear();
+
         currentLevel = level;
         for (int i = 0; i < healBox.Length; i++)
         {
@@ -265,11 +267,11 @@ public class GameMaster : MonoBehaviour
         {
             if (AM.abilityActive && (AM.abilitysInLane[0].y == 1))
             {
-                speedUpTime = Time.time + 24;
+                speedUpTime = Time.time + ConfigReader.Instance.getValueInt("CrystalSpeedLevel" + currentLevel);
                 return;
             }
             speedUp();
-            speedUpTime = Time.time + 24;
+            speedUpTime = Time.time + ConfigReader.Instance.getValueInt("CrystalSpeedLevel" + currentLevel);
             for (int i = 0; i < lanetextscript.Length; i++)
             {
                 if(!destroyedLanes.Contains(i))
@@ -280,11 +282,11 @@ public class GameMaster : MonoBehaviour
         {
             if (AM.abilityActive && (AM.abilitysInLane[0].y == 1))
             {
-                spawnRateTime = Time.time + 30;
+                spawnRateTime = Time.time + ConfigReader.Instance.getValueInt("SpawnRateLevel"+currentLevel);
                 return;
             }
             spawnrateUp();
-            spawnRateTime = Time.time + 30f;
+            spawnRateTime = Time.time + ConfigReader.Instance.getValueInt("SpawnRateLevel" + currentLevel);
         }
         if (currentLevel > 1)
         {

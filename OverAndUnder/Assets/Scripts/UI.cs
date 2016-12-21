@@ -13,6 +13,7 @@ public class UI : MonoBehaviour {
     public GameObject MainMenuButton;
     public GameObject RestartButton;
     public GameObject startMenu;
+    public GameObject[] PopUplevelselct;
 
     GameMaster GM;
     Abilitys AM;
@@ -43,6 +44,11 @@ public class UI : MonoBehaviour {
     public int currentLevel;
     private float countdownTimer;
     public GameObject[] nextLevel;
+    public GameObject UnPauseButton;
+    public GameObject LevelUnlock;
+    public GameObject SectorUnlock;
+    public GameObject[] PressToStart;
+    public Text[] StarrecText;
 
     private float scalefactor = (1.175139f - 0.01587644f) / 300;
     private float posfactor = (0.055496f - 0.05536f) / 300;
@@ -61,8 +67,8 @@ public class UI : MonoBehaviour {
         scoreMeterStars = GameObject.FindGameObjectsWithTag("Respawn");
         redParitcle = GameObject.Find("particles_gameover_crystalsred");
         blueParitcle = GameObject.Find("particles_gameover_crystalsblue");
-        countdown = GameObject.FindGameObjectWithTag("CountDown").GetComponentInChildren<Text>();
         nextLevel[1] = GameObject.FindGameObjectWithTag("NextLevelButton");
+        PopUplevelselct[1] = Instantiate(PopUplevelselct[1], new Vector3(0,0,-3f), Quaternion.Euler(0,-180,0)) as GameObject;
         GameOver.SetActive(false);
         MainMenuButton.SetActive(false);
         RestartButton.SetActive(false);
@@ -72,6 +78,8 @@ public class UI : MonoBehaviour {
         TutorialButton.SetActive(false);
         NextTutButton.SetActive(false);
         ContinueGameButton.SetActive(false);
+        PopUplevelselct[0].SetActive(false);
+        PopUplevelselct[1].SetActive(false);
         for (int i = 0; i < GameOverStars.Length; i++)
         {
             GameOverStars[i].SetActive(false);
@@ -91,8 +99,9 @@ public class UI : MonoBehaviour {
     }
     public void Reset(int level)
     {
-        if(countdown != null)
-            countdown.transform.parent.gameObject.SetActive(true);
+        UnPauseButton.SetActive(false);
+       /* if (countdown != null)
+            countdown.transform.parent.gameObject.SetActive(false);*/
         currentLevel = level;
         GameOver.SetActive(true);
         gameoverMesh.SetActive(true);
@@ -139,7 +148,24 @@ public class UI : MonoBehaviour {
             tutorialText[1].SetActive(false);
             tutorialText[2].SetActive(true);
         }
-    }
+        if(currentLevel < 4)
+        {
+            UnPauseButton.SetActive(true);
+            Time.timeScale = 0;
+            if (countdown != null)
+                countdown.transform.parent.gameObject.SetActive(false);
+        }
+        else
+        {
+            if (countdown != null)
+                countdown.transform.parent.gameObject.SetActive(true);
+        }
+        StarrecText[0].text = (ConfigReader.Instance.getValueInt("StarRequirementLevel" + currentLevel) * 3).ToString();
+        StarrecText[1].text = (ConfigReader.Instance.getValueInt("StarRequirementLevel" + currentLevel) * 2).ToString();
+        StarrecText[2].text = (ConfigReader.Instance.getValueInt("StarRequirementLevel" + currentLevel)).ToString();
+        scalefactor = (1.175139f - 0.01587644f) / (ConfigReader.Instance.getValueInt("StarRequirementLevel" + currentLevel) * 3);
+        posfactor = (0.055496f - 0.05536f) / (ConfigReader.Instance.getValueInt("StarRequirementLevel" + currentLevel) * 3);
+}
 	
 	// Update is called once per frame
 	void Update () {
@@ -236,11 +262,25 @@ public class UI : MonoBehaviour {
                 blueScoreStart = blueScoreEnd;
                 redScoreEnd = GM.redScore;
                 redScoreStart = redScoreEnd;
+                int tempscore = blueScoreEnd + redScoreEnd;
                 transform.parent.GetComponentInChildren<UniversalCanvas>().changeState();
                 startMenu.GetComponent<MainMenu>().lights.SetActive(true);
                 startMenu.GetComponent<MainMenu>().lightsIngame.SetActive(false);
                 first = true;
-                if (stars < 1)
+                int tempstars = 0;
+                if (tempscore > ((ConfigReader.Instance.getValueInt("StarRequirementLevel" + currentLevel) * 3) - 1))
+                {
+                    tempstars = 3;
+                }
+                else if (tempscore > ((ConfigReader.Instance.getValueInt("StarRequirementLevel" + currentLevel) * 2) - 1))
+                {
+                    tempstars = 2;
+                }
+                else if (tempscore > (ConfigReader.Instance.getValueInt("StarRequirementLevel" + currentLevel) - 1))
+                {
+                    tempstars = 1;
+                }
+                if (tempstars <= 0)
                 {
                     nextLevel[0].SetActive(false);
                     nextLevel[1].SetActive(false);
@@ -249,7 +289,40 @@ public class UI : MonoBehaviour {
                 {
                     nextLevel[0].SetActive(true);
                     nextLevel[1].SetActive(true);
+                    if(currentLevel == 3)
+                    {
+                        if ((ConfigReader.Instance.getValueInt("StarsLevel1") + ConfigReader.Instance.getValueInt("StarsLevel2") + tempstars >= 6) && ConfigReader.Instance.getValueInt("UpgradeUnlock") == 0)
+                        {
+                            ConfigReader.Instance.changeValue("UpgradeUnlock", 1);
+                            PopUplevelselct[0].SetActive(true);
+                            PopUplevelselct[1].SetActive(true);
+
+                        }
+                        else if (ConfigReader.Instance.getValueInt("StarsLevel1")+ConfigReader.Instance.getValueInt("StarsLevel2")+tempstars >=6)
+                        {
+                            SectorUnlock.SetActive(true);
+                            LevelUnlock.SetActive(true);
+                        }
+                    }
+                    else if(currentLevel == 9)
+                    {
+                        int starcount = 0;
+                        for (int i = 1; i < 8; i++)
+                        {
+                            starcount = ConfigReader.Instance.getValueInt("StarsLevel" + i);
+                        }
+                        if (starcount >= 18)
+                        {
+                            SectorUnlock.SetActive(true);
+                            LevelUnlock.SetActive(true);
+                        }
+                    }
+                    else
+                    {
+                        LevelUnlock.SetActive(true);
+                    }
                 }
+                
             }
             if(lastTick < Time.time)
             {
@@ -309,6 +382,7 @@ public class UI : MonoBehaviour {
         GameOver.SetActive(false);
         gameoverMesh.SetActive(false);
         GM.clear();
+        GM.Reset(currentLevel);
 
         for (int i = 0; i < GameOverStars.Length; i++)
         {
@@ -423,5 +497,23 @@ public class UI : MonoBehaviour {
     public void CountDown()
     {
         countdownTimer = Time.time + 3;
+    }
+    public void UnPause()
+    {
+        Time.timeScale = 1;
+        UnPauseButton.SetActive(false);
+        for (int i = 0; i < PressToStart.Length; i++)
+        {
+            PressToStart[i].SetActive(false);
+        }
+        if (countdown != null)
+            countdown.transform.parent.gameObject.SetActive(true);
+    }
+    public void hidePopUp()
+    {
+        PopUplevelselct[0].SetActive(false);
+        PopUplevelselct[1].SetActive(false);
+        SectorUnlock.SetActive(true);
+        LevelUnlock.SetActive(true);
     }
 }

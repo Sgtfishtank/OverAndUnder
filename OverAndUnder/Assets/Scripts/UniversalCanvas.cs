@@ -13,6 +13,7 @@ public class UniversalCanvas : MonoBehaviour
     public GameObject MainMenuButton;
     public GameObject MainMenuButton2;
     public GameObject CreditsObj;
+    public GameObject creditCanvas;
     public GameObject StatisticsObj;
     public GameObject StatisticsCanvas;
     public GameObject BackButton;
@@ -34,6 +35,7 @@ public class UniversalCanvas : MonoBehaviour
         mainMenuGraphics.SetActive(false);
         StatisticsObj.SetActive(false);
         CreditsObj.SetActive(false);
+        creditCanvas.SetActive(false);
         StatisticsCanvas.SetActive(false);
         SettingsButton1.SetActive(false);
         SettingObj.SetActive(false);
@@ -60,6 +62,7 @@ public class UniversalCanvas : MonoBehaviour
     public void Back()
     {
         CreditsObj.SetActive(false);
+        creditCanvas.SetActive(false);
         SettingObj.SetActive(true);
         StatisticsCanvas.SetActive(false);
         StatisticsObj.SetActive(false);
@@ -82,6 +85,7 @@ public class UniversalCanvas : MonoBehaviour
     public void Credits()
     {
         CreditsObj.SetActive(true);
+        creditCanvas.SetActive(true);
         SettingsButton1.SetActive(false);
         BackButton.SetActive(true);
         BackButton2.SetActive(false);
@@ -106,6 +110,7 @@ public class UniversalCanvas : MonoBehaviour
     public void SettingsFunc()
     {
         CreditsObj.SetActive(false);
+        creditCanvas.SetActive(false);
         MainMenu.SetActive(false);
         SettingObj.SetActive(true);
         MainMenuButton.SetActive(true);
@@ -134,6 +139,7 @@ public class UniversalCanvas : MonoBehaviour
         else
         {
             CreditsObj.SetActive(false);
+            creditCanvas.SetActive(false);
             MainMenu.SetActive(true);
             MainMenuButton.SetActive(false);
             SettingsButton1.SetActive(false);
@@ -143,6 +149,7 @@ public class UniversalCanvas : MonoBehaviour
     public void Yes()
     {
         CreditsObj.SetActive(false);
+        creditCanvas.SetActive(false);
         MainMenu.SetActive(true);
         MainMenuButton.SetActive(false);
         SettingsButton1.SetActive(false);

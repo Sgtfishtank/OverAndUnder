@@ -8,7 +8,13 @@ public class ConfigReader
 {
     public string[] lines;
     static FileStream fs;
-    private static string path = /*Application.persistentDataPath + */"Config.txt";
+#if UNITY_EDITOR
+    private static string path = /*Application.persistentDataPath +*/ "Assets/Config.txt";
+#endif
+#if !UNITY_EDITOR
+    private static string path = Application.persistentDataPath + "Config.txt";
+#endif
+
 
     private static ConfigReader instance = null;
     private ConfigReader()

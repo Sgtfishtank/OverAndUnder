@@ -2,7 +2,7 @@ UpgradeUnlock- 1
 CrystalsTop- 2
 CrystalsTotal- 1091
 CrystalsBanked- 929
-GamesPlayed- 62
+GamesPlayed- 63
 Healed- 2
 SlowUsed- 9
 ShieldLost- 353
@@ -13,7 +13,7 @@ UpgradeCDLevel- 2
 StarsLevel1- 2
 StarsLevel2- 2
 StarsLevel3- 2
-StarsLevel4- 1
+StarsLevel4- 2
 StarsLevel5- 2
 StarsLevel6- 2
 StarsLevel7- 2

@@ -68,10 +68,9 @@ public class Abilitys : MonoBehaviour
         {
             if(blinkInterwall < Time.time)
             {
-                print(blinkInterwall);
                 for (int i = 0; i < GM.lanetextscript.Length; i++)
                 {
-                    print(lanerenders[i].material);
+                    
                     if(lanerenders[i].material.name != defaultMat.name + " (Instance)")
                         lanerenders[i].sharedMaterial = defaultMat;
                     else

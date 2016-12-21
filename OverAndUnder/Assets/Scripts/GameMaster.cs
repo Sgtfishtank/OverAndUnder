@@ -267,7 +267,14 @@ public class GameMaster : MonoBehaviour
         {
             if (AM.abilityActive && (AM.abilitysInLane[0].y == 1))
             {
-                speedUpTime = Time.time + ConfigReader.Instance.getValueInt("CrystalSpeedLevel" + currentLevel);
+                switch (currentLevel)
+                {
+                    case 1:
+                        break;
+                    default:
+                        break;
+                }
+                //speedUpTime = Time.time + GlobalVariables.Instance.CrystalSpeedLevel+currentLevel);
                 return;
             }
             speedUp();

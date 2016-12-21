@@ -33,6 +33,7 @@ public class MainMenu : MonoBehaviour
     public GameObject lightsIngame;
     public string[] temp;
     public GameObject[] upgradeLock;
+    public Material UpgradeButtonMat;
     
     int Tut = 1;
     public int score;
@@ -72,7 +73,7 @@ public class MainMenu : MonoBehaviour
         upgradeLock[0].transform.GetComponent<Text>().text = (ConfigReader.Instance.getValueInt("StarsLevel1") + ConfigReader.Instance.getValueInt("StarsLevel2") + ConfigReader.Instance.getValueInt("StarsLevel3")).ToString();
         if (ConfigReader.Instance.getValueInt("StarsLevel1") + ConfigReader.Instance.getValueInt("StarsLevel2") + ConfigReader.Instance.getValueInt("StarsLevel3") > 5)
         {
-            upgradeLock[1].transform.GetComponent<MeshRenderer>().sharedMaterial = matBackground1;
+            upgradeLock[1].transform.GetComponent<MeshRenderer>().sharedMaterial = UpgradeButtonMat;
             upgradeLock[2].SetActive(false);
             upgradeLock[3].SetActive(true);
         }
@@ -89,7 +90,7 @@ public class MainMenu : MonoBehaviour
         upgradeLock[0].transform.GetComponent<Text>().text = (ConfigReader.Instance.getValueInt("StarsLevel1") + ConfigReader.Instance.getValueInt("StarsLevel2") + ConfigReader.Instance.getValueInt("StarsLevel3")).ToString();
         if (ConfigReader.Instance.getValueInt("StarsLevel1")+ ConfigReader.Instance.getValueInt("StarsLevel2")+ ConfigReader.Instance.getValueInt("StarsLevel3") > 5)
         {
-            upgradeLock[1].transform.GetComponent<MeshRenderer>().sharedMaterial = matBackground1;
+            upgradeLock[1].transform.GetComponent<MeshRenderer>().sharedMaterial = UpgradeButtonMat;
             upgradeLock[2].SetActive(false);
             upgradeLock[3].SetActive(true);
         }
@@ -234,14 +235,18 @@ public class MainMenu : MonoBehaviour
             }
         }
         int increes = 1;
-        for(int i = 0; i < 12; i++)
+        for(int i = 0; i < forwardArrows.Length; i++)
         {
-            if(i == 2 || i == 7)
-                increes++;
+            
             int stars = ConfigReader.Instance.getValueInt("StarsLevel" + (i + increes));
             if(stars > 0)
             {
                 forwardArrows[i].gameObject.SetActive(true);
+                if (i == 2 && totalstars < 6)
+                    forwardArrows[i].gameObject.SetActive(false);
+                else if (i == 8 && totalstars < 18)
+                    forwardArrows[i].gameObject.SetActive(false);
+                    
             }
             else
             {

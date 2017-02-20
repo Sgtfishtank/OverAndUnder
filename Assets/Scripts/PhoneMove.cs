@@ -38,7 +38,7 @@ public class PhoneMove : MonoBehaviour
                             pickedObject.GetComponent<Box>().onTheMove(1);
                         }
                     }
-                    else if(hit.transform.tag == "Ability Button")
+                   /*else if(hit.transform.tag == "Ability Button")
                     {
                         if (selectedAbility != hit.transform.GetComponent<AbilityButton>().buttontype)
                         {
@@ -82,7 +82,7 @@ public class PhoneMove : MonoBehaviour
                                 break;
                         }
                         selectedAbility = Abilitys.AbilitysEnum.NONE;
-                    }
+                    }*/
                     
                 }
                 else

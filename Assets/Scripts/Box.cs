@@ -360,7 +360,6 @@ public class Box : MonoBehaviour
         }
         else
         {
-            print(fullBox.GetComponentInChildren<MeshRenderer>(true).materials[3]);
             fullBox.GetComponentInChildren<MeshRenderer>(true).materials[3].SetColor("_EmissionColor", scoreEffect);
             fullBox.GetComponentInChildren<MeshRenderer>(true).materials[3].SetColor("_Color", scoreEffect);
         }
@@ -370,12 +369,15 @@ public class Box : MonoBehaviour
         if (hp < maxHp / 2)
         {
             brokenBox.GetComponentInChildren<MeshRenderer>(true).materials[0].SetColor("_EmissionColor", defaultColor);
-            brokenBox.GetComponentInChildren<MeshRenderer>(true).materials[0].SetColor("_Color", scoreEffect);
+            if(transform.tag == "Red Box")
+                brokenBox.GetComponentInChildren<MeshRenderer>(true).materials[0].SetColor("_Color", red);
+            else
+                brokenBox.GetComponentInChildren<MeshRenderer>(true).materials[0].SetColor("_Color", blue);
         }
         else
         {
             fullBox.GetComponentInChildren<MeshRenderer>(true).materials[3].SetColor("_EmissionColor", defaultColor);
-            if(transform.tag == "Red")
+            if(transform.tag == "Red Box")
                 fullBox.GetComponentInChildren<MeshRenderer>(true).materials[3].SetColor("_Color", red);
             else
                 fullBox.GetComponentInChildren<MeshRenderer>(true).materials[3].SetColor("_Color", blue);

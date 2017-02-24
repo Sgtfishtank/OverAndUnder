@@ -326,7 +326,7 @@ public class GameMaster : MonoBehaviour
         if(scorestreak > scorestreakLimit)
         {
             scorestreakLimit += 20;
-            for (int i = 0; i < boxes.Count-1; i++)
+            for (int i = 0; i < boxes.Count; i++)
             {
                 boxes[i].GetComponent<Box>().scoreStreakOn();
             }
@@ -536,7 +536,7 @@ public class GameMaster : MonoBehaviour
         scorestreak = 0;
         scorestreakLimit = 20;
         scoreStreakEffect.SetActive(false);
-        for (int i = 0; i < boxes.Count-1; i++)
+        for (int i = 0; i < boxes.Count; i++)
         {
             boxes[i].GetComponent<Box>().currentMultiplier = 1;
             boxes[i].GetComponent<Box>().scoreStreakOff();

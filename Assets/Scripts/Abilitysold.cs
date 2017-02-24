@@ -388,7 +388,7 @@ public void activateAbility(AbilitysEnum a, int lane)
                 lanerenders[lane].material.SetColor("_EmissionColor", multicolor);
                 break;
             case AbilitysEnum.SWITCH:
-                GM.boxes[lane].transform.GetComponent<Box>().changeColor();
+                //GM.boxes[lane].transform.GetComponent<Box>().changeColor();
                 switchTime = Time.time + switchCD;
                 switchRemaning = Mathf.FloorToInt(switchTime);
                 SwitchObj.transform.position = GM.boxPoints[lane].transform.position + new Vector3(0, 0, -2);

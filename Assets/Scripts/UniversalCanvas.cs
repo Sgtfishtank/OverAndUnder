@@ -81,6 +81,7 @@ public class UniversalCanvas : MonoBehaviour
         SettingObj.SetActive(false);
         SettingsButton1.SetActive(false);
         InGameCanvas.SetActive(true);
+        MainMenuButton.SetActive(false);
     }
     public void Credits()
     {
@@ -122,7 +123,7 @@ public class UniversalCanvas : MonoBehaviour
             Time.timeScale = 0;
             BackButton2.SetActive(true);
             BackButton.SetActive(false);
-            MainMenuButton.SetActive(false);
+            //MainMenuButton.SetActive(false);
         }
         else
         {

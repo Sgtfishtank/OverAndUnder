@@ -204,7 +204,7 @@ public class Box : MonoBehaviour
             {
                 fullBox.GetComponentInChildren<MeshRenderer>(true).materials[1].SetColor("_EmissionColor", scoreBlink);
             }
-            scoreBlinktime = Time.time + 0.2f;
+            scoreBlinktime = Time.time + 0.1f;
         }
         else if (col.transform.tag == "Blue" && transform.tag == "Blue Box")
         {
@@ -223,7 +223,7 @@ public class Box : MonoBehaviour
             {
                 fullBox.GetComponentInChildren<MeshRenderer>(true).materials[1].SetColor("_EmissionColor", scoreBlink);
             }
-            scoreBlinktime = Time.time + 0.2f;
+            scoreBlinktime = Time.time + 0.1f;
         }
         else
         {
@@ -321,23 +321,6 @@ public class Box : MonoBehaviour
     {
         moving = a;
     }
-    public void changeColor()
-    {
-        if (transform.tag == "Red Box")
-        {
-            transform.tag = "Blue Box";
-            transform.GetComponentsInChildren<MeshRenderer>(true)[0].sharedMaterial = mat2;
-            transform.GetComponentsInChildren<MeshRenderer>(true)[2].sharedMaterial = mat2;
-            transform.GetComponentInChildren<TextMesh>(true).color = blue;
-        }
-        else
-        {
-            transform.tag = "Red Box";
-            transform.GetComponentsInChildren<Renderer>(true)[0].sharedMaterial = mat1;
-            transform.GetComponentsInChildren<Renderer>(true)[2].sharedMaterial = mat1;
-            transform.GetComponentInChildren<TextMesh>(true).color = red;
-        }
-    }
     public void canMove()
     {
         movable = true;
@@ -353,6 +336,8 @@ public class Box : MonoBehaviour
     }
     public void scoreStreakOn()
     {
+        if (transform.tag != "Red Box" && transform.tag != "Blue Box")
+            return;
         if (hp < maxHp / 2)
         {
             brokenBox.GetComponentInChildren<MeshRenderer>(true).materials[0].SetColor("_EmissionColor", scoreEffect);
@@ -366,6 +351,8 @@ public class Box : MonoBehaviour
     }
     public void scoreStreakOff()
     {
+        if (transform.tag != "Red Box" && transform.tag != "Blue Box")
+            return;
         if (hp < maxHp / 2)
         {
             brokenBox.GetComponentInChildren<MeshRenderer>(true).materials[0].SetColor("_EmissionColor", defaultColor);

@@ -22,11 +22,13 @@ public class UniversalCanvas : MonoBehaviour
     public GameObject InGameCanvas;
     private GameObject mainMenuGraphics;
     private Scrollbar[] Scrollbars;
+    private GameMaster GM;
     bool inGame = false;
     
     // Use this for initialization
     void Start ()
     {
+        GM = GameObject.Find("Game Master(Clone)").GetComponent<GameMaster>();
         SettingObj = Instantiate(SettingObj, new Vector3(0, 0, -1), Quaternion.Euler(0, 180, 0)) as GameObject;
         StatisticsObj = Instantiate(StatisticsObj, new Vector3(0, 0, -1), Quaternion.Euler(0, 180, 0)) as GameObject;
         CreditsObj = GameObject.FindGameObjectWithTag("Credits");
@@ -70,7 +72,6 @@ public class UniversalCanvas : MonoBehaviour
         if (!inGame)
         {
             BackButton.SetActive(false);
-            BackButton2.SetActive(false);
         }
         MainMenuButton.SetActive(true);
         SettingsButton1.SetActive(true);
@@ -80,7 +81,10 @@ public class UniversalCanvas : MonoBehaviour
         Time.timeScale = 1;
         SettingObj.SetActive(false);
         SettingsButton1.SetActive(false);
-        InGameCanvas.SetActive(true);
+        if (inGame)
+            InGameCanvas.SetActive(true);
+        else
+            MainMenu.SetActive(true);
         MainMenuButton.SetActive(false);
     }
     public void Credits()
@@ -117,11 +121,9 @@ public class UniversalCanvas : MonoBehaviour
         MainMenuButton.SetActive(true);
         SettingsButton1.SetActive(true);
         InGameCanvas.SetActive(false);
-        BackButton2.SetActive(false);
         if (inGame)
         {
             Time.timeScale = 0;
-            BackButton2.SetActive(true);
             BackButton.SetActive(false);
             //MainMenuButton.SetActive(false);
         }
@@ -147,8 +149,9 @@ public class UniversalCanvas : MonoBehaviour
             SettingObj.SetActive(false);
         }
     }
-    public void Yes()
+    public void Yes() 
     {
+        GM.clear();
         CreditsObj.SetActive(false);
         creditCanvas.SetActive(false);
         MainMenu.SetActive(true);

@@ -351,7 +351,7 @@ public class UI : MonoBehaviour {
             redScoreEnd--;
             redScoreBegin++;
         }
-        if (blueScoreBegin < (GlobalVariables.Instance.GetStarReq(currentLevel) * 3)/*(ConfigReader.Instance.getValueInt("StarRequirementLevel" + currentLevel) * 3)*/ +1 )
+        if (blueScoreBegin+redScoreBegin < (GlobalVariables.Instance.GetStarReq(currentLevel) * 3)/*(ConfigReader.Instance.getValueInt("StarRequirementLevel" + currentLevel) * 3)*/ +1 )
         {
             scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.055496f + (posfactor * (redScoreBegin + blueScoreBegin)), scoreMeterBlue.transform.localPosition.z);
             scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01587644f + (scalefactor * (redScoreBegin + blueScoreBegin)), scoreMeterBlue.transform.localScale.z);

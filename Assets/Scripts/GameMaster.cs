@@ -312,7 +312,7 @@ public class GameMaster : MonoBehaviour
                     healslot.GetComponent<MeshRenderer>().sharedMaterial = healMatDef;
             }
         }
-        if ((blueScore +redScore) < 301)
+        if ((blueScore +redScore) < (GlobalVariables.Instance.GetStarReq(currentLevel) * 3) + 1)
         {
             scoreMeterBlue.transform.localPosition = new Vector3(scoreMeterBlue.transform.localPosition.x, 0.055496f + (posfactor * (redScore + blueScore)), scoreMeterBlue.transform.localPosition.z);
             scoreMeterBlue.transform.localScale = new Vector3(scoreMeterBlue.transform.localScale.x, 0.01587644f + (scalefactor * (redScore + blueScore)), scoreMeterBlue.transform.localScale.z);

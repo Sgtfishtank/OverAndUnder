@@ -85,6 +85,7 @@ public class MainMenu : MonoBehaviour
         LevelButtons.SetActive(false);
         StartScreen.SetActive(true);
         StartGameButton.SetActive(true);
+        GM.GetComponent<GameMaster>().clear();
         GM.SetActive(false);
         score = 0;// ConfigReader.Instance.getValueInt("CrystalsBanked");
         upgradeLock[0].transform.GetComponent<Text>().text = "0";// (ConfigReader.Instance.getValueInt("StarsLevel1") + ConfigReader.Instance.getValueInt("StarsLevel2") + ConfigReader.Instance.getValueInt("StarsLevel3")).ToString();

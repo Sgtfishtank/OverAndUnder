@@ -331,6 +331,8 @@ public class Box : MonoBehaviour
     }
     public void takeDamage()
     {
+        if (hp <= 0)
+            return;
         hp--;
         shaketime = 0.3f + Time.time;
     }
@@ -351,7 +353,7 @@ public class Box : MonoBehaviour
     }
     public void scoreStreakOff()
     {
-        if (transform.tag != "Red Box" && transform.tag != "Blue Box")
+        if (transform.tag != "Red Box" && transform.tag != "Blue Box" || hp <= 0)
             return;
         if (hp < maxHp / 2)
         {

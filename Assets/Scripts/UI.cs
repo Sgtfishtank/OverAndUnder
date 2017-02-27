@@ -49,6 +49,8 @@ public class UI : MonoBehaviour {
     public GameObject SectorUnlock;
     public GameObject[] PressToStart;
     public Text[] StarrecText;
+    public GameObject lights;
+    public GameObject lightsIngame;
 
     private float scalefactor = (1.175139f - 0.01587644f) / 300;
     private float posfactor = (0.055496f - 0.05536f) / 300;
@@ -68,6 +70,8 @@ public class UI : MonoBehaviour {
         redParitcle = GameObject.Find("particles_gameover_crystalsred");
         blueParitcle = GameObject.Find("particles_gameover_crystalsblue");
         nextLevel[1] = GameObject.FindGameObjectWithTag("NextLevelButton");
+        //lights = GameObject.Find("Point light_menus");
+        lightsIngame = GameObject.Find("Point light");
         PopUplevelselct[1] = Instantiate(PopUplevelselct[1], new Vector3(0,0,-3f), Quaternion.Euler(0,-180,0)) as GameObject;
         GameOver.SetActive(false);
         MainMenuButton.SetActive(false);
@@ -243,6 +247,8 @@ public class UI : MonoBehaviour {
             }
             if(!first)
             {
+                lights.SetActive(true);
+                lightsIngame.SetActive(false);
                 tutorialText[0].SetActive(false);
                 tutorialText[1].SetActive(false);
                 tutorialText[2].SetActive(false);
@@ -379,6 +385,8 @@ public class UI : MonoBehaviour {
     }
     public void Restart()
     {
+        lights.SetActive(false);
+        lightsIngame.SetActive(true);
         GameOver.SetActive(false);
         gameoverMesh.SetActive(false);
         GM.clear();
@@ -404,6 +412,8 @@ public class UI : MonoBehaviour {
     }
     public void NextLevel()
     {
+        lights.SetActive(false);
+        lightsIngame.SetActive(true);
         GameOver.SetActive(false);
         gameoverMesh.SetActive(false);
         GM.clear();
@@ -426,7 +436,7 @@ public class UI : MonoBehaviour {
         Reset(currentLevel+1);
         //ConfigReader.Instance.changeValue("GamesPlayed", ConfigReader.Instance.getValueInt("GamesPlayed") + 1);
     }
-    public void SettingsFunc()
+   /* public void SettingsFunc()
     {
         Time.timeScale = 0;
         Settings.SetActive(true);
@@ -438,7 +448,7 @@ public class UI : MonoBehaviour {
             textfields[i].gameObject.SetActive(false);
         }
 
-    }
+    }*/
     public void TutorialFunc()
     {
         Settings.SetActive(false);

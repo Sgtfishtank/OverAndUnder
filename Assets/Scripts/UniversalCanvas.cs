@@ -20,21 +20,24 @@ public class UniversalCanvas : MonoBehaviour
     public GameObject BackButton2;
     public GameObject AreUSure;
     public GameObject InGameCanvas;
-    private GameObject mainMenuGraphics;
+    public GameObject mainMenuGraphics;
     private Scrollbar[] Scrollbars;
-    private GameMaster GM;
+    public GameObject lights;
+    public GameObject lightsIngame;
     bool inGame = false;
     
     // Use this for initialization
     void Start ()
     {
-        GM = GameObject.Find("Game Master(Clone)").GetComponent<GameMaster>();
+        
         SettingObj = Instantiate(SettingObj, new Vector3(0, 0, -1), Quaternion.Euler(0, 180, 0)) as GameObject;
         StatisticsObj = Instantiate(StatisticsObj, new Vector3(0, 0, -1), Quaternion.Euler(0, 180, 0)) as GameObject;
         CreditsObj = GameObject.FindGameObjectWithTag("Credits");
         Scrollbars = SettingsButton1.GetComponentsInChildren<Scrollbar>();
         mainMenuGraphics = GameObject.FindGameObjectWithTag("MainMenuGraphics");
         mainMenuGraphics.SetActive(false);
+        lights = GameObject.Find("Point light_menus");
+        lightsIngame = GameObject.Find("Point light");
         StatisticsObj.SetActive(false);
         CreditsObj.SetActive(false);
         creditCanvas.SetActive(false);
@@ -42,7 +45,7 @@ public class UniversalCanvas : MonoBehaviour
         SettingsButton1.SetActive(false);
         SettingObj.SetActive(false);
         BackButton.SetActive(false);
-        AreUSure.SetActive(false);
+        AreUSure.SetActive(false);        
     }
 	
 	// Update is called once per frame
@@ -82,7 +85,11 @@ public class UniversalCanvas : MonoBehaviour
         SettingObj.SetActive(false);
         SettingsButton1.SetActive(false);
         if (inGame)
+        {
             InGameCanvas.SetActive(true);
+            lights.SetActive(false);
+            lightsIngame.SetActive(true);
+        }
         else
             MainMenu.SetActive(true);
         MainMenuButton.SetActive(false);
@@ -125,6 +132,8 @@ public class UniversalCanvas : MonoBehaviour
         {
             Time.timeScale = 0;
             BackButton.SetActive(false);
+            lights.SetActive(true);
+            lightsIngame.SetActive(false);
             //MainMenuButton.SetActive(false);
         }
         else
@@ -151,7 +160,6 @@ public class UniversalCanvas : MonoBehaviour
     }
     public void Yes() 
     {
-        GM.clear();
         CreditsObj.SetActive(false);
         creditCanvas.SetActive(false);
         MainMenu.SetActive(true);
@@ -160,6 +168,7 @@ public class UniversalCanvas : MonoBehaviour
         SettingObj.SetActive(false);
         MainMenu.GetComponent<MainMenu>().reset();
         AreUSure.SetActive(false);
+        MainMenuObj.transform.GetComponent<MainMenu>().GM.GetComponent<GameMaster>().clear(); ;
         if (inGame)
             Time.timeScale = 1;
     }

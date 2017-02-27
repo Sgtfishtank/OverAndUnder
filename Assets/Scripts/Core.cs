@@ -40,12 +40,9 @@ public class Core : MonoBehaviour {
     }
     void OnTriggerEnter(Collider col)
     {
-        if(currentLevel < 4)
-        {
-            boxesscripts[2].takeDamage();
-            boxesscripts[5].takeDamage();
-        }
-        if(currentLevel < 10)
+        boxesscripts[2].takeDamage();
+        boxesscripts[5].takeDamage();
+        if(currentLevel > 3)
         {
             boxesscripts[1].takeDamage();
             boxesscripts[4].takeDamage();

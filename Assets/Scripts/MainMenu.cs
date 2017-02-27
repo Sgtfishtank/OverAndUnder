@@ -31,6 +31,9 @@ public class MainMenu : MonoBehaviour
     public GameObject[] locks;
     public GameObject lights;
     public GameObject lightsIngame;
+    public GameObject introPrefab;
+    public GameObject upgradeStarReq;
+    private float removeIntro;
     //public string[] temp;
     public GameObject[] upgradeLock;
     public Material UpgradeButtonMat;
@@ -59,6 +62,8 @@ public class MainMenu : MonoBehaviour
         lights = GameObject.Find("Point light_menus");
         lightsIngame = GameObject.Find("Point light");
         lightsIngame.SetActive(false);
+        introPrefab = Instantiate(introPrefab, new Vector3(0, 0f, -2f), Quaternion.Euler(0, 180, 0)) as GameObject;
+        removeIntro = Time.time + 2f;
         UpgradeCanvas.SetActive(false);
         Upgrades.SetActive(false);
         LevelSelect.SetActive(false);
@@ -66,7 +71,7 @@ public class MainMenu : MonoBehaviour
         helpScreen[0].SetActive(false);
         PopUp.SetActive(false);
         //temp = ConfigReader.Instance.lines;
-        upgradeLock[0] = GameObject.FindGameObjectWithTag("UpgradeTextSC");
+        //upgradeLock[0] = GameObject.FindGameObjectWithTag("UpgradeTextSC");
         upgradeLock[1] = GameObject.FindGameObjectWithTag("UpgradeBottonMatChange");
         upgradeLock[2] = GameObject.FindGameObjectWithTag("UpgradeLock");
         score = 100;//ConfigReader.Instance.getValueInt("CrystalsBanked");
@@ -100,7 +105,11 @@ public class MainMenu : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-	
+	    if(Time.time > removeIntro)
+        {
+            introPrefab.SetActive(false);
+            upgradeStarReq.SetActive(true);
+        }
 	}
     public void LevelSelectFunc()
     {

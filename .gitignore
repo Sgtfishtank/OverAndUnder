@@ -24,10 +24,10 @@ sysinfo.txt
 ProjectSettings/EditorBuildSettings.asset
 
 #Unity scenes
-*.unity
-*.unity.meta
-OverAndUnder/Assets/_Scenes
-OverAndUnder/Assets/_Scenes/*
+#*.unity
+#*.unity.meta
+#OverAndUnder/Assets/_Scenes
+#OverAndUnder/Assets/_Scenes/*
 
 #Folder for materials used in local testing, ie resources, prefabs etc
 OverAndUnder/Assets/Testing/*

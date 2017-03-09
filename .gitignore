@@ -21,7 +21,7 @@
 sysinfo.txt
 
 #Unity build settings - to be removed later
-ProjectSettings/EditorBuildSettings.asset
+#ProjectSettings/EditorBuildSettings.asset
 
 #Unity scenes
 #*.unity

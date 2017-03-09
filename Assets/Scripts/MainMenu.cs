@@ -32,11 +32,11 @@ public class MainMenu : MonoBehaviour
     public GameObject lights;
     public GameObject lightsIngame;
     public GameObject introPrefab;
-    public GameObject upgradeStarReq;
     private float removeIntro;
     //public string[] temp;
     public GameObject[] upgradeLock;
     public Material UpgradeButtonMat;
+    private bool once = false;
     
     int Tut = 1;
     public int score;
@@ -63,7 +63,7 @@ public class MainMenu : MonoBehaviour
         lightsIngame = GameObject.Find("Point light");
         lightsIngame.SetActive(false);
         introPrefab = Instantiate(introPrefab, new Vector3(0, 0f, -2f), Quaternion.Euler(0, 180, 0)) as GameObject;
-        removeIntro = Time.time + 2f;
+        removeIntro = Time.time + 1f;
         UpgradeCanvas.SetActive(false);
         Upgrades.SetActive(false);
         LevelSelect.SetActive(false);
@@ -105,14 +105,16 @@ public class MainMenu : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-	    if(Time.time > removeIntro)
+	    if(Time.time > removeIntro && !once)
         {
+            once = true;
             introPrefab.SetActive(false);
-            upgradeStarReq.SetActive(true);
+            upgradeLock[4].SetActive(true);
         }
 	}
     public void LevelSelectFunc()
     {
+        upgradeLock[4].SetActive(false);
         StartScreen.SetActive(false);
         StartGameButton.SetActive(false);
         LevelButtons.SetActive(true);
@@ -126,7 +128,8 @@ public class MainMenu : MonoBehaviour
         }
         helpScreen[1].SetActive(true);
         levelSelectButtons();
-        upgradeLock[4].SetActive(false);
+        
+        UpgradeButton.SetActive(false);
     }
     public void PopUpFunc(int level)
     {

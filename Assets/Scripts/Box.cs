@@ -29,6 +29,8 @@ public class Box : MonoBehaviour
     public Color defaultColor;
     public Color scoreEffect;
     public Color scoreBlink;
+    public Color black;
+    public Color selectedcolor;
     private float shaketime;
 
     bool isBroken = false;
@@ -53,6 +55,8 @@ public class Box : MonoBehaviour
         ColorUtility.TryParseHtmlString("#909090FF", out grey);
         ColorUtility.TryParseHtmlString("#00000000", out defaultColor);
         ColorUtility.TryParseHtmlString("#FFCD63FF", out scoreEffect);
+        ColorUtility.TryParseHtmlString("#3C3C3C76", out selectedcolor);
+        ColorUtility.TryParseHtmlString("#00000076", out black);
         ColorUtility.TryParseHtmlString("#4A4A4A", out scoreBlink);
         camera = GameObject.Find("camera_main").GetComponent<Camera>();
         GM = GameObject.Find("Game Master(Clone)").GetComponent<GameMaster>();
@@ -370,6 +374,43 @@ public class Box : MonoBehaviour
                 fullBox.GetComponentInChildren<MeshRenderer>(true).materials[3].SetColor("_Color", red);
             else
                 fullBox.GetComponentInChildren<MeshRenderer>(true).materials[3].SetColor("_Color", blue);
+        }
+    }
+    public void Select(bool selected)
+    {
+        if(selected)
+        {
+            if (hp < maxHp / 2)
+            {
+                brokenBox.GetComponentInChildren<MeshRenderer>(true).materials[1].SetColor("_Color", selectedcolor);//black
+                brokenBox.GetComponentInChildren<MeshRenderer>(true).materials[4].SetColor("_Color", selectedcolor);//nr 4
+            }
+            else
+            {
+                fullBox.GetComponentInChildren<MeshRenderer>(true).materials[2].SetColor("_Color", selectedcolor);//nr 4
+                fullBox.GetComponentInChildren<MeshRenderer>(true).materials[4].SetColor("_Color", selectedcolor);//black
+            }
+        }
+        else
+        {
+            if (hp < maxHp / 2)
+            {
+                brokenBox.GetComponentInChildren<MeshRenderer>(true).materials[1].SetColor("_Color", black);//black
+                //brokenBox.GetComponentInChildren<MeshRenderer>(true).materials[4].SetColor("_Color", scoreEffect);//nr 4
+                if (transform.tag == "Red Box")
+                    fullBox.GetComponentInChildren<MeshRenderer>(true).materials[4].SetColor("_Color", red);
+                else
+                    fullBox.GetComponentInChildren<MeshRenderer>(true).materials[4].SetColor("_Color", blue);
+            }
+            else
+            {
+                //fullBox.GetComponentInChildren<MeshRenderer>(true).materials[2].SetColor("_Color", scoreEffect);//nr 4
+                fullBox.GetComponentInChildren<MeshRenderer>(true).materials[4].SetColor("_Color", black);//black
+                if (transform.tag == "Red Box")
+                    fullBox.GetComponentInChildren<MeshRenderer>(true).materials[2].SetColor("_Color", red);
+                else
+                    fullBox.GetComponentInChildren<MeshRenderer>(true).materials[2].SetColor("_Color", blue);
+            }
         }
     }
 }

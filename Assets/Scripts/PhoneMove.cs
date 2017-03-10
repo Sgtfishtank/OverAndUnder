@@ -29,10 +29,20 @@ public class PhoneMove : MonoBehaviour
                 {
                     if (hit.transform.tag == "Blue Box" || hit.transform.tag == "Red Box")
                     {
+                        if(hit.transform == pickedObject)
+                        {
+                            pickedObject.GetComponent<Box>().Select(false);
+                        }
+                        if(hit.transform != pickedObject)
+                        {
+                            int temp = pickedObject.GetComponent<Box>().Slot;
+                            pickedObject.GetComponent<Box>().newPos(hit.transform.GetComponent<Box>().Slot);
+                            hit.transform.GetComponent<Box>().newPos(temp);
+                        }
                         if (pickedObject == null)
                         {
                             pickedObject = hit.transform;
-                            pickedObject.GetComponent<Box>().onTheMove(1);
+                            pickedObject.GetComponent<Box>().Select(true);
                         }
                     }
                 }
@@ -41,7 +51,7 @@ public class PhoneMove : MonoBehaviour
                     pickedObject = null;
                 }
             }
-            else if (touch.phase == TouchPhase.Moved)
+           /* else if (touch.phase == TouchPhase.Moved)
             {
                 if (pickedObject != null)
                 {
@@ -56,7 +66,7 @@ public class PhoneMove : MonoBehaviour
             {
                 pickedObject.GetComponent<Box>().onTheMove(2);
                 pickedObject = null;
-            }
+            }*/
         }
     }
 }

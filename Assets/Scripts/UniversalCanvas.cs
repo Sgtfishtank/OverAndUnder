@@ -91,8 +91,9 @@ public class UniversalCanvas : MonoBehaviour
             lightsIngame.SetActive(true);
         }
         else
-            MainMenu.SetActive(true);
+        MainMenu.SetActive(true);
         MainMenuButton.SetActive(false);
+        BackButton2.SetActive(false);
     }
     public void Credits()
     {
@@ -121,6 +122,15 @@ public class UniversalCanvas : MonoBehaviour
     }
     public void SettingsFunc()
     {
+        if(lightsIngame == null)
+        {
+            
+            lightsIngame = GameObject.Find("Point light");
+        }
+        if (lights == null)
+        {
+            lights = GameObject.Find("Point light_menus");
+        }
         CreditsObj.SetActive(false);
         creditCanvas.SetActive(false);
         MainMenu.SetActive(false);
@@ -128,6 +138,7 @@ public class UniversalCanvas : MonoBehaviour
         MainMenuButton.SetActive(true);
         SettingsButton1.SetActive(true);
         InGameCanvas.SetActive(false);
+        BackButton2.SetActive(true);
         if (inGame)
         {
             Time.timeScale = 0;

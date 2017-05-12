@@ -55,7 +55,7 @@ public class Box : MonoBehaviour
         ColorUtility.TryParseHtmlString("#909090FF", out grey);
         ColorUtility.TryParseHtmlString("#00000000", out defaultColor);
         ColorUtility.TryParseHtmlString("#FFCD63FF", out scoreEffect);
-        ColorUtility.TryParseHtmlString("#3C3C3C76", out selectedcolor);
+        ColorUtility.TryParseHtmlString("#C3C3C376", out selectedcolor);
         ColorUtility.TryParseHtmlString("#00000076", out black);
         ColorUtility.TryParseHtmlString("#4A4A4A", out scoreBlink);
         camera = GameObject.Find("camera_main").GetComponent<Camera>();
@@ -64,8 +64,11 @@ public class Box : MonoBehaviour
         BoxSlots = GM.boxPoints.GetRange(0, GM.boxPoints.Count);
         currentLevel = GM.currentLevel;
         psMaster.SetActive(false);
-        brokenBox.transform.gameObject.SetActive(false);
-        temp = fullBox.transform.GetComponentsInChildren<Transform>();
+        if (!ghost)
+        {
+            brokenBox.transform.gameObject.SetActive(false);
+            temp = fullBox.transform.GetComponentsInChildren<Transform>();
+        }
         if (currentLevel == 1 && BoxSlots.Count == 7)
             BoxSlots.RemoveAt(6);
     }
@@ -100,8 +103,9 @@ public class Box : MonoBehaviour
                 }
             }
         }
-        if (once)
+        if (once && !ghost)
         {
+        
             temp = fullBox.transform.GetComponentsInChildren<Transform>();
             
             for (int j = 0; j < temp.Length; j++)
@@ -244,7 +248,11 @@ public class Box : MonoBehaviour
 
     void OnMouseOver()
     {
-        if (Input.GetMouseButton(0))
+        if(Input.GetMouseButtonDown(0))
+        {
+            GM.selectBox(Slot);
+        }
+      /*  if (Input.GetMouseButton(0))
         {
             if (movable)
             {
@@ -311,7 +319,7 @@ public class Box : MonoBehaviour
                 }
             }
             selected = false;
-        }
+        }*/
     }
     public void newPos(int pos)
     {

@@ -53,6 +53,7 @@ public class GameMaster : MonoBehaviour
     public Material healMat;
     public Material laneDefMat;
     public Material laneDeathMat;
+    private int selectedBox = -1;
 
     void Start()
     {
@@ -540,6 +541,29 @@ public class GameMaster : MonoBehaviour
         {
             boxes[i].GetComponent<Box>().currentMultiplier = 1;
             boxes[i].GetComponent<Box>().scoreStreakOff();
+        }
+    }
+    public void selectBox(int box)
+    {
+        if (selectedBox < 0)
+        {
+            selectedBox = box;
+            boxes[box].transform.GetComponent<Box>().Select(true);
+        }
+        else if(selectedBox != box)
+        {
+            GameObject temp = boxes[selectedBox];
+            boxes[selectedBox] = boxes[box];
+            boxes[box] = temp;
+            boxes[selectedBox].transform.GetComponent<Box>().newPos(selectedBox);
+            boxes[box].transform.GetComponent<Box>().newPos(box);
+            selectedBox = -1;
+            boxes[box].transform.GetComponent<Box>().Select(false);
+        }
+        else if(selectedBox == box)
+        {
+            selectedBox = -1;
+            boxes[box].transform.GetComponent<Box>().Select(false);
         }
     }
 }

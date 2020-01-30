@@ -214,7 +214,7 @@ namespace BeautifyEffect
 			EditorGUILayout.Separator ();
 			DrawLabel ("Image Enhancement");
 
-			if (_effect.cameraEffect != null && !_effect.cameraEffect.hdr) {
+			if (_effect.cameraEffect != null && !_effect.cameraEffect.allowHDR) {
 				EditorGUILayout.HelpBox ("Some effects, like dither and bloom, works better with HDR enabled. Check your camera setting.", MessageType.Warning);
 			}
 

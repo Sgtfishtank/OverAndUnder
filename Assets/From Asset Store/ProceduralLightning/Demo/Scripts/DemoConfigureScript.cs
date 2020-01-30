@@ -233,7 +233,7 @@ namespace DigitalRuby.ThunderAndLightning
                 SpaceBarLabel = null;
             }
 
-            UnityEngine.Profiler.BeginSample("CreateLightningBolt");
+            UnityEngine.Profiling.Profiler.BeginSample("CreateLightningBolt");
             System.Diagnostics.Stopwatch timer = System.Diagnostics.Stopwatch.StartNew();
 
             lastStart = StartImage.transform.position + (Camera.main.transform.forward * DistanceSlider.value);
@@ -279,7 +279,7 @@ namespace DigitalRuby.ThunderAndLightning
             }
 
             timer.Stop();
-            UnityEngine.Profiler.EndSample();
+            UnityEngine.Profiling.Profiler.EndSample();
 
             UpdateStatusLabel(timer.Elapsed);
         }

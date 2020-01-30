@@ -40,17 +40,17 @@ public class Core : MonoBehaviour {
     }
     void OnTriggerEnter(Collider col)
     {
-        boxesscripts[2].takeDamage();
-        boxesscripts[5].takeDamage();
+        boxesscripts[2].TakeDamage();
+        boxesscripts[5].TakeDamage();
         if(currentLevel > 3)
         {
-            boxesscripts[1].takeDamage();
-            boxesscripts[4].takeDamage();
+            boxesscripts[1].TakeDamage();
+            boxesscripts[4].TakeDamage();
         }
         if(currentLevel > 9)
         {
-            boxesscripts[0].takeDamage();
-            boxesscripts[3].takeDamage();
+            boxesscripts[0].TakeDamage();
+            boxesscripts[3].TakeDamage();
         }
         col.gameObject.SetActive(false);
         psMaster.SetActive(true);

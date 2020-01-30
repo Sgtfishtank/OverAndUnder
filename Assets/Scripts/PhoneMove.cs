@@ -14,7 +14,7 @@ public class PhoneMove : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-        foreach (Touch touch in Input.touches)
+        /*foreach (Touch touch in Input.touches)
         {
             //Create horizontal plane
             Plane horPlane = new Plane(Vector3.up, Vector3.zero);
@@ -66,7 +66,7 @@ public class PhoneMove : MonoBehaviour
             {
                 pickedObject.GetComponent<Box>().onTheMove(2);
                 pickedObject = null;
-            }*/
-        }
+            }*
+        }*/
     }
 }

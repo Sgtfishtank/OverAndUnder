@@ -181,15 +181,17 @@ public class GameMaster : MonoBehaviour
         
         for (int i = 0; i < boxPoints.Count; i++)
         {
+            print("point " + i);
             if (i < 3)
                 boxes.Add(Instantiate(blueBox, boxPoints[i].position, Quaternion.identity) as GameObject);
             else if (i > 2 && i < 6)
                 boxes.Add(Instantiate(redBox, boxPoints[i].position, Quaternion.identity) as GameObject);
             else
             {
+                print("spawning ghost "  + i);
                 boxes.Add(Instantiate(ghostBox, boxPoints[i].position, Quaternion.identity) as GameObject);
             }
-            if (i != 6)
+            //if (i != 6)
                 boxes[i].transform.GetComponent<Box>().StartPos(i); 
         }
         if (currentLevel < 4)
@@ -329,7 +331,7 @@ public class GameMaster : MonoBehaviour
             scorestreakLimit += 20;
             for (int i = 0; i < boxes.Count; i++)
             {
-                boxes[i].GetComponent<Box>().scoreStreakOn();
+                boxes[i].GetComponent<Box>().ScoreStreakOn();
             }
             //scoreStreakEffect.SetActive(true);
             
@@ -359,21 +361,6 @@ public class GameMaster : MonoBehaviour
         if (spawnRate > 0.54f)
             spawnRate -= 0.05f;
     }
-    public void unLockBoxes(int slot)
-    {
-        for (int i = 0; i < boxes.Count; i++)
-        {
-            boxes[i].GetComponent<Box>().canMove();
-        }
-    }
-    public void LockBoxes(int slot)
-    {
-        for (int i = 0; i < boxes.Count; i++)
-        {
-            if(i != slot)
-                boxes[i].GetComponent<Box>().cantMove();
-        }
-    }
     int getLane()
     {
         int temp = UnityEngine.Random.Range(0,6);
@@ -394,7 +381,7 @@ public class GameMaster : MonoBehaviour
                 if (boxes[i].tag == "Untagged")
                     slot = i;
             }
-            boxes[temp].GetComponent<Box>().newPos(slot);
+            boxes[temp].GetComponent<Box>().NewPos(slot);
         }
         if (destroyedLanes.Contains(slot))
             return;
@@ -410,6 +397,8 @@ public class GameMaster : MonoBehaviour
             }
         }
     }
+
+ 
     void spawnNormal(int lane, float speed, int color, bool multi)
     {
         int ball = 0;
@@ -442,7 +431,7 @@ public class GameMaster : MonoBehaviour
         if(AM.abilitysInLane[2].y == 1)
             spawnNormal(lane, normalspeed, color, true);
        else
-            spawnNormal(lane, normalspeed/4, color, false);
+            spawnNormal(lane, normalspeed / 4, color, false);
         
     }
     public void patternSpawn(int lane, float speed, int color)
@@ -530,7 +519,7 @@ public class GameMaster : MonoBehaviour
         GameObject temp = boxes[newPos];
         boxes[newPos] = boxes[CurrentPos];
         boxes[CurrentPos] = temp;
-        boxes[CurrentPos].transform.GetComponent<Box>().newPos(CurrentPos);
+        boxes[CurrentPos].transform.GetComponent<Box>().NewPos(CurrentPos);
     }
     public void resetScoreStreak()
     {
@@ -540,7 +529,7 @@ public class GameMaster : MonoBehaviour
         for (int i = 0; i < boxes.Count; i++)
         {
             boxes[i].GetComponent<Box>().currentMultiplier = 1;
-            boxes[i].GetComponent<Box>().scoreStreakOff();
+            boxes[i].GetComponent<Box>().ScoreStreakOff();
         }
     }
     public void selectBox(int box)
@@ -555,8 +544,8 @@ public class GameMaster : MonoBehaviour
             GameObject temp = boxes[selectedBox];
             boxes[selectedBox] = boxes[box];
             boxes[box] = temp;
-            boxes[selectedBox].transform.GetComponent<Box>().newPos(selectedBox);
-            boxes[box].transform.GetComponent<Box>().newPos(box);
+            boxes[selectedBox].transform.GetComponent<Box>().NewPos(selectedBox);
+            boxes[box].transform.GetComponent<Box>().NewPos(box);
             selectedBox = -1;
             boxes[box].transform.GetComponent<Box>().Select(false);
         }

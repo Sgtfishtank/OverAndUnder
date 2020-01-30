@@ -1,4 +1,6 @@
-﻿Shader "Custom/LightningBoltShaderMesh"
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Custom/LightningBoltShaderMesh"
 {
 	Properties
 	{
@@ -189,7 +191,7 @@
 				float4 tangent = float4(cross(directionBackwardsNormalized, directionToCamera), 0);
 				dirModifier = v.dir.w / absRadius;
 				float4 directionSideways = (tangent * lineMultiplier * dirModifier * jitter);
-				o.pos = mul(UNITY_MATRIX_MVP, v.vertex + directionBackwards + directionSideways + turbulenceDirection);
+				o.pos = UnityObjectToClipPos(v.vertex + directionBackwards + directionSideways + turbulenceDirection);
 
 #elif defined(ORTHOGRAPHIC_XY)
 
@@ -199,7 +201,7 @@
 				float2 tangent = normalize(float2(-v.dir2.y, v.dir2.x));
 				dirModifier = v.dir.w / absRadius;
 				float4 directionSideways = float4(tangent * lineMultiplier * dirModifier * jitter, 0, 0);
-				o.pos = mul(UNITY_MATRIX_MVP, v.vertex + directionBackwards + directionSideways + turbulenceDirection);
+				o.pos = UnityObjectToClipPos(v.vertex + directionBackwards + directionSideways + turbulenceDirection);
 
 #else
 
@@ -212,7 +214,7 @@
 				dirModifier = v.dir.w / absRadius;
 				tangent = tangent * lineMultiplier * dirModifier * jitter;
 				float4 directionSideways = float4(tangent.x, 0.0f, tangent.y, 0.0f);
-				o.pos = mul(UNITY_MATRIX_MVP, v.vertex + directionBackwards4 + directionSideways + turbulenceDirection4);
+				o.pos = UnityObjectToClipPos(v.vertex + directionBackwards4 + directionSideways + turbulenceDirection4);
 				
 #endif
 
@@ -301,14 +303,14 @@
 				float3 directionToCamera = (_WorldSpaceCameraPos - worldPos);
 				float3 tangent = cross(v.dir.xyz, directionToCamera);
 				float4 offset = float4(normalize(tangent) * v.dir.w, 0);
-				o.pos = mul(UNITY_MATRIX_MVP, worldPos + (offset * jitter) + turbulenceDirection);
+				o.pos = UnityObjectToClipPos(worldPos + (offset * jitter) + turbulenceDirection);
 
 #elif defined(ORTHOGRAPHIC_XY)
 								
 				float4 turbulenceDirection = float4(turbulenceVelocity.xy, 0, 0) + (float4(normalize(v.dir).xy, 0, 0) * turbulence);
 				float2 tangent = normalize(float2(-v.dir.y, v.dir.x));
 				float4 offset = float4(tangent * v.dir.w, 0, 0);
-				o.pos = mul(UNITY_MATRIX_MVP, worldPos + (offset * jitter) + turbulenceDirection);
+				o.pos = UnityObjectToClipPos(worldPos + (offset * jitter) + turbulenceDirection);
 
 #else
 
@@ -317,7 +319,7 @@
 				float2 tangent = normalize(float2(-v.dir.z, v.dir.x));
 				tangent *= v.dir.w;
 				float4 offset = float4(tangent.x, 0.0f, tangent.y, 0.0f);
-				o.pos = mul(UNITY_MATRIX_MVP, worldPos + (offset * jitter) + turbulenceDirection4);
+				o.pos = UnityObjectToClipPos(worldPos + (offset * jitter) + turbulenceDirection4);
 				
 #endif
 				
